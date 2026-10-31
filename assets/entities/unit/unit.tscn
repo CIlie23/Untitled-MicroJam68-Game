@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://h8vpc05mtwi0"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_mukvx"]
+[ext_resource type="Script" uid="uid://b5giqhkwkvnt8" path="res://assets/entities/unit/unit.gd" id="1_q456h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
+size = Vector2(139, 143)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtxm7"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0, 0.3372549, 1)
+border_blend = true
+
+[node name="Unit" type="CharacterBody2D" unique_id=1370506533 groups=["unit"]]
+script = ExtResource("1_q456h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1358620830]
+position = Vector2(-1.5, -0.5)
+shape = SubResource("RectangleShape2D_fqy7p")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1280843234]
+texture = ExtResource("1_mukvx")
+
+[node name="Box" type="Panel" parent="." unique_id=896607805]
+offset_left = -71.0
+offset_top = -72.0
+offset_right = 68.0
+offset_bottom = 71.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rtxm7")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

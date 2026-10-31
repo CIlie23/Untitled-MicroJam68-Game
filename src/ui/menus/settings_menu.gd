@@ -64,4 +64,3 @@ func _set_sliders_enabled(enabled: bool) -> void:
 func _on_fullscreen_toggled(fullscreen: bool) -> void:
 	Settings.set_fullscreen(fullscreen)
 	%WindowSize.disabled = fullscreen
-

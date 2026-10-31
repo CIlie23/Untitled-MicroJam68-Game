@@ -1,10 +1,42 @@
 [gd_scene format=3 uid="uid://ufj1jmngqsds"]
 
-[ext_resource type="PackedScene" uid="uid://ccs0buydk4645" path="res://src/ui/hud/ui.tscn" id="1_qd0h3"]
+[ext_resource type="Script" uid="uid://dne6j7jiaj50l" path="res://src/levels/world.gd" id="1_q35l7"]
+[ext_resource type="Script" uid="uid://b7nve0a26tikt" path="res://src/ui/hud/camera.gd" id="1_qd0h3"]
+[ext_resource type="PackedScene" uid="uid://h8vpc05mtwi0" path="res://assets/entities/unit/unit.tscn" id="2_jimqh"]
 [ext_resource type="PackedScene" path="res://src/ui/menus/pause_menu.tscn" id="2_pause"]
+[ext_resource type="PackedScene" uid="uid://db35skuyw7efj" path="res://assets/terrain/tree/tree.tscn" id="4_j8oow"]
+[ext_resource type="PackedScene" uid="uid://ncn1qvqrj1l0" path="res://assets/terrain/townhall/townhall.tscn" id="5_hkv0b"]
+[ext_resource type="PackedScene" uid="uid://ccs0buydk4645" path="res://src/ui/hud/ui.tscn" id="5_wr3og"]
 
 [node name="World" type="Node2D" unique_id=1628329778]
+y_sort_enabled = true
+script = ExtResource("1_q35l7")
 
-[node name="UI" parent="." unique_id=648317043 instance=ExtResource("1_qd0h3")]
+[node name="Camera" type="Camera2D" parent="." unique_id=944772322]
+position = Vector2(574, 326)
+script = ExtResource("1_qd0h3")
 
-[node name="PauseMenu" parent="." instance=ExtResource("2_pause")]
+[node name="UI" parent="." unique_id=648317043 instance=ExtResource("5_wr3og")]
+
+[node name="PauseMenu" parent="." unique_id=891804397 instance=ExtResource("2_pause")]
+
+[node name="Units" type="Node2D" parent="." unique_id=2012210298]
+y_sort_enabled = true
+
+[node name="Unit" parent="Units" unique_id=1370506533 instance=ExtResource("2_jimqh")]
+position = Vector2(464, 351)
+
+[node name="Objects" type="Node2D" parent="." unique_id=1800154722]
+y_sort_enabled = true
+
+[node name="Tree" parent="Objects" unique_id=387960191 instance=ExtResource("4_j8oow")]
+position = Vector2(129, 461)
+scale = Vector2(5, 5)
+
+[node name="Houses" type="Node2D" parent="." unique_id=31918186]
+
+[node name="Townhall" parent="Houses" unique_id=1677700993 instance=ExtResource("5_hkv0b")]
+position = Vector2(744, 155)
+scale = Vector2(3, 3)
+
+[connection signal="area_selected" from="Camera" to="." method="_on_camera_area_selected"]

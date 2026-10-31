@@ -1,12 +1,22 @@
 [gd_scene format=3 uid="uid://ccs0buydk4645"]
 
-[ext_resource type="Script" uid="uid://b7nve0a26tikt" path="res://src/ui/hud/camera.gd" id="1_bepx4"]
+[ext_resource type="Script" uid="uid://uhvfjr0mxe7h" path="res://src/ui/hud/ui.gd" id="1_bepx4"]
 
-[node name="UI" type="Node" unique_id=648317043]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bepx4"]
+bg_color = Color(0, 0, 0, 0.21176471)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.91509295, 0.8018863, 0, 1)
 
-[node name="Camera" type="Camera2D" parent="." unique_id=944772322]
+[node name="UI" type="CanvasLayer" unique_id=2026718745]
 script = ExtResource("1_bepx4")
 
 [node name="Panel" type="Panel" parent="." unique_id=1745375936]
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bepx4")
+
+[node name="Label" type="Label" parent="." unique_id=964517606]
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 23.0

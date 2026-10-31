@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://7lem0osnqw30"]
+
+[ext_resource type="Script" uid="uid://d3wp4w3gcjgle" path="res://src/ui/dialogue/spawn_unit.gd" id="1_4uvx0"]
+
+[node name="SpawnUnit" type="Node2D" unique_id=932671990]
+script = ExtResource("1_4uvx0")
+
+[node name="Panel" type="Panel" parent="." unique_id=803925504]
+offset_left = 320.0
+offset_top = 192.0
+offset_right = 768.0
+offset_bottom = 448.0
+
+[node name="Label" type="Label" parent="." unique_id=643829599]
+offset_left = 416.0
+offset_top = 256.0
+offset_right = 702.0
+offset_bottom = 296.0
+text = "Would you like to purchase this unit?"
+
+[node name="Yes" type="Button" parent="." unique_id=701786214]
+offset_left = 384.0
+offset_top = 392.0
+offset_right = 512.0
+offset_bottom = 423.0
+text = "Yes"
+
+[node name="No" type="Button" parent="." unique_id=1778129622]
+offset_left = 576.0
+offset_top = 392.0
+offset_right = 704.0
+offset_bottom = 423.0
+text = "No"
+
+[connection signal="pressed" from="Yes" to="." method="_on_yes_pressed"]
+[connection signal="pressed" from="No" to="." method="_on_no_pressed"]

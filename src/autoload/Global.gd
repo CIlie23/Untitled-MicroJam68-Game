@@ -1,11 +1,16 @@
 extends Node
 
+@onready var spawn = preload("res://src/ui/dialogue/spawn_unit.tscn")
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var Wood = 0
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func spawnUnit(pos):
+	var path = get_tree().get_root().get_node("World/Units")
+	var hasSpawn = false
+	for i in path.get_child_count():
+		if "SpawnUnit" in path.get_child(i).name:
+			hasSpawn = true
+	if hasSpawn == false:
+		var spawnUnit = spawn.instantiate()
+		spawnUnit.housePos = pos
+		path.add_child(spawnUnit)
