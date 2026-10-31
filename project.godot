@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="New Game Project"
+config/name="PrimordialRace"
+run/main_scene="uid://ufj1jmngqsds"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -29,4 +30,5 @@ window/stretch/aspect="expand"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"

@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ccs0buydk4645"]
+
+[ext_resource type="Script" uid="uid://b7nve0a26tikt" path="res://src/ui/hud/camera.gd" id="1_bepx4"]
+
+[node name="UI" type="Node" unique_id=648317043]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=944772322]
+script = ExtResource("1_bepx4")
+
+[node name="Panel" type="Panel" parent="." unique_id=1745375936]
+offset_right = 40.0
+offset_bottom = 40.0
