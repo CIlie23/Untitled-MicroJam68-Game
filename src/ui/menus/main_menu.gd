@@ -1,17 +1,32 @@
 extends Control
 
+const GAME_SCENE_PATH := "res://src/levels/world.tscn"
+const HOW_TO_PLAY_SCENE := preload("res://src/ui/menus/how_to_play_menu.tscn")
+const OPTIONS_SCENE := preload("res://src/ui/menus/settings_menu.tscn")
+const CREDITS_SCENE := preload("res://src/ui/menus/credits_menu.tscn")
 
-#var game_scene = preload("res://levels/level2.tscn").instantiate()
-var settings_scene = preload("res://src/ui/menus/settings_menu.tscn").instantiate()
-var credits_scene = preload("res://src/ui/menus/credits_menu.tscn").instantiate()
+
+func _ready() -> void:
+	# A browser tab can't be closed by the game, so Quit would do nothing on web.
+	if OS.has_feature("web"):
+		%Quit.hide()
+
 
 func _on_play_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+
+
+func _on_how_to_play_pressed() -> void:
+	add_child(HOW_TO_PLAY_SCENE.instantiate())
+
 
 func _on_options_pressed() -> void:
-	#animation.play("Fade-In")
-	get_tree().change_scene_to_file("res://src/ui/menus/settings_menu.tscn")
+	add_child(OPTIONS_SCENE.instantiate())
+
 
 func _on_credits_pressed() -> void:
-	get_tree().change_scene_to_file("res://src/ui/menus/credits_menu.tscn")
-	#get_tree().root.add_child(credits_scene)
+	add_child(CREDITS_SCENE.instantiate())
+
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()

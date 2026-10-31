@@ -2,7 +2,6 @@
 
 [ext_resource type="Shader" uid="uid://c6eou3taws00l" path="res://assets/shaders/background.gdshader" id="1_8ef0u"]
 [ext_resource type="Script" uid="uid://dfbq5ab3ybc3c" path="res://src/ui/menus/settings_menu.gd" id="1_rahb6"]
-[ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="2_7y5a0"]
 [ext_resource type="Texture2D" uid="uid://ehhjy2fbfblt" path="res://assets/textures/menu/bgSquares.png" id="2_8ef0u"]
 [ext_resource type="Material" uid="uid://c45blnws6i24j" path="res://assets/shaders/TransitionShader/TransitonShaderMaterial.tres" id="4_3etfd"]
 
@@ -66,6 +65,7 @@ _data = {
 }
 
 [node name="SettingsMenu" type="Control" unique_id=1846025755]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -94,135 +94,7 @@ grow_vertical = 2
 texture = ExtResource("2_8ef0u")
 stretch_mode = 1
 
-[node name="TabContainer" type="TabContainer" parent="." unique_id=207362277]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -45.0
-grow_horizontal = 2
-grow_vertical = 2
-current_tab = 1
-tab_0/icon = ExtResource("2_7y5a0")
-tab_1/icon = ExtResource("2_7y5a0")
-tab_2/icon = ExtResource("2_7y5a0")
-tab_3/icon = ExtResource("2_7y5a0")
-
-[node name="Keybinds" type="TabBar" parent="TabContainer" unique_id=112593521]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Keybinds" unique_id=19467612]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 13.0
-offset_top = 3.0
-offset_right = -10.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Text" type="VBoxContainer" parent="TabContainer/Keybinds/PanelContainer" unique_id=465322841]
-layout_mode = 2
-
-[node name="HSeparator" type="HSeparator" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=208497999]
-layout_mode = 2
-
-[node name="Keybind" type="HBoxContainer" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=2072142036]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind" unique_id=645579891]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "Up"
-
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind" unique_id=202969359]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="Button" type="Button" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind" unique_id=861563308]
-layout_mode = 2
-text = "UP KEY"
-
-[node name="HSeparator2" type="HSeparator" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=1362357357]
-layout_mode = 2
-
-[node name="Keybind2" type="HBoxContainer" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=928675000]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind2" unique_id=104190979]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "Down"
-
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind2" unique_id=973250369]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="Button" type="Button" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind2" unique_id=851027888]
-layout_mode = 2
-text = "UP KEY"
-
-[node name="HSeparator3" type="HSeparator" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=632230677]
-layout_mode = 2
-
-[node name="Keybind3" type="HBoxContainer" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=145375324]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind3" unique_id=1415524934]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "Left"
-
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind3" unique_id=889650159]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="Button" type="Button" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind3" unique_id=804498219]
-layout_mode = 2
-text = "UP KEY"
-
-[node name="HSeparator4" type="HSeparator" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=962371217]
-layout_mode = 2
-
-[node name="Keybind4" type="HBoxContainer" parent="TabContainer/Keybinds/PanelContainer/Text" unique_id=858215138]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind4" unique_id=313184668]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "Right"
-
-[node name="VSeparator" type="VSeparator" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind4" unique_id=22177692]
-layout_mode = 2
-theme_override_constants/separation = 200
-
-[node name="Button" type="Button" parent="TabContainer/Keybinds/PanelContainer/Text/Keybind4" unique_id=1392141269]
-layout_mode = 2
-text = "UP KEY"
-
-[node name="Sound" type="TabBar" parent="TabContainer" unique_id=1218117841]
-layout_mode = 2
-metadata/_tab_index = 1
-
-[node name="Sound" type="VBoxContainer" parent="TabContainer/Sound" unique_id=1310277506]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = -562.0
-offset_right = 386.0
-offset_bottom = -488.0
-grow_vertical = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Sound" unique_id=1568307443]
+[node name="Center" type="CenterContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -230,154 +102,132 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Sound/PanelContainer" unique_id=340535577]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Sound/PanelContainer/VBoxContainer" unique_id=61870944]
+[node name="Box" type="PanelContainer" parent="Center"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer" unique_id=960081089]
-custom_minimum_size = Vector2(120, 0)
+[node name="Margin" type="MarginContainer" parent="Center/Box"]
 layout_mode = 2
-text = "Global Volume"
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
-[node name="HSlider" type="HSlider" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer" unique_id=428677459]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Label2" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer" unique_id=2085520112]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "100"
-horizontal_alignment = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/Sound/PanelContainer/VBoxContainer" unique_id=1138094331]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=575592879]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-text = "Music Volume"
-
-[node name="HSlider" type="HSlider" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=500089969]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Label2" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer2" unique_id=1433711297]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "100"
-horizontal_alignment = 1
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/Sound/PanelContainer/VBoxContainer" unique_id=765950975]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer3" unique_id=886401767]
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-text = "SFX Volume"
-
-[node name="HSlider" type="HSlider" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer3" unique_id=1681786343]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="Label2" type="Label" parent="TabContainer/Sound/PanelContainer/VBoxContainer/HBoxContainer3" unique_id=494482296]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-text = "100"
-horizontal_alignment = 1
-
-[node name="Visuals" type="TabBar" parent="TabContainer" unique_id=1066606301]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Visuals" unique_id=96964491]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 8.0
-offset_top = -274.5
-offset_right = 231.0
-offset_bottom = -173.5
-grow_vertical = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Visuals" unique_id=807518479]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Visuals/PanelContainer" unique_id=273517451]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Visuals/PanelContainer/VBoxContainer" unique_id=1453245399]
+[node name="List" type="VBoxContainer" parent="Center/Box/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Label" type="Label" parent="TabContainer/Visuals/PanelContainer/VBoxContainer/HBoxContainer" unique_id=334406346]
+[node name="Title" type="Label" parent="Center/Box/Margin/List"]
 layout_mode = 2
-text = "Screen Resolution"
+theme_override_font_sizes/font_size = 36
+text = "OPTIONS"
+horizontal_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="TabContainer/Visuals/PanelContainer/VBoxContainer/HBoxContainer" unique_id=402792029]
+[node name="SoundHeader" type="Label" parent="Center/Box/Margin/List"]
 layout_mode = 2
-size_flags_horizontal = 10
+text = "SOUND"
+
+[node name="MasterRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/MasterRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="Center/Box/Margin/List/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 size_flags_vertical = 4
-selected = 0
-item_count = 2
-popup/item_0/text = "Test"
-popup/item_0/id = 0
-popup/item_1/text = "Test2"
-popup/item_1/id = 1
+value = 100.0
 
-[node name="CheckButton" type="CheckButton" parent="TabContainer/Visuals/PanelContainer/VBoxContainer" unique_id=1906004826]
+[node name="MasterValue" type="Label" parent="Center/Box/Margin/List/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/MusicRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="Center/Box/Margin/List/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="MusicValue" type="Label" parent="Center/Box/Margin/List/MusicRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="SFXRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/SFXRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "SFX"
+
+[node name="SFXSlider" type="HSlider" parent="Center/Box/Margin/List/SFXRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+value = 100.0
+
+[node name="SFXValue" type="Label" parent="Center/Box/Margin/List/SFXRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="MuteCheck" type="CheckBox" parent="Center/Box/Margin/List"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Mute All"
+
+[node name="HSeparator" type="HSeparator" parent="Center/Box/Margin/List"]
+layout_mode = 2
+
+[node name="DisplayHeader" type="Label" parent="Center/Box/Margin/List"]
+layout_mode = 2
+text = "DISPLAY"
+
+[node name="WindowSizeRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/WindowSizeRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Window Size"
+
+[node name="WindowSize" type="OptionButton" parent="Center/Box/Margin/List/WindowSizeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullscreenCheck" type="CheckButton" parent="Center/Box/Margin/List"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Fullscreen"
 
-[node name="CheckButton2" type="CheckButton" parent="TabContainer/Visuals/PanelContainer/VBoxContainer" unique_id=995087519]
+[node name="HSeparator2" type="HSeparator" parent="Center/Box/Margin/List"]
 layout_mode = 2
-text = "VSync"
 
-[node name="Accessibility" type="TabBar" parent="TabContainer" unique_id=122477459]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 3
-
-[node name="Buttons" type="HBoxContainer" parent="." unique_id=1444233493]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -310.0
-offset_top = -42.0
-offset_bottom = -2.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 0
-theme_override_constants/separation = 10
-
-[node name="Save" type="Button" parent="Buttons" unique_id=344797268]
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-disabled = true
-text = "SAVE"
-
-[node name="Back" type="Button" parent="Buttons" unique_id=821247711]
-custom_minimum_size = Vector2(150, 0)
+[node name="BackButton" type="Button" parent="Center/Box/Margin/List"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "BACK"
 
@@ -395,5 +245,3 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_3etfd")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1352143002]
 libraries/ = SubResource("AnimationLibrary_jjs6x")
 autoplay = &"Fade-Out"
-
-[connection signal="pressed" from="Buttons/Back" to="." method="_on_back_pressed"]

@@ -1,15 +1,39 @@
 extends Control
+## Credits overlay, opened from the main menu. Back/Esc removes it.
+## Edit ENTRIES to change the credits; each role gets a small grey heading with names below.
+
+const ENTRIES: Array[Dictionary] = [
+	{"role": "Programming", "names": ["Mihaila Nicolae-Octavian & MaskMajor"]},
+	{"role": "Art & UI", "names": ["Mask Major"]},
+	{"role": "Music & Sound", "names": ["Majora's Mask"]},
+	{"role": "Made for", "names": ["Micro Jam - 2026 "]},
+]
+
+const ROLE_COLOR := Color(1, 1, 1, 0.55)
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	for entry in ENTRIES:
+		var group := VBoxContainer.new()
+		group.add_theme_constant_override("separation", 2)
+		group.add_child(_make_label(entry.role, 14, ROLE_COLOR))
+		for credit_name in entry.names:
+			group.add_child(_make_label(credit_name, 20))
+		%Entries.add_child(group)
+
+	%BackButton.pressed.connect(queue_free)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		queue_free()
 
 
-func _on_close_btn_pressed() -> void:
-	get_tree().change_scene_to_file("res://src/ui/menus/main_menu.tscn")
+func _make_label(text: String, font_size: int, color := Color.WHITE) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.add_theme_font_size_override("font_size", font_size)
+	label.add_theme_color_override("font_color", color)
+	return label
