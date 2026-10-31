@@ -4,13 +4,17 @@
 [ext_resource type="Script" uid="uid://b7nve0a26tikt" path="res://src/ui/hud/camera.gd" id="1_qd0h3"]
 [ext_resource type="PackedScene" uid="uid://h8vpc05mtwi0" path="res://assets/entities/unit/unit.tscn" id="2_jimqh"]
 [ext_resource type="PackedScene" path="res://src/ui/menus/pause_menu.tscn" id="2_pause"]
-[ext_resource type="PackedScene" uid="uid://db35skuyw7efj" path="res://assets/terrain/tree/tree.tscn" id="4_j8oow"]
+[ext_resource type="TileSet" path="res://assets/textures/tiles/tileset.tres" id="6_tileset"]
 [ext_resource type="PackedScene" uid="uid://ncn1qvqrj1l0" path="res://assets/terrain/townhall/townhall.tscn" id="5_hkv0b"]
 [ext_resource type="PackedScene" uid="uid://ccs0buydk4645" path="res://src/ui/hud/ui.tscn" id="5_wr3og"]
 
 [node name="World" type="Node2D" unique_id=1628329778]
 y_sort_enabled = true
 script = ExtResource("1_q35l7")
+
+[node name="Ground" type="TileMapLayer" parent="."]
+z_index = -1
+tile_set = ExtResource("6_tileset")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=944772322]
 position = Vector2(574, 326)
@@ -28,10 +32,6 @@ position = Vector2(464, 351)
 
 [node name="Objects" type="Node2D" parent="." unique_id=1800154722]
 y_sort_enabled = true
-
-[node name="Tree" parent="Objects" unique_id=387960191 instance=ExtResource("4_j8oow")]
-position = Vector2(129, 461)
-scale = Vector2(5, 5)
 
 [node name="Houses" type="Node2D" parent="." unique_id=31918186]
 

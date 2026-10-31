@@ -1,4 +1,4 @@
-extends StaticBody2D
+extends Building
 
 var mouseEntered = false
 @onready var select: Panel = $Selected

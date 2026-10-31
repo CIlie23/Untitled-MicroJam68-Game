@@ -1,6 +1,4 @@
 extends CanvasLayer
-## In-game pause menu. Drop this scene into any level; Esc toggles it.
-## process_mode is Always, so this keeps running while the rest of the tree is paused.
 
 const MAIN_MENU_PATH := "res://src/ui/menus/main_menu.tscn"
 const OPTIONS_SCENE := preload("res://src/ui/menus/settings_menu.tscn")
@@ -33,7 +31,6 @@ func resume() -> void:
 	%Menu.hide()
 
 
-# The tree stays paused across scene changes, so unpause before leaving.
 func _on_try_again_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()

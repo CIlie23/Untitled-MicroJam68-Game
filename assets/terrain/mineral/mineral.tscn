@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://assets/terrain/mineral/mineral.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/terrain/mineral/mineral.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(20, 12)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gather"]
+radius = 30.0
+
+[node name="Mineral" type="StaticBody2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_script")
+resource_name = "Minerals"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="GatherArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GatherArea"]
+shape = SubResource("CircleShape2D_gather")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -13.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = -10.0
+show_percentage = false
+
+[connection signal="body_entered" from="GatherArea" to="." method="_on_gather_area_body_entered"]
+[connection signal="body_exited" from="GatherArea" to="." method="_on_gather_area_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

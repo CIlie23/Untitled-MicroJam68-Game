@@ -1,9 +1,23 @@
 extends Control
-## How-to-play overlay, opened from the main menu. Back/Esc removes it.
-## Drop a screenshot or diagram into the Image node's Texture in the Inspector.
 
 
 func _ready() -> void:
+	%Body.text = "\n".join([
+		"Explain the goal of the game here.",
+		"",
+		"- Move camera: %s %s %s %s (change in Options)" % [
+			Settings.key_label(&"camera_up"),
+			Settings.key_label(&"camera_left"),
+			Settings.key_label(&"camera_down"),
+			Settings.key_label(&"camera_right"),
+		],
+		"- Zoom: mouse wheel",
+		"- Select units: left-click and drag",
+		"- Move selected units: hold right-click",
+		"- Spawn units: click the townhall",
+		"- Gather: move units next to a tree (wood) or rock (minerals)",
+		"- Pause: Esc",
+	])
 	%BackButton.pressed.connect(queue_free)
 
 

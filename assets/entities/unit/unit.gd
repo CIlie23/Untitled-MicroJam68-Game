@@ -5,7 +5,7 @@ extends CharacterBody2D
 
 var target: Vector2 = Vector2.ZERO
 var follow_cursor = false
-var Speed = 550
+var Speed = Global.UNIT_SPEED
 
 func _ready() -> void:
 	set_selected(selected)

@@ -114,7 +114,7 @@ theme_override_constants/margin_bottom = 24
 
 [node name="List" type="VBoxContainer" parent="Center/Box/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 
 [node name="Title" type="Label" parent="Center/Box/Margin/List"]
 layout_mode = 2
@@ -122,113 +122,193 @@ theme_override_font_sizes/font_size = 36
 text = "OPTIONS"
 horizontal_alignment = 1
 
-[node name="SoundHeader" type="Label" parent="Center/Box/Margin/List"]
+[node name="Scroll" type="ScrollContainer" parent="Center/Box/Margin/List"]
+custom_minimum_size = Vector2(460, 380)
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="Center/Box/Margin/List/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SoundHeader" type="Label" parent="Center/Box/Margin/List/Scroll/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "SOUND"
 
-[node name="MasterRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+[node name="MasterRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Center/Box/Margin/List/MasterRow"]
-custom_minimum_size = Vector2(120, 0)
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/MasterRow"]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Master"
 
-[node name="MasterSlider" type="HSlider" parent="Center/Box/Margin/List/MasterRow"]
+[node name="MasterSlider" type="HSlider" parent="Center/Box/Margin/List/Scroll/Content/MasterRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 4
+min_value = 0.0
+max_value = 100.0
+step = 1.0
 value = 100.0
+scrollable = false
 
-[node name="MasterValue" type="Label" parent="Center/Box/Margin/List/MasterRow"]
+[node name="MasterValue" type="Label" parent="Center/Box/Margin/List/Scroll/Content/MasterRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "100"
 horizontal_alignment = 1
 
-[node name="MusicRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+[node name="MusicRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Center/Box/Margin/List/MusicRow"]
-custom_minimum_size = Vector2(120, 0)
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/MusicRow"]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Music"
 
-[node name="MusicSlider" type="HSlider" parent="Center/Box/Margin/List/MusicRow"]
+[node name="MusicSlider" type="HSlider" parent="Center/Box/Margin/List/Scroll/Content/MusicRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 4
+min_value = 0.0
+max_value = 100.0
+step = 1.0
 value = 100.0
+scrollable = false
 
-[node name="MusicValue" type="Label" parent="Center/Box/Margin/List/MusicRow"]
+[node name="MusicValue" type="Label" parent="Center/Box/Margin/List/Scroll/Content/MusicRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "100"
 horizontal_alignment = 1
 
-[node name="SFXRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+[node name="SFXRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Center/Box/Margin/List/SFXRow"]
-custom_minimum_size = Vector2(120, 0)
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/SFXRow"]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "SFX"
 
-[node name="SFXSlider" type="HSlider" parent="Center/Box/Margin/List/SFXRow"]
+[node name="SFXSlider" type="HSlider" parent="Center/Box/Margin/List/Scroll/Content/SFXRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 4
+min_value = 0.0
+max_value = 100.0
+step = 1.0
 value = 100.0
+scrollable = false
 
-[node name="SFXValue" type="Label" parent="Center/Box/Margin/List/SFXRow"]
+[node name="SFXValue" type="Label" parent="Center/Box/Margin/List/Scroll/Content/SFXRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "100"
 horizontal_alignment = 1
 
-[node name="MuteCheck" type="CheckBox" parent="Center/Box/Margin/List"]
+[node name="MuteCheck" type="CheckBox" parent="Center/Box/Margin/List/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Mute All"
 
-[node name="HSeparator" type="HSeparator" parent="Center/Box/Margin/List"]
+[node name="DisplaySeparator" type="HSeparator" parent="Center/Box/Margin/List/Scroll/Content"]
 layout_mode = 2
 
-[node name="DisplayHeader" type="Label" parent="Center/Box/Margin/List"]
+[node name="DisplayHeader" type="Label" parent="Center/Box/Margin/List/Scroll/Content"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "DISPLAY"
 
-[node name="WindowSizeRow" type="HBoxContainer" parent="Center/Box/Margin/List"]
+[node name="WindowSizeRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Center/Box/Margin/List/WindowSizeRow"]
-custom_minimum_size = Vector2(120, 0)
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/WindowSizeRow"]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 text = "Window Size"
 
-[node name="WindowSize" type="OptionButton" parent="Center/Box/Margin/List/WindowSizeRow"]
+[node name="WindowSize" type="OptionButton" parent="Center/Box/Margin/List/Scroll/Content/WindowSizeRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FullscreenCheck" type="CheckButton" parent="Center/Box/Margin/List"]
+[node name="FullscreenCheck" type="CheckButton" parent="Center/Box/Margin/List/Scroll/Content"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Fullscreen"
 
-[node name="HSeparator2" type="HSeparator" parent="Center/Box/Margin/List"]
+[node name="GameplaySeparator" type="HSeparator" parent="Center/Box/Margin/List/Scroll/Content"]
+layout_mode = 2
+
+[node name="GameplayHeader" type="Label" parent="Center/Box/Margin/List/Scroll/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "GAMEPLAY"
+
+[node name="CameraSpeedRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/CameraSpeedRow"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Camera Speed"
+
+[node name="CameraSpeedSlider" type="HSlider" parent="Center/Box/Margin/List/Scroll/Content/CameraSpeedRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+min_value = 50.0
+max_value = 200.0
+step = 10.0
+value = 100.0
+scrollable = false
+
+[node name="CameraSpeedValue" type="Label" parent="Center/Box/Margin/List/Scroll/Content/CameraSpeedRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 1
+
+[node name="KeyLayoutRow" type="HBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Center/Box/Margin/List/Scroll/Content/KeyLayoutRow"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+text = "Key Layout"
+
+[node name="KeyLayoutButton" type="Button" parent="Center/Box/Margin/List/Scroll/Content/KeyLayoutRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+tooltip_text = "Switch between arrow keys and WASD"
+text = "Arrows"
+
+[node name="KeybindList" type="VBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BottomSeparator" type="HSeparator" parent="Center/Box/Margin/List"]
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="Center/Box/Margin/List"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 text = "BACK"
 
 [node name="Panel" type="Panel" parent="." unique_id=560982737]

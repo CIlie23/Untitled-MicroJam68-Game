@@ -7,7 +7,6 @@ const CREDITS_SCENE := preload("res://src/ui/menus/credits_menu.tscn")
 
 
 func _ready() -> void:
-	# A browser tab can't be closed by the game, so Quit would do nothing on web.
 	if OS.has_feature("web"):
 		%Quit.hide()
 

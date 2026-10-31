@@ -2,7 +2,6 @@ extends Camera2D
 
 
 # Camera Control
-@export var SPEED = 20.0
 @export var ZOOM_SPEED = 20.0
 @export var ZOOM_MARGIN = 0.1
 @export var ZOOM_MIN = 0.5
@@ -27,17 +26,18 @@ signal start_move_selection
 
 func _process(delta: float) -> void:
 	
-	var inputX = int(Input.is_action_pressed("ui_right")) - int(Input.is_action_pressed("ui_left"))
-	var inputY = int(Input.is_action_pressed("ui_down")) - int(Input.is_action_pressed("ui_up"))
-	
-	position.x = lerp(position.x, position.x + inputX * SPEED * zoom.x, SPEED * delta)
-	position.y = lerp(position.y, position.y + inputY * SPEED * zoom.y, SPEED * delta)
+	var input = Input.get_vector("camera_left", "camera_right", "camera_up", "camera_down")
+	var speed = Global.CAMERA_SPEED * Settings.camera_speed / 100.0
+	position += input * speed * delta / zoom.x
 	
 	zoom.x = lerp(zoom.x, zoom.x * zoomFactor, ZOOM_SPEED * delta)
 	zoom.y = lerp(zoom.y, zoom.y * zoomFactor, ZOOM_SPEED * delta)
 	
 	zoom.x = clamp(zoom.x, ZOOM_MIN, ZOOM_MAX)
 	zoom.y = clamp(zoom.y, ZOOM_MIN, ZOOM_MAX)
+
+	var halfView = get_viewport_rect().size / zoom / 2
+	position = position.clamp(Vector2(limit_left, limit_top) + halfView, Vector2(limit_right, limit_bottom) - halfView)
 	
 	if not zooming:
 		zoomFactor = 1.0

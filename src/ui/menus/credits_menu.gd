@@ -1,6 +1,4 @@
 extends Control
-## Credits overlay, opened from the main menu. Back/Esc removes it.
-## Edit ENTRIES to change the credits; each role gets a small grey heading with names below.
 
 const ENTRIES: Array[Dictionary] = [
 	{"role": "Programming", "names": ["Mihaila Nicolae-Octavian & MaskMajor"]},

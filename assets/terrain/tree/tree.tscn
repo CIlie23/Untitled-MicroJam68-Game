@@ -10,6 +10,7 @@ size = Vector2(13, 7.5)
 radius = 23.021729
 
 [node name="Tree" type="StaticBody2D" unique_id=387960191]
+scale = Vector2(5, 5)
 script = ExtResource("1_3oxyo")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=608332616]
@@ -19,9 +20,9 @@ texture = ExtResource("2_21jrs")
 position = Vector2(-1.5, 13.25)
 shape = SubResource("RectangleShape2D_fqy7p")
 
-[node name="ChopArea" type="Area2D" parent="." unique_id=1623105865]
+[node name="GatherArea" type="Area2D" parent="." unique_id=1623105865]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ChopArea" unique_id=118113324]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GatherArea" unique_id=118113324]
 position = Vector2(-1, 2)
 shape = SubResource("CircleShape2D_rtxm7")
 
@@ -34,6 +35,6 @@ offset_right = 14.0
 offset_bottom = -17.0
 show_percentage = false
 
-[connection signal="body_entered" from="ChopArea" to="." method="_on_chop_area_body_entered"]
-[connection signal="body_exited" from="ChopArea" to="." method="_on_chop_area_body_exited"]
+[connection signal="body_entered" from="GatherArea" to="." method="_on_gather_area_body_entered"]
+[connection signal="body_exited" from="GatherArea" to="." method="_on_gather_area_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
