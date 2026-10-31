@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://bxtcmbhxedmc5"]
+
+[ext_resource type="Script" uid="uid://dqmhmhlucpkug" path="res://src/ui/menus/credits_menu.gd" id="1_2g1r6"]
+
+[node name="Credits" type="Control" unique_id=1067645547]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2g1r6")
+
+[node name="Panel" type="Panel" parent="." unique_id=771410167]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleHere" type="Label" parent="." unique_id=730234822]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -271.0
+offset_top = 80.0
+offset_right = -80.0
+offset_bottom = 130.25
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 36
+text = "TITLE HERE"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1008341689]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 21.0
+offset_top = -100.0
+offset_right = 417.0
+offset_bottom = 100.0
+grow_vertical = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1053250403]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "CREDITS:"
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=791156139]
+layout_mode = 2
+text = "CREDIT GOES HERE
+CREDIT GOES HERE
+CREDIT GOES HERE
+CREDIT GOES HERE
+
+Thanks for playing!
+"
+
+[node name="CloseBtn" type="Button" parent="." unique_id=1150141601]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -58.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "CLOSE"
+
+[connection signal="pressed" from="CloseBtn" to="." method="_on_close_btn_pressed"]

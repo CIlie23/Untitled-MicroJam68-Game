@@ -1,8 +1,8 @@
 # Untitled-MicroJam68-Game
 hi
-
+V
 # Project Structure Guide
-
+V
 This project follows a **feature-oriented (contextual)** organization. Related scenes, scripts, and entity-specific assets are kept together rather than split into disparate top-level folders.
 
 ---
@@ -22,14 +22,14 @@ res://
 │   └── stats/               # Unit stats, balancing numbers, attribute configs
 │
 └── src/                     # Game logic, scenes, and mechanics
-    ├── autoload/            # Global singletons (Event bus, persistent state)
-    ├── common/              # Shared base systems and utilities
-    │   ├── components/      # Reusable sub-nodes (Hitbox, Hurtbox, Health)
-    │   ├── resources/       # Custom Resource definitions (class_name ... extends Resource)
-    │   └── utils/           # Pure functional helpers, math libs, constants
-    ├── entities/            # In-game dynamic actors (player, NPCs, enemies)
-    ├── levels/              # Playable maps, rooms, arenas, and level logic
-    └── ui/                  # User interface scenes and menus
+	├── autoload/            # Global singletons (Event bus, persistent state)
+	├── common/              # Shared base systems and utilities
+	│   ├── components/      # Reusable sub-nodes (Hitbox, Hurtbox, Health)
+	│   ├── resources/       # Custom Resource definitions (class_name ... extends Resource)
+	│   └── utils/           # Pure functional helpers, math libs, constants
+	├── entities/            # In-game dynamic actors (player, NPCs, enemies)
+	├── levels/              # Playable maps, rooms, arenas, and level logic
+	└── ui/                  # User interface scenes and menus
 ```
 
 ---

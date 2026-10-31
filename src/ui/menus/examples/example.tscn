@@ -1,0 +1,190 @@
+[gd_scene format=3 uid="uid://c0hjcghupebg4"]
+
+[ext_resource type="Texture2D" uid="uid://j4ho1utl0flw" path="res://assets/textures/menu/example.png" id="1_tfh3j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qpl2c"]
+bg_color = Color(0.14509805, 0.14509805, 0.14509805, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx6oe"]
+bg_color = Color(0.14406255, 0.14406255, 0.14406249, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.27387273, 0.27387276, 0.2738727, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kej8m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bvllj"]
+bg_color = Color(0.5663907, 0.00023247153, 0.5663868, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_em451"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d7sul"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgn00"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.28485027, 0.2848503, 0.28485018, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Example" type="Control" unique_id=632949840]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=2099084330]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -319.5
+offset_top = -158.5
+offset_right = 319.5
+offset_bottom = 158.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-168.5, -89.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qpl2c")
+
+[node name="Example" type="Sprite2D" parent="." unique_id=1978643819]
+position = Vector2(88, 76)
+texture = ExtResource("1_tfh3j")
+offset = Vector2(1378, 82)
+
+[node name="YOutubeTHing" type="PanelContainer" parent="." unique_id=967948902]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -104.5
+offset_right = 250.0
+offset_bottom = 104.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-238, -143.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_hx6oe")
+
+[node name="MarginContainer" type="MarginContainer" parent="YOutubeTHing" unique_id=1800134307]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="YOutubeTHing/MarginContainer" unique_id=1429603377]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer" unique_id=2076609645]
+layout_mode = 2
+text = "Watch time from subscribers"
+
+[node name="Label2" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer" unique_id=860912936]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5330367, 0.5330367, 0.5330367, 1)
+theme_override_font_sizes/font_size = 7
+text = "Watch time * Last 28 Days"
+
+[node name="MarginContainer" type="MarginContainer" parent="YOutubeTHing/MarginContainer/VBoxContainer" unique_id=2062718687]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer" unique_id=2006213395]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=398611631]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1599668650]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Not subscribed"
+
+[node name="VSeparator" type="VSeparator" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1892258350]
+layout_mode = 2
+theme_override_constants/separation = 150
+theme_override_styles/separator = SubResource("StyleBoxEmpty_kej8m")
+
+[node name="ProgressBar" type="ProgressBar" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=508248937]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_bvllj")
+value = 97.0
+rounded = true
+fill_mode = 1
+show_percentage = false
+
+[node name="Label2" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1863682013]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "97.2 % "
+
+[node name="HSeparator" type="HSeparator" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1378209285]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_em451")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer" unique_id=1736742289]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=415409984]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Subscribed"
+
+[node name="VSeparator2" type="VSeparator" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1059235289]
+layout_mode = 2
+theme_override_constants/separation = 150
+theme_override_styles/separator = SubResource("StyleBoxEmpty_d7sul")
+
+[node name="ProgressBar" type="ProgressBar" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1867452164]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_bvllj")
+value = 20.0
+rounded = true
+fill_mode = 1
+show_percentage = false
+
+[node name="Label2" type="Label" parent="YOutubeTHing/MarginContainer/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=104019407]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "2.7 %"
+
+[node name="Button" type="Button" parent="YOutubeTHing/MarginContainer/VBoxContainer" unique_id=607521710]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 7
+theme_override_styles/normal = SubResource("StyleBoxFlat_pgn00")
+text = "See More"
