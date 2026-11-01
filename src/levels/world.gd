@@ -96,6 +96,9 @@ var lip_images := {}
 var units = []
 var cluster_centers: Array[Vector2] = []
 
+# Roughly the unit's 139x143 collision box, so a click on the sprite counts as a hit.
+const CLICK_PICK_RADIUS := 80.0
+
 func _ready() -> void:
 	Global.reset()
 	generate_map()
@@ -429,6 +432,10 @@ func get_units():
 func _on_camera_area_selected(object) -> void:
 	var start = object.start
 	var end = object.end
+	if start.is_equal_approx(end):
+		# A click, not a drag: pick one unit instead of scanning an area.
+		select_unit_at(start)
+		return
 	var area = []
 	area.append(Vector2(min(start.x, end.x), min (start.y, end.y)))
 	area.append(Vector2(max(start.x, end.x), max(start.y, end.y)))
@@ -437,6 +444,18 @@ func _on_camera_area_selected(object) -> void:
 		u.set_selected(false)
 	for u in ut:
 		u.set_selected(!u.selected)
+
+# Nearest unit within CLICK_PICK_RADIUS of the click, or nothing if the click missed.
+func select_unit_at(point: Vector2) -> void:
+	var picked = null
+	var best := CLICK_PICK_RADIUS
+	for unit in units:
+		var distance = unit.position.distance_to(point)
+		if distance <= best:
+			best = distance
+			picked = unit
+	for unit in units:
+		unit.set_selected(unit == picked)
 
 func get_units_in_area(area):
 	var u = []

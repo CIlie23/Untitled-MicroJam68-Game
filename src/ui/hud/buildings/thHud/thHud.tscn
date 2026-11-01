@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://xyxeom3ddygd"]
+
+[ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_yg5oy"]
+[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="2_gwkay"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuxs4"]
+bg_color = Color(0.20996031, 0.22353527, 0.25253984, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n53xk"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd4fx"]
+bg_color = Color(1, 0, 0.16470589, 1)
+
+[node name="unitPortrait" type="CanvasLayer" unique_id=447086382]
+
+[node name="Panel" type="Panel" parent="." unique_id=1962666542]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -311.25
+offset_top = -130.0
+offset_right = 311.25
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tuxs4")
+
+[node name="Container" type="HBoxContainer" parent="Panel" unique_id=1325739064]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -305.0
+offset_top = -123.0
+offset_right = 299.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="troopInfo" type="VBoxContainer" parent="Panel/Container" unique_id=149775780]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Container/troopInfo" unique_id=1250591017]
+layout_mode = 2
+text = "TOWN HALL"
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Container/troopInfo" unique_id=51831561]
+custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_yg5oy")
+
+[node name="ProgressBar" type="ProgressBar" parent="Panel/Container/troopInfo" unique_id=984992844]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_n53xk")
+theme_override_styles/fill = SubResource("StyleBoxFlat_sd4fx")
+show_percentage = false
+
+[node name="statsContainer" type="VBoxContainer" parent="Panel/Container" unique_id=2030943978]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/Container/statsContainer" unique_id=1027413146]
+layout_mode = 2
+text = "STATS:"
+
+[node name="Health" type="HBoxContainer" parent="Panel/Container/statsContainer" unique_id=627801096]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Health" unique_id=56626511]
+layout_mode = 2
+texture = ExtResource("2_gwkay")
+
+[node name="Label" type="Label" parent="Panel/Container/statsContainer/Health" unique_id=1765120081]
+layout_mode = 2
+text = "10"
+
+[node name="Defense" type="HBoxContainer" parent="Panel/Container/statsContainer" unique_id=306973371]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Defense" unique_id=2136058872]
+layout_mode = 2
+texture = ExtResource("2_gwkay")
+
+[node name="Label" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
+layout_mode = 2
+text = "10"

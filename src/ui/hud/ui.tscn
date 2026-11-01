@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="4_q5lr7"]
 [ext_resource type="Texture2D" uid="uid://boawgncfvuuq6" path="res://assets/textures/ui/ui_populus.png" id="5_ltawx"]
 [ext_resource type="Texture2D" uid="uid://btjb441qdr2n4" path="res://assets/textures/ui/up_food.png" id="6_krukd"]
+[ext_resource type="PackedScene" uid="uid://rlxao1mjuim8" path="res://src/ui/hud/portrait/unit_portrait.tscn" id="7_prt"]
+[ext_resource type="PackedScene" uid="uid://bd2rkok8kys5x" path="res://src/ui/hud/portrait/multipleUnit/multipleSelected.tscn" id="8_mult"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bepx4"]
 bg_color = Color(0, 0, 0, 0.21176471)
@@ -96,3 +98,9 @@ texture = ExtResource("6_krukd")
 [node name="Label2" type="Label" parent="VBoxContainer/Food" unique_id=336218955]
 layout_mode = 2
 text = "0 food"
+
+[node name="UnitPortrait" parent="." instance=ExtResource("7_prt")]
+visible = false
+
+[node name="MultipleSelected" parent="." instance=ExtResource("8_mult")]
+visible = false
