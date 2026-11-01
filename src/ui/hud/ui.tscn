@@ -1,6 +1,11 @@
 [gd_scene format=3 uid="uid://ccs0buydk4645"]
 
 [ext_resource type="Script" uid="uid://uhvfjr0mxe7h" path="res://src/ui/hud/ui.gd" id="1_bepx4"]
+[ext_resource type="PackedScene" uid="uid://ejdt1kdyqtjj" path="res://src/ui/hud/minimap/minimap.tscn" id="2_50hus"]
+[ext_resource type="Texture2D" uid="uid://cqy1xjqy0dxt6" path="res://assets/textures/ui/ui_wood.png" id="3_6c12x"]
+[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="4_q5lr7"]
+[ext_resource type="Texture2D" uid="uid://boawgncfvuuq6" path="res://assets/textures/ui/ui_populus.png" id="5_ltawx"]
+[ext_resource type="Texture2D" uid="uid://btjb441qdr2n4" path="res://assets/textures/ui/up_food.png" id="6_krukd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bepx4"]
 bg_color = Color(0, 0, 0, 0.21176471)
@@ -18,5 +23,76 @@ size_flags_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bepx4")
 
 [node name="Label" type="Label" parent="." unique_id=964517606]
+visible = false
 offset_right = 40.0
 offset_bottom = 23.0
+text = "TEXT TEXT"
+
+[node name="Minimap" parent="." unique_id=1867178028 instance=ExtResource("2_50hus")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_bottom = 0.0
+offset_left = -181.0
+offset_top = -2.0
+offset_right = -181.0
+offset_bottom = -2.0
+grow_horizontal = 0
+grow_vertical = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=784638923]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 128.0
+offset_bottom = 148.0
+
+[node name="Wood" type="HBoxContainer" parent="VBoxContainer" unique_id=1103319847]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Wood" unique_id=1186297566]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("3_6c12x")
+
+[node name="Label2" type="Label" parent="VBoxContainer/Wood" unique_id=1601131003]
+layout_mode = 2
+text = "0 wood"
+
+[node name="Mineral" type="HBoxContainer" parent="VBoxContainer" unique_id=1629325076]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Mineral" unique_id=1686361444]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("4_q5lr7")
+
+[node name="Label2" type="Label" parent="VBoxContainer/Mineral" unique_id=498936778]
+layout_mode = 2
+text = "0 ore"
+
+[node name="Populus" type="HBoxContainer" parent="VBoxContainer" unique_id=1221516351]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Populus" unique_id=2004192107]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_ltawx")
+
+[node name="Label2" type="Label" parent="VBoxContainer/Populus" unique_id=1111177865]
+layout_mode = 2
+text = "0 populus"
+
+[node name="Food" type="HBoxContainer" parent="VBoxContainer" unique_id=683092520]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Food" unique_id=750374052]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("6_krukd")
+
+[node name="Label2" type="Label" parent="VBoxContainer/Food" unique_id=336218955]
+layout_mode = 2
+text = "0 food"

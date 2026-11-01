@@ -14,12 +14,18 @@ var RESOURCES := {
 var Wood = 0
 var Minerals = 0
 var coin = 0
+var populus = 0
+var maxPopulus = 5
 
 func reset():
 	Wood = 0
 	Minerals = 0
+	coin = 0
+	populus = 0
 
 func spawnUnit(pos):
+	if populus >= maxPopulus:
+		return
 	var path = get_tree().get_root().get_node("World/Units")
 	var hasSpawn = false
 	for i in path.get_child_count():

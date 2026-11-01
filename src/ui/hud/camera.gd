@@ -6,7 +6,10 @@ extends Camera2D
 @export var ZOOM_MARGIN = 0.1
 @export var ZOOM_MIN = 0.5
 @export var ZOOM_MAX = 3.0
+@export var PAN_SPEED = 8.0
 
+var pan_target: Vector2
+var panning := false
 var zoomFactor = 1.0
 var zoomPos = Vector2()
 var zooming = false
@@ -24,11 +27,26 @@ signal start_move_selection
 
 @onready var panel: Panel = $"../UI/Panel"
 
+# Ease toward a world position. Called by the minimap.
+func pan_to(target: Vector2) -> void:
+	pan_target = target
+	panning = true
+
 func _process(delta: float) -> void:
 	
 	var input = Input.get_vector("camera_left", "camera_right", "camera_up", "camera_down")
 	var speed = Global.CAMERA_SPEED * Settings.camera_speed / 100.0
 	position += input * speed * delta / zoom.x
+	
+	# Keyboard wins: while it is held, kill any pending minimap pan.
+	# Anything that sets position directly is left alone, since panning stays false.
+	if input != Vector2.ZERO:
+		panning = false
+	if panning:
+		position = position.lerp(pan_target, PAN_SPEED * delta)
+		if position.distance_squared_to(pan_target) < 1.0:
+			position = pan_target
+			panning = false
 	
 	zoom.x = lerp(zoom.x, zoom.x * zoomFactor, ZOOM_SPEED * delta)
 	zoom.y = lerp(zoom.y, zoom.y * zoomFactor, ZOOM_SPEED * delta)
@@ -58,11 +76,13 @@ func _process(delta: float) -> void:
 			endV = mousePos
 			isDragging = false
 			draw_area(false)
-			emit_signal("area_selected", self)
 		else:
+			# Too short to be a drag, so treat it as a click: end == start, which
+			# makes an empty area, and world.gd deselects everything it does not find.
 			end = start
 			isDragging = false
 			draw_area(false)
+		emit_signal("area_selected", self)
 
 func _input(event: InputEvent) -> void:
 	if abs(zoomPos.x - get_global_mouse_position().x) > ZOOM_MARGIN:

@@ -3,8 +3,8 @@ extends CharacterBody2D
 @export var selected:bool = false
 @onready var box: Panel = $Box
 
-var target: Vector2 = Vector2.ZERO
-var follow_cursor = false
+var target: Vector2
+var moving := false
 var Speed = Global.UNIT_SPEED
 
 func _ready() -> void:
@@ -14,21 +14,21 @@ func set_selected(value):
 	selected = value
 	box.visible = value
 
+# One right-click sets the destination. No need to hold.
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("RightClick"):
-		follow_cursor = true
-	if event.is_action_released("RightClick"):
-		follow_cursor = false
+	if event.is_action_pressed("RightClick") and selected:
+		target = get_global_mouse_position()
+		moving = true
 
 func _physics_process(delta: float) -> void:
-	if follow_cursor and selected:
-		target = get_global_mouse_position()
-		velocity = global_position.direction_to(target) * Speed
-		if global_position.distance_to(target) > 15:
-			move_and_slide()
-			#play walk anim
-		else:
-			velocity = Vector2.ZERO
-			#anim stop
-	else:
+	if not moving:
 		velocity = Vector2.ZERO
+		return
+	if global_position.distance_to(target) <= 15:
+		velocity = Vector2.ZERO
+		moving = false
+		#anim stop
+		return
+	velocity = global_position.direction_to(target) * Speed
+	move_and_slide()
+	#play walk anim

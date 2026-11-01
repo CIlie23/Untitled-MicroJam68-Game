@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d3wp4w3gcjgle" path="res://src/ui/dialogue/spawn_unit.gd" id="1_4uvx0"]
 
-[node name="SpawnUnit" type="Node2D" unique_id=932671990]
+[node name="SpawnUnit" type="CanvasLayer" unique_id=932671990]
 script = ExtResource("1_4uvx0")
 
 [node name="Panel" type="Panel" parent="." unique_id=803925504]
@@ -12,9 +12,9 @@ offset_right = 768.0
 offset_bottom = 448.0
 
 [node name="Label" type="Label" parent="." unique_id=643829599]
-offset_left = 416.0
+offset_left = 392.0
 offset_top = 256.0
-offset_right = 702.0
+offset_right = 708.0
 offset_bottom = 296.0
 text = "Would you like to purchase this unit?"
 

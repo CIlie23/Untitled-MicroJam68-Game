@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://rlxao1mjuim8"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=447086382]
+
+[node name="Panel" type="Panel" parent="." unique_id=1962666542]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -311.25
+offset_top = -109.0
+offset_right = 311.25
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="." unique_id=1250591017]
+offset_right = 40.0
+offset_bottom = 20.0
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=984992844]
+offset_right = 4.0
+offset_bottom = 24.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=51831561]
+custom_minimum_size = Vector2(128, 128)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -309.0
+offset_top = -127.0
+offset_right = -181.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
