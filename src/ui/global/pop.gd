@@ -10,4 +10,4 @@ func lbl_delete_self():
 	self.queue_free()
 
 func show_value(value):
-	text = "+ " + str(value) + "g"
+	text = "+ " + str(value)

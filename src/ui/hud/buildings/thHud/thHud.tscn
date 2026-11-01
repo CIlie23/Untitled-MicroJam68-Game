@@ -1,8 +1,18 @@
 [gd_scene format=3 uid="uid://xyxeom3ddygd"]
 
 [ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_yg5oy"]
-[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="2_gwkay"]
 [ext_resource type="FontFile" uid="uid://dhyltg26lgfpw" path="res://assets/fonts/Cairopixel.ttf" id="3_oifef"]
+[ext_resource type="Script" path="res://src/ui/hud/buildings/thHud/th_hud.gd" id="9_script"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/farm.tscn" id="11_farm"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/barracks.tscn" id="12_barracks"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/archery_range.tscn" id="13_archery"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/shield_hall.tscn" id="14_shield"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_health.png" id="30_health"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_defense.png" id="30_defense"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/house.tscn" id="15_house"]
+
+[sub_resource type="Theme" id="Theme_panel"]
+default_font_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuxs4"]
 bg_color = Color(0.20996031, 0.22353527, 0.25253984, 1)
@@ -25,52 +35,55 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0.29803923, 0.49019608, 1, 1)
 
 [node name="unitPortrait" type="CanvasLayer" unique_id=447086382]
+script = ExtResource("9_script")
+buildings = Array[PackedScene]([ExtResource("11_farm"), ExtResource("15_house"), ExtResource("12_barracks"), ExtResource("13_archery"), ExtResource("14_shield")])
 
 [node name="Panel" type="Panel" parent="." unique_id=1962666542]
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -311.25
-offset_top = -130.0
-offset_right = 311.25
-grow_horizontal = 2
+offset_left = 8.0
+offset_top = -344.0
+offset_right = 568.0
+offset_bottom = -174.0
 grow_vertical = 0
 mouse_filter = 2
+theme = SubResource("Theme_panel")
 theme_override_styles/panel = SubResource("StyleBoxFlat_tuxs4")
 
 [node name="Container" type="HBoxContainer" parent="Panel" unique_id=1325739064]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -305.0
-offset_top = -123.0
-offset_right = 299.0
-offset_bottom = -7.0
+offset_left = 8.0
+offset_top = 6.0
+offset_right = -8.0
+offset_bottom = -6.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_constants/separation = 20
 
 [node name="troopInfo" type="VBoxContainer" parent="Panel/Container" unique_id=149775780]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Container/troopInfo" unique_id=1250591017]
+[node name="BuildingName" type="Label" parent="Panel/Container/troopInfo" unique_id=1250591017]
+unique_name_in_owner = true
 layout_mode = 2
 text = "TOWN HALL"
 
-[node name="TextureRect" type="TextureRect" parent="Panel/Container/troopInfo" unique_id=51831561]
-custom_minimum_size = Vector2(64, 64)
-custom_maximum_size = Vector2(64, 64)
+[node name="BuildingPicture" type="TextureRect" parent="Panel/Container/troopInfo" unique_id=51831561]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_yg5oy")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ProgressBar" type="ProgressBar" parent="Panel/Container/troopInfo" unique_id=984992844]
-custom_minimum_size = Vector2(16, 16)
+[node name="BuildingHealthBar" type="ProgressBar" parent="Panel/Container/troopInfo" unique_id=984992844]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_n53xk")
 theme_override_styles/fill = SubResource("StyleBoxFlat_sd4fx")
@@ -88,9 +101,10 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Health" unique_id=56626511]
 layout_mode = 2
-texture = ExtResource("2_gwkay")
+texture = ExtResource("30_health")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Health" unique_id=1765120081]
+[node name="BuildingHealth" type="Label" parent="Panel/Container/statsContainer/Health" unique_id=1765120081]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
@@ -99,24 +113,32 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Defense" unique_id=2136058872]
 layout_mode = 2
-texture = ExtResource("2_gwkay")
+texture = ExtResource("30_defense")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
+[node name="BuildingDefense" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
+[node name="InfoLabel" type="Label" parent="Panel/Container/statsContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oifef")
+autowrap_mode = 3
+
 [node name="TabContainer" type="TabContainer" parent="." unique_id=860169499]
-anchors_preset = 7
-anchor_left = 0.5
+unique_name_in_owner = true
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -118.0
-offset_top = -123.0
-offset_right = 307.0
-grow_horizontal = 2
+offset_left = 8.0
+offset_top = -166.0
+offset_right = 568.0
+offset_bottom = -8.0
 grow_vertical = 0
-current_tab = 1
+theme = SubResource("Theme_panel")
+current_tab = 0
 
 [node name="Troops" type="TabBar" parent="TabContainer" unique_id=1348594802]
 visible = false
@@ -139,21 +161,21 @@ grow_vertical = 2
 layout_mode = 2
 
 [node name="btnTroop1" type="Button" parent="TabContainer/Troops/VBoxContainer2/VBoxContainer" unique_id=1431793639]
-custom_minimum_size = Vector2(32, 32)
-custom_maximum_size = Vector2(32, 32)
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
-text = "FA"
+text = "TRAIN"
 
 [node name="Panel" type="Panel" parent="TabContainer/Troops" unique_id=1465640877]
 layout_mode = 0
-offset_left = 199.0
-offset_top = 2.0
-offset_right = 419.0
-offset_bottom = 90.0
+offset_left = 230.0
+offset_top = 4.0
+offset_right = 548.0
+offset_bottom = 118.0
 
 [node name="TrainingQueue" type="Label" parent="TabContainer/Troops/Panel" unique_id=1528075208]
 layout_mode = 0
-offset_right = 217.0
+offset_right = 318.0
 offset_bottom = 20.0
 theme_override_fonts/font = ExtResource("3_oifef")
 text = "Training Queue"
@@ -171,7 +193,8 @@ grow_vertical = 2
 [node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Troops/Panel/MarginContainer" unique_id=387306679]
 layout_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="TabContainer/Troops/Panel/MarginContainer/ScrollContainer" unique_id=768606181]
+[node name="QueueGrid" type="GridContainer" parent="TabContainer/Troops/Panel/MarginContainer/ScrollContainer" unique_id=768606181]
+unique_name_in_owner = true
 layout_mode = 2
 columns = 5
 
@@ -179,7 +202,7 @@ columns = 5
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/Buildings" unique_id=1504419469]
+[node name="BuildLayout" type="HBoxContainer" parent="TabContainer/Buildings"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -190,21 +213,59 @@ offset_right = -4.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Buildings/VBoxContainer2" unique_id=373305747]
+[node name="BuildList" type="ItemList" parent="TabContainer/Buildings/BuildLayout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+fixed_icon_size = Vector2i(28, 28)
 
-[node name="GridContainer" type="GridContainer" parent="TabContainer/Buildings/VBoxContainer2/MarginContainer" unique_id=1198567042]
+[node name="BuildDetail" type="VBoxContainer" parent="TabContainer/Buildings/BuildLayout"]
 layout_mode = 2
-size_flags_horizontal = 4
-columns = 6
+size_flags_horizontal = 3
 
-[node name="btnBuild1" type="Button" parent="TabContainer/Buildings/VBoxContainer2/MarginContainer/GridContainer" unique_id=1431149082]
-custom_minimum_size = Vector2(32, 32)
-custom_maximum_size = Vector2(32, 32)
+[node name="BuildTop" type="HBoxContainer" parent="TabContainer/Buildings/BuildLayout/BuildDetail"]
 layout_mode = 2
-text = "B1"
+
+[node name="BuildPicture" type="TextureRect" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildTop"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BuildText" type="VBoxContainer" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildTop"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BuildName" type="Label" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildTop/BuildText"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BuildDescription" type="Label" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildTop/BuildText"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 3
+
+[node name="BuildBottom" type="HBoxContainer" parent="TabContainer/Buildings/BuildLayout/BuildDetail"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="BuildCost" type="RichTextLabel" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildBottom"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+fit_content = true
+
+[node name="BuildButton" type="Button" parent="TabContainer/Buildings/BuildLayout/BuildDetail/BuildBottom"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+text = "BUILD"
 
 [node name="Evolve" type="TabBar" parent="TabContainer" unique_id=1096031014]
 visible = false
@@ -223,10 +284,17 @@ offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="TabContainer/Evolve/VBoxContainer2" unique_id=725221734]
+[node name="EvolveInfo" type="Label" parent="TabContainer/Evolve/VBoxContainer2" unique_id=725221734]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_oifef")
 text = "Kill your enemies and earn XP. It's survival of the fittest after all! Evolving improves your troops and increases your chances of survival."
+autowrap_mode = 3
+
+[node name="EvolveNext" type="Label" parent="TabContainer/Evolve/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oifef")
 autowrap_mode = 3
 
 [node name="BoxContainer" type="BoxContainer" parent="TabContainer/Evolve/VBoxContainer2" unique_id=1356890780]
@@ -234,7 +302,8 @@ layout_mode = 2
 size_flags_vertical = 10
 alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=978546058]
+[node name="XpBar" type="ProgressBar" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=978546058]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 0)
 custom_maximum_size = Vector2(300, -1)
 layout_mode = 2
@@ -242,8 +311,46 @@ theme_override_styles/background = SubResource("StyleBoxFlat_fqy7p")
 theme_override_styles/fill = SubResource("StyleBoxFlat_rtxm7")
 value = 50.0
 
-[node name="Button" type="Button" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=125502118]
+[node name="EvolveButton" type="Button" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=125502118]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 5)
 custom_maximum_size = Vector2(-1, 20)
 layout_mode = 2
 text = "EVOLVE"
+
+[node name="Upgrade" type="TabBar" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/Upgrade"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="UpgradeInfo" type="Label" parent="TabContainer/Upgrade/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oifef")
+text = "Upgrade the town hall"
+autowrap_mode = 3
+
+[node name="UpgradeButton" type="Button" parent="TabContainer/Upgrade/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+text = "UPGRADE"
+
+[connection signal="pressed" from="TabContainer/Evolve/VBoxContainer2/BoxContainer/EvolveButton" to="." method="_on_evolve_button_pressed"]
+[connection signal="pressed" from="TabContainer/Upgrade/VBoxContainer2/UpgradeButton" to="." method="_on_upgrade_button_pressed"]
+[connection signal="pressed" from="TabContainer/Troops/VBoxContainer2/VBoxContainer/btnTroop1" to="." method="_on_train_pressed"]
+[connection signal="item_selected" from="TabContainer/Buildings/BuildLayout/BuildList" to="." method="_on_build_list_item_selected"]
+[connection signal="pressed" from="TabContainer/Buildings/BuildLayout/BuildDetail/BuildBottom/BuildButton" to="." method="_on_build_button_pressed"]

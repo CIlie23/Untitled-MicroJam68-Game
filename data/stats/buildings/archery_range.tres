@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BuildingStats" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/building_stats.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Archery Range"
+description = "Trains archers."
+category = 1
+max_health = 220
+defense = 3
+cost = {"Wood": 2, "Minerals": 2}
+upgrade_cost = {"food": 5, "Wood": 5}
+max_level = 4
+produces = ""
+production = 0
+production_per_level = 0
+production_time = 5.0

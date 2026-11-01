@@ -5,6 +5,7 @@ func _ready() -> void:
 	%Body.text = "\n".join([
 		"Explain the goal of the game here.",
 		"",
+		"CONTROLS",
 		"- Move camera: %s %s %s %s (change in Options)" % [
 			Settings.key_label(&"camera_up"),
 			Settings.key_label(&"camera_left"),
@@ -12,11 +13,24 @@ func _ready() -> void:
 			Settings.key_label(&"camera_right"),
 		],
 		"- Zoom: mouse wheel",
-		"- Select units: left-click and drag",
-		"- Move selected units: hold right-click",
-		"- Spawn units: click the townhall",
-		"- Gather: move units next to a tree (wood) or rock (minerals)",
+		"- Select: left-click a troop or drag a box; click a building",
+		"- Move selected troops: right-click",
+		"- Troops list (top right): click a troop to select it and jump to it",
 		"- Pause: Esc",
+		"",
+		"ECONOMY",
+		"- Workers gather wood from trees and ore from rocks (up to 6 x 16 each)",
+		"- Walk them back to the town hall to store what they carry",
+		"- Farms make food, houses give room for more troops",
+		"",
+		"TROOPS",
+		"- The town hall trains workers for free",
+		"- Barracks, Archery Range and Shield Hall train swordsmen, archers and tanks for food",
+		"",
+		"GROWING",
+		"- Place buildings from the town hall's Buildings tab; each one gives XP",
+		"- Evolve the town hall with XP: more population, stronger new troops, higher building levels",
+		"- Upgrade a building from its Upgrade tab: more food, more room, faster troops and training",
 	])
 
 

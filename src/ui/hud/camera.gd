@@ -97,6 +97,8 @@ func _input(event: InputEvent) -> void:
 # Unhandled, not _input: the GUI gets the event first, so a wheel over a
 # ScrollContainer scrolls the panel instead of zooming the camera.
 func _unhandled_input(event: InputEvent) -> void:
+	if _over_scroll_area():
+		return
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			zooming = true
@@ -109,6 +111,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	else:
 		zooming = false
 		
+func _over_scroll_area() -> bool:
+	var node := get_viewport().gui_get_hovered_control()
+	while node:
+		if node is ScrollContainer or node is ItemList:
+			return true
+		node = node.get_parent() as Control
+	return false
+
 # the select area
 func draw_area(s=true):
 	panel.size = Vector2(abs(startV.x - endV.x), abs(startV.y - endV.y))

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="BuildingStats" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/building_stats.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Farm"
+description = "Grows food over time."
+category = 0
+max_health = 200
+defense = 2
+cost = {"Wood": 4}
+upgrade_cost = {"Wood": 5}
+max_level = 4
+produces = "food"
+production = 10
+production_per_level = 5
+production_time = 5.0

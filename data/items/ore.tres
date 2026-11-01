@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/item.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Ore"
+icon = ExtResource("2_icon")
+stock_name = "Minerals"

@@ -1,10 +1,20 @@
 [gd_scene format=3 uid="uid://dgdhxhadf7ccv"]
 
-[ext_resource type="Script" uid="uid://d06ogi0cjamsg" path="res://assets/terrain/storage/storage_house.gd" id="1_b61pd"]
+[ext_resource type="Script" uid="uid://d06ogi0cjamsg" path="res://assets/terrain/buildings/placed_building.gd" id="1_b61pd"]
 [ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_k5a0v"]
+[ext_resource type="Resource" path="res://data/stats/buildings/farm.tres" id="2_stats"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k5a0v"]
-size = Vector2(32, 12)
+size = Vector2(110, 50)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_selected"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0.3372549, 1)
+border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4asi"]
 bg_color = Color(1, 0.16298431, 0.3333164, 0.14117648)
@@ -24,19 +34,21 @@ border_width_bottom = 3
 border_color = Color(0, 0.92156863, 0, 1)
 border_blend = true
 
-[node name="StorageHouse" type="StaticBody2D" unique_id=34833653]
+[node name="PlacedBuilding" type="StaticBody2D" unique_id=34833653]
 y_sort_enabled = true
+input_pickable = true
 script = ExtResource("1_b61pd")
+stats = ExtResource("2_stats")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1708366853]
-position = Vector2(-1, 1)
+position = Vector2(0, 40)
 shape = SubResource("RectangleShape2D_k5a0v")
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=723694669]
-offset_left = -19.0
-offset_top = -26.0
-offset_right = 16.0
-offset_bottom = -19.0
+offset_left = -60.0
+offset_top = -100.0
+offset_right = 60.0
+offset_bottom = -88.0
 show_percentage = false
 
 [node name="Timer" type="Timer" parent="." unique_id=823257465]
@@ -46,17 +58,28 @@ wait_time = 0.1
 texture = ExtResource("1_k5a0v")
 
 [node name="panelRed" type="Panel" parent="." unique_id=1984938123]
-offset_left = -20.0
-offset_top = -31.0
-offset_right = 20.0
-offset_bottom = 9.0
+offset_left = -75.0
+offset_top = -80.0
+offset_right = 75.0
+offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_f4asi")
 
 [node name="panelGreen" type="Panel" parent="." unique_id=1350110311]
-offset_left = -20.0
-offset_top = -31.0
-offset_right = 20.0
-offset_bottom = 9.0
+offset_left = -75.0
+offset_top = -80.0
+offset_right = 75.0
+offset_bottom = 80.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_fqy7p")
 
+[node name="Selected" type="Panel" parent="."]
+visible = false
+offset_left = -75.0
+offset_top = -80.0
+offset_right = 75.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_selected")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -100,8 +100,8 @@ var cluster_centers: Array[Vector2] = []
 const CLICK_PICK_RADIUS := 80.0
 
 # The ghost's green/red panel spans x -20..20, y -31..9, so its centre sits 11px up.
-const PLACE_FOOTPRINT := Vector2(40, 40)
-const PLACE_FOOTPRINT_OFFSET := Vector2(0, -11)
+const PLACE_FOOTPRINT := Vector2(150, 150)
+const PLACE_FOOTPRINT_OFFSET := Vector2(0, 0)
 
 var placing_scene: PackedScene
 # Untyped on purpose: this is a scene instance carrying set_preview_valid().
@@ -111,6 +111,7 @@ func _ready() -> void:
 	Global.reset()
 	generate_map()
 	get_units()
+	Global.populus = units.size()
 
 func generate_map():
 	var tile_size := TILE_PX * ground_scale
@@ -481,17 +482,18 @@ func can_place_at(pos: Vector2) -> bool:
 	return true
 
 func place_ghost() -> void:
-	if not can_place_at(ghost.global_position):
+	if not can_place_at(ghost.global_position) or not Global.spend(ghost.stats.cost):
 		return
 	var building := placing_scene.instantiate() as Node2D
 	building.position = ghost.global_position
 	$Objects.add_child(building)
+	Global.add_xp(Global.XP_PER_BUILD)
 	# One placement per pick: drop the ghost so nothing stays in hand.
 	cancel_placement()
 
 func _update_ghost() -> void:
 	ghost.global_position = get_global_mouse_position()
-	ghost.set_preview_valid(can_place_at(ghost.global_position))
+	ghost.set_preview_valid(can_place_at(ghost.global_position) and Global.can_afford(ghost.stats.cost))
 
 # Polled rather than an _unhandled_input branch: both the GUI and physics picking
 # mark a mouse click handled before unhandled input runs, so a click over a unit or
@@ -533,6 +535,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	
 func _on_camera_area_selected(object) -> void:
+	if _pointing_at_widget():
+		return
 	var start = object.start
 	var end = object.end
 	if start.is_equal_approx(end):

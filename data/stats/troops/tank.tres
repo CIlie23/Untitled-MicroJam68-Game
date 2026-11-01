@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="TroopStats" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/troop_stats.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Tank"
+description = "Slow and sturdy. Soaks up damage."
+max_health = 220
+damage = 8
+defense = 14
+speed = 380.0
+cost = {"food": 8}
+train_time = 4.0
+can_gather = false
+tint = Color(0.55, 0.7, 1, 1)
+stage_sprites = Array[Texture2D]([])

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BuildingStats" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/building_stats.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "House"
+description = "Room for more troops."
+category = 0
+max_health = 150
+defense = 2
+cost = {"Wood": 4}
+upgrade_cost = {"Wood": 4}
+max_level = 4
+produces = ""
+population = 3
+population_per_level = 1

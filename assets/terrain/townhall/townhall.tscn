@@ -1,10 +1,15 @@
 [gd_scene format=3 uid="uid://ncn1qvqrj1l0"]
 
-[ext_resource type="Texture2D" uid="uid://itxa4y6l8f7v" path="res://assets/textures/soup/soup.png" id="1_j6gtm"]
+[ext_resource type="Texture2D" path="res://assets/textures/soup/townhallSheet.png" id="1_j6gtm"]
 [ext_resource type="Script" uid="uid://clx6u41rawc03" path="res://assets/terrain/townhall/townhall.gd" id="1_k2fjg"]
+[ext_resource type="Script" path="res://src/common/components/trainer.gd" id="2_trainer"]
+[ext_resource type="Resource" path="res://data/stats/troops/troop.tres" id="3_worker"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
 size = Vector2(29, 10)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_deposit"]
+radius = 25.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k2fjg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -21,6 +26,7 @@ script = ExtResource("1_k2fjg")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=353445144]
 texture = ExtResource("1_j6gtm")
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1638643384]
 position = Vector2(-0.5, 9)
@@ -28,11 +34,23 @@ shape = SubResource("RectangleShape2D_fqy7p")
 
 [node name="Selected" type="Panel" parent="." unique_id=1552119480]
 offset_left = -17.0
-offset_top = -5.0
+offset_top = -17.0
 offset_right = 17.0
 offset_bottom = 17.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k2fjg")
 
+[node name="DepositArea" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DepositArea"]
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_deposit")
+
+[node name="Trainer" type="Node" parent="."]
+script = ExtResource("2_trainer")
+troop = ExtResource("3_worker")
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="body_entered" from="DepositArea" to="." method="_on_deposit_area_body_entered"]

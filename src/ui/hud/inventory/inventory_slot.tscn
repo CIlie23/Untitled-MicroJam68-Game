@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://68r1vwxlkfep"]
 
 [ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="1_bu3mw"]
+[ext_resource type="Script" path="res://src/ui/hud/inventory/inventory_slot.gd" id="9_script"]
 
 [node name="inventorySlot" type="Control" unique_id=937816461]
+script = ExtResource("9_script")
 custom_minimum_size = Vector2(40, 40)
 custom_maximum_size = Vector2(40, 40)
 layout_mode = 3

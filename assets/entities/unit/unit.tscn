@@ -2,6 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_mukvx"]
 [ext_resource type="Script" uid="uid://b5giqhkwkvnt8" path="res://assets/entities/unit/unit.gd" id="1_q456h"]
+[ext_resource type="Resource" path="res://data/stats/troops/troop.tres" id="2_stats"]
+[ext_resource type="Script" path="res://src/common/resources/inventory.gd" id="3_inventory"]
+
+[sub_resource type="Resource" id="Resource_inventory"]
+resource_local_to_scene = true
+script = ExtResource("3_inventory")
+slot_count = 6
+max_per_slot = 16
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
 size = Vector2(139, 143)
@@ -17,6 +25,8 @@ border_blend = true
 
 [node name="Unit" type="CharacterBody2D" unique_id=1370506533 groups=["unit"]]
 script = ExtResource("1_q456h")
+stats = ExtResource("2_stats")
+inventory = SubResource("Resource_inventory")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1358620830]
 position = Vector2(-1.5, -0.5)

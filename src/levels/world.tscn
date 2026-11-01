@@ -46,7 +46,7 @@ position = Vector2(464, 351)
 
 [node name="Townhall" parent="Houses" unique_id=1677700993 instance=ExtResource("5_hkv0b")]
 position = Vector2(744, 155)
-scale = Vector2(3, 3)
+scale = Vector2(6.25, 6.25)
 
 [node name="Effects" type="Node2D" parent="." unique_id=5182315]
 

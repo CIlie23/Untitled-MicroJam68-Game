@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://rlxao1mjuim8"]
 
 [ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_sd4fx"]
-[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="2_n53xk"]
 [ext_resource type="PackedScene" uid="uid://68r1vwxlkfep" path="res://src/ui/hud/inventory/inventory_slot.tscn" id="3_tuxs4"]
+[ext_resource type="Script" path="res://src/ui/hud/portrait/unit_portrait.gd" id="9_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_health.png" id="30_health"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_attack.png" id="30_attack"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_speed.png" id="30_speed"]
+[ext_resource type="Texture2D" path="res://assets/textures/ui/ui_defense.png" id="30_defense"]
+
+[sub_resource type="Theme" id="Theme_panel"]
+default_font_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuxs4"]
 bg_color = Color(0.20996031, 0.22353527, 0.25253984, 1)
@@ -19,6 +26,7 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(1, 0, 0.16470589, 1)
 
 [node name="unitPortrait" type="CanvasLayer" unique_id=447086382]
+script = ExtResource("9_script")
 
 [node name="Panel" type="Panel" parent="." unique_id=1962666542]
 anchors_preset = 7
@@ -27,11 +35,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -311.25
-offset_top = -130.0
+offset_top = -175.0
 offset_right = 311.25
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tuxs4")
+theme = SubResource("Theme_panel")
 
 [node name="Container" type="HBoxContainer" parent="Panel" unique_id=1325739064]
 layout_mode = 1
@@ -41,7 +50,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -305.0
-offset_top = -123.0
+offset_top = -168.0
 offset_right = 299.0
 offset_bottom = -7.0
 grow_horizontal = 2
@@ -51,19 +60,23 @@ theme_override_constants/separation = 20
 [node name="troopInfo" type="VBoxContainer" parent="Panel/Container" unique_id=149775780]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/Container/troopInfo" unique_id=1250591017]
+[node name="NameLabel" type="Label" parent="Panel/Container/troopInfo" unique_id=1250591017]
+unique_name_in_owner = true
 layout_mode = 2
 text = "TROOP NAME"
 
-[node name="TextureRect" type="TextureRect" parent="Panel/Container/troopInfo" unique_id=51831561]
-custom_minimum_size = Vector2(64, 64)
-custom_maximum_size = Vector2(64, 64)
+[node name="Picture" type="TextureRect" parent="Panel/Container/troopInfo" unique_id=51831561]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_sd4fx")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="ProgressBar" type="ProgressBar" parent="Panel/Container/troopInfo" unique_id=984992844]
-custom_minimum_size = Vector2(16, 16)
+[node name="HealthBar" type="ProgressBar" parent="Panel/Container/troopInfo" unique_id=984992844]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_n53xk")
 theme_override_styles/fill = SubResource("StyleBoxFlat_sd4fx")
@@ -82,9 +95,10 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Health" unique_id=56626511]
 layout_mode = 2
-texture = ExtResource("2_n53xk")
+texture = ExtResource("30_health")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Health" unique_id=1765120081]
+[node name="HealthValue" type="Label" parent="Panel/Container/statsContainer/Health" unique_id=1765120081]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
@@ -93,9 +107,10 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Attack" unique_id=135807746]
 layout_mode = 2
-texture = ExtResource("2_n53xk")
+texture = ExtResource("30_attack")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Attack" unique_id=1136843504]
+[node name="AttackValue" type="Label" parent="Panel/Container/statsContainer/Attack" unique_id=1136843504]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
@@ -104,9 +119,10 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Speed" unique_id=755458565]
 layout_mode = 2
-texture = ExtResource("2_n53xk")
+texture = ExtResource("30_speed")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Speed" unique_id=186605550]
+[node name="SpeedValue" type="Label" parent="Panel/Container/statsContainer/Speed" unique_id=186605550]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
@@ -115,13 +131,15 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="Panel/Container/statsContainer/Defense" unique_id=2136058872]
 layout_mode = 2
-texture = ExtResource("2_n53xk")
+texture = ExtResource("30_defense")
 
-[node name="Label" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
+[node name="DefenseValue" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
+unique_name_in_owner = true
 layout_mode = 2
 text = "10"
 
 [node name="Inventory" type="VBoxContainer" parent="Panel" unique_id=518218221]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -165,3 +183,4 @@ layout_mode = 2
 
 [node name="inventorySlot3" parent="Panel/Inventory/HBoxContainer3" unique_id=629363797 instance=ExtResource("3_tuxs4")]
 layout_mode = 2
+

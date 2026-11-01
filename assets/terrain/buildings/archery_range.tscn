@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://dgdhxhadf7ccv" path="res://assets/terrain/buildings/building.tscn" id="1_base"]
+[ext_resource type="Resource" path="res://data/stats/buildings/archery_range.tres" id="2_stats"]
+[ext_resource type="Script" path="res://src/common/components/trainer.gd" id="4_trainer"]
+[ext_resource type="Resource" path="res://data/stats/troops/archer.tres" id="5_troop"]
+[ext_resource type="Texture2D" path="res://assets/textures/buildings/rangedTroopBuilding/rangedSheet.png" id="3_sheet"]
+
+[node name="ArcheryRange" instance=ExtResource("1_base")]
+stats = ExtResource("2_stats")
+
+[node name="Sprite2D" parent="." index="3"]
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("3_sheet")
+hframes = 4
+
+[node name="Trainer" type="Node" parent="."]
+script = ExtResource("4_trainer")
+troop = ExtResource("5_troop")

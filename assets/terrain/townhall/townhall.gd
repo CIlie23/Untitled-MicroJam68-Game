@@ -1,24 +1,17 @@
+class_name Townhall
 extends Building
 
-var mouseEntered = false
-@onready var select: Panel = $Selected
-var Selected = false
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	select.visible = Selected
-
-# Unhandled, not _input: clicks on the thHud buttons must not also toggle the building.
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("LeftClick"):
-		if mouseEntered == true:
-			Selected = !Selected
-		else:
-			Selected = false
-
-func _on_mouse_entered() -> void:
-	mouseEntered = true
+func _ready() -> void:
+	Selected = false
+	$Sprite2D.frame = Global.townhall_level - 1
+	Global.townhall_evolved.connect(_on_townhall_evolved)
 
 
-func _on_mouse_exited() -> void:
-	mouseEntered = false
+func _on_townhall_evolved(stage: int) -> void:
+	$Sprite2D.frame = mini(stage, $Sprite2D.hframes - 1)
+
+
+func _on_deposit_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("unit"):
+		for stack in body.inventory.take_all():
+			Global.set(stack.item.stock_name, Global.get(stack.item.stock_name) + stack.count)
