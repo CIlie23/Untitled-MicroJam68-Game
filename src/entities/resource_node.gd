@@ -33,6 +33,7 @@ func _process(delta: float) -> void:
 func _on_gather_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("unit"):
 		units += 1
+		bar.show()
 		startGathering()
 
 func _on_gather_area_body_exited(body: Node2D) -> void:
@@ -40,6 +41,7 @@ func _on_gather_area_body_exited(body: Node2D) -> void:
 		units -= 1
 		if units <= 0:
 			timer.stop()
+			bar.hide()
 
 
 func _on_timer_timeout() -> void:
@@ -53,5 +55,9 @@ func startGathering():
 		timer.start()
 
 func depleted():
+	set_process(false)
 	Global.set(resource_name, Global.get(resource_name) + yieldAmount)
+	var burst := $GatherBurst as CPUParticles2D
+	burst.reparent(get_parent())
+	burst.emitting = true
 	queue_free()

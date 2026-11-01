@@ -1,13 +1,19 @@
 [gd_scene format=3 uid="uid://db35skuyw7efj"]
 
-[ext_resource type="Script" uid="uid://b7o5qftdogkv7" path="res://assets/terrain/tree/tree.gd" id="1_3oxyo"]
+[ext_resource type="Script" uid="uid://b7o5qftdogkv7" path="res://assets/terrain/trees/tree.gd" id="1_3oxyo"]
 [ext_resource type="Texture2D" uid="uid://balrxcuy5esrk" path="res://assets/textures/tiles/tree.png" id="2_21jrs"]
+[ext_resource type="PackedScene" path="res://src/common/components/gather_burst.tscn" id="3_burst"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
 size = Vector2(13, 7.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rtxm7"]
 radius = 23.021729
+
+[sub_resource type="Gradient" id="Gradient_wood"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.34, 0.67)
+colors = PackedColorArray(0.271, 0.157, 0.235, 1, 0.431, 0.282, 0.196, 1, 0.549, 0.376, 0.243, 1)
 
 [node name="Tree" type="StaticBody2D" unique_id=387960191]
 scale = Vector2(5, 5)
@@ -29,11 +35,16 @@ shape = SubResource("CircleShape2D_rtxm7")
 [node name="Timer" type="Timer" parent="." unique_id=158423131]
 
 [node name="ProgressBar" type="ProgressBar" parent="." unique_id=1490392441]
+visible = false
 offset_left = -13.0
 offset_top = -21.0
 offset_right = 14.0
 offset_bottom = -17.0
 show_percentage = false
+
+[node name="GatherBurst" parent="." instance=ExtResource("3_burst")]
+position = Vector2(0, 8)
+color_initial_ramp = SubResource("Gradient_wood")
 
 [connection signal="body_entered" from="GatherArea" to="." method="_on_gather_area_body_entered"]
 [connection signal="body_exited" from="GatherArea" to="." method="_on_gather_area_body_exited"]

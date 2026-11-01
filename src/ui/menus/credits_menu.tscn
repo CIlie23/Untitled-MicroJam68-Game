@@ -161,3 +161,5 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_3etfd")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries/ = SubResource("AnimationLibrary_jjs6x")
 autoplay = &"Fade-Out"
+
+[connection signal="pressed" from="Center/Box/Margin/List/BackButton" to="." method="_on_back_button_pressed"]

@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://db35skuyw7efj" path="res://assets/terrain/trees/tree.tscn" id="1_base"]
+[ext_resource type="Texture2D" path="res://assets/terrain/trees/treeTwo.png" id="2_texture"]
+
+[node name="TreeTwo" instance=ExtResource("1_base")]
+scale = Vector2(3, 3)
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_texture")
+offset = Vector2(-5.5, -25.5)
+
+[node name="ProgressBar" parent="." index="4"]
+offset_top = -74.0
+offset_bottom = -70.0

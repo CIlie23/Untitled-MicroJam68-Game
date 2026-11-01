@@ -16,13 +16,11 @@ var rebinding_action: StringName = &""
 
 func _ready() -> void:
 	for bus in sliders:
-		sliders[bus].value = Settings.volumes[bus]
+		sliders[bus].set_value_no_signal(Settings.volumes[bus])
 		value_labels[bus].text = str(int(Settings.volumes[bus]))
-		sliders[bus].value_changed.connect(_on_volume_changed.bind(bus))
 
-	%MuteCheck.button_pressed = Settings.muted
+	%MuteCheck.set_pressed_no_signal(Settings.muted)
 	_set_sliders_enabled(not Settings.muted)
-	%MuteCheck.toggled.connect(_on_mute_toggled)
 
 	if OS.has_feature("web"):
 		%WindowSizeRow.hide()
@@ -31,14 +29,11 @@ func _ready() -> void:
 			%WindowSize.add_item("%d x %d" % [window_size.x, window_size.y])
 		%WindowSize.select(Settings.window_size_index)
 		%WindowSize.disabled = Settings.is_fullscreen()
-		%WindowSize.item_selected.connect(Settings.set_window_size)
 
-	%FullscreenCheck.button_pressed = Settings.is_fullscreen()
-	%FullscreenCheck.toggled.connect(_on_fullscreen_toggled)
+	%FullscreenCheck.set_pressed_no_signal(Settings.is_fullscreen())
 
-	%CameraSpeedSlider.value = Settings.camera_speed
+	%CameraSpeedSlider.set_value_no_signal(Settings.camera_speed)
 	%CameraSpeedValue.text = "%d%%" % Settings.camera_speed
-	%CameraSpeedSlider.value_changed.connect(_on_camera_speed_changed)
 
 	for action in Settings.KEYBIND_NAMES:
 		var row := HBoxContainer.new()
@@ -53,9 +48,6 @@ func _ready() -> void:
 		%KeybindList.add_child(row)
 		key_buttons[action] = button
 	_refresh_key_labels()
-	%KeyLayoutButton.pressed.connect(_on_key_layout_pressed)
-
-	%BackButton.pressed.connect(queue_free)
 
 
 func _input(event: InputEvent) -> void:
@@ -68,18 +60,34 @@ func _input(event: InputEvent) -> void:
 	_refresh_key_labels()
 
 
+func _on_back_button_pressed() -> void:
+	queue_free()
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		queue_free()
 
 
-func _on_volume_changed(value: float, bus: StringName) -> void:
+func _on_master_slider_value_changed(value: float) -> void:
+	_set_volume(&"Master", value)
+
+
+func _on_music_slider_value_changed(value: float) -> void:
+	_set_volume(&"Music", value)
+
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	_set_volume(&"SFX", value)
+
+
+func _set_volume(bus: StringName, value: float) -> void:
 	Settings.set_volume(bus, value)
 	value_labels[bus].text = str(int(value))
 
 
-func _on_mute_toggled(muted: bool) -> void:
+func _on_mute_check_toggled(muted: bool) -> void:
 	Settings.set_muted(muted)
 	_set_sliders_enabled(not muted)
 
@@ -89,7 +97,11 @@ func _set_sliders_enabled(enabled: bool) -> void:
 		slider.editable = enabled
 
 
-func _on_fullscreen_toggled(fullscreen: bool) -> void:
+func _on_window_size_item_selected(index: int) -> void:
+	Settings.set_window_size(index)
+
+
+func _on_fullscreen_check_toggled(fullscreen: bool) -> void:
 	Settings.set_fullscreen(fullscreen)
 	%WindowSize.disabled = fullscreen
 
@@ -100,12 +112,12 @@ func _start_rebind(action: StringName) -> void:
 	key_buttons[action].text = "Press a key..."
 
 
-func _on_camera_speed_changed(value: float) -> void:
+func _on_camera_speed_slider_value_changed(value: float) -> void:
 	Settings.camera_speed = value
 	%CameraSpeedValue.text = "%d%%" % value
 
 
-func _on_key_layout_pressed() -> void:
+func _on_key_layout_button_pressed() -> void:
 	Settings.apply_key_layout("WASD" if Settings.current_key_layout() == "Arrows" else "Arrows")
 	rebinding_action = &""
 	_refresh_key_labels()

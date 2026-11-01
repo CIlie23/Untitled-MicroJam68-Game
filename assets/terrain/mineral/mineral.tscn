@@ -2,12 +2,18 @@
 
 [ext_resource type="Script" path="res://assets/terrain/mineral/mineral.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/terrain/mineral/mineral.png" id="2_tex"]
+[ext_resource type="PackedScene" path="res://src/common/components/gather_burst.tscn" id="3_burst"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(20, 12)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gather"]
 radius = 30.0
+
+[sub_resource type="Gradient" id="Gradient_stone"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.34, 0.67)
+colors = PackedColorArray(0.608, 0.678, 0.718, 1, 0.518, 0.494, 0.529, 1, 0.353, 0.345, 0.392, 1)
 
 [node name="Mineral" type="StaticBody2D"]
 scale = Vector2(3, 3)
@@ -29,11 +35,16 @@ shape = SubResource("CircleShape2D_gather")
 [node name="Timer" type="Timer" parent="."]
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
 offset_left = -13.0
 offset_top = -14.0
 offset_right = 14.0
 offset_bottom = -10.0
 show_percentage = false
+
+[node name="GatherBurst" parent="." instance=ExtResource("3_burst")]
+position = Vector2(0, 4)
+color_initial_ramp = SubResource("Gradient_stone")
 
 [connection signal="body_entered" from="GatherArea" to="." method="_on_gather_area_body_entered"]
 [connection signal="body_exited" from="GatherArea" to="." method="_on_gather_area_body_exited"]

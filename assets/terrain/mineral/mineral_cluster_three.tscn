@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral.tscn" id="1_base"]
+[ext_resource type="Texture2D" path="res://assets/terrain/mineral/clusterTree.png" id="2_texture"]
+
+[node name="MineralClusterThree" instance=ExtResource("1_base")]
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_texture")
+offset = Vector2(0.5, -2.0)
+
+[node name="ProgressBar" parent="." index="4"]
+offset_top = -23.0
+offset_bottom = -19.0

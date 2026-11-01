@@ -19,7 +19,10 @@ func _ready() -> void:
 			group.add_child(_make_label(credit_name, 20))
 		%Entries.add_child(group)
 
-	%BackButton.pressed.connect(queue_free)
+
+
+func _on_back_button_pressed() -> void:
+	queue_free()
 
 
 func _unhandled_input(event: InputEvent) -> void:

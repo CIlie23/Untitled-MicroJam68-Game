@@ -1,0 +1,42 @@
+[gd_scene format=3]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_dot"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dot"]
+gradient = SubResource("Gradient_dot")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_flicker"]
+offsets = PackedFloat32Array(0, 0.15, 0.35, 0.5, 0.7, 0.85, 1)
+colors = PackedColorArray(0.85, 1, 0.45, 0, 0.85, 1, 0.45, 1, 0.85, 1, 0.45, 0.35, 0.85, 1, 0.45, 1, 0.85, 1, 0.45, 0.4, 0.85, 1, 0.45, 0.9, 0.85, 1, 0.45, 0)
+
+[node name="Fireflies" type="CPUParticles2D"]
+z_index = 1
+material = SubResource("CanvasItemMaterial_glow")
+amount = 12
+lifetime = 5.0
+preprocess = 5.0
+lifetime_randomness = 0.5
+texture = SubResource("GradientTexture2D_dot")
+emission_shape = 3
+emission_rect_extents = Vector2(80, 60)
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 14.0
+tangential_accel_min = -12.0
+tangential_accel_max = 12.0
+damping_min = 1.0
+damping_max = 3.0
+scale_amount_min = 0.4
+scale_amount_max = 0.8
+color_ramp = SubResource("Gradient_flicker")

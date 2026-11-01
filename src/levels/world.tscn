@@ -7,10 +7,22 @@
 [ext_resource type="TileSet" path="res://assets/textures/tiles/tileset.tres" id="6_tileset"]
 [ext_resource type="PackedScene" uid="uid://ncn1qvqrj1l0" path="res://assets/terrain/townhall/townhall.tscn" id="5_hkv0b"]
 [ext_resource type="PackedScene" uid="uid://ccs0buydk4645" path="res://src/ui/hud/ui.tscn" id="5_wr3og"]
+[ext_resource type="PackedScene" path="res://assets/terrain/trees/tree_dead.tscn" id="7_tree"]
+[ext_resource type="PackedScene" path="res://src/common/components/fireflies.tscn" id="9_fireflies"]
+[ext_resource type="PackedScene" path="res://assets/terrain/trees/tree_one.tscn" id="7_tree_one"]
+[ext_resource type="PackedScene" path="res://assets/terrain/trees/tree_two.tscn" id="7_tree_two"]
+[ext_resource type="PackedScene" path="res://assets/terrain/trees/tree_three.tscn" id="7_tree_three"]
+[ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral.tscn" id="8_mineral"]
+[ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_one.tscn" id="8_mineral_one"]
+[ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_two.tscn" id="8_mineral_two"]
+[ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_three.tscn" id="8_mineral_three"]
 
 [node name="World" type="Node2D" unique_id=1628329778]
 y_sort_enabled = true
 script = ExtResource("1_q35l7")
+tree_scenes = Array[PackedScene]([ExtResource("7_tree"), ExtResource("7_tree_one"), ExtResource("7_tree_two"), ExtResource("7_tree_three")])
+mineral_scenes = Array[PackedScene]([ExtResource("8_mineral"), ExtResource("8_mineral_one"), ExtResource("8_mineral_two"), ExtResource("8_mineral_three")])
+firefly_scene = ExtResource("9_fireflies")
 
 [node name="Ground" type="TileMapLayer" parent="."]
 z_index = -1
@@ -39,4 +51,6 @@ y_sort_enabled = true
 position = Vector2(744, 155)
 scale = Vector2(3, 3)
 
+
+[node name="Effects" type="Node2D" parent="."]
 [connection signal="area_selected" from="Camera" to="." method="_on_camera_area_selected"]

@@ -18,7 +18,10 @@ func _ready() -> void:
 		"- Gather: move units next to a tree (wood) or rock (minerals)",
 		"- Pause: Esc",
 	])
-	%BackButton.pressed.connect(queue_free)
+
+
+func _on_back_button_pressed() -> void:
+	queue_free()
 
 
 func _unhandled_input(event: InputEvent) -> void:
