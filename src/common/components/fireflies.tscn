@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d3pn1us4grbjd"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_glow"]
 blend_mode = 1
@@ -18,14 +18,14 @@ fill_to = Vector2(1, 0.5)
 offsets = PackedFloat32Array(0, 0.15, 0.35, 0.5, 0.7, 0.85, 1)
 colors = PackedColorArray(0.85, 1, 0.45, 0, 0.85, 1, 0.45, 1, 0.85, 1, 0.45, 0.35, 0.85, 1, 0.45, 1, 0.85, 1, 0.45, 0.4, 0.85, 1, 0.45, 0.9, 0.85, 1, 0.45, 0)
 
-[node name="Fireflies" type="CPUParticles2D"]
+[node name="Fireflies" type="CPUParticles2D" unique_id=1351474875]
 z_index = 1
 material = SubResource("CanvasItemMaterial_glow")
 amount = 12
+texture = SubResource("GradientTexture2D_dot")
 lifetime = 5.0
 preprocess = 5.0
 lifetime_randomness = 0.5
-texture = SubResource("GradientTexture2D_dot")
 emission_shape = 3
 emission_rect_extents = Vector2(80, 60)
 direction = Vector2(0, -1)

@@ -7,7 +7,6 @@ const OPTIONS_SCENE := preload("res://src/ui/menus/settings_menu.tscn")
 func _ready() -> void:
 	%Menu.hide()
 
-
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()

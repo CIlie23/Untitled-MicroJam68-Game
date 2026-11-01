@@ -1,15 +1,18 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dwo4vmc0y6ayq"]
 
 [ext_resource type="PackedScene" uid="uid://db35skuyw7efj" path="res://assets/terrain/trees/tree.tscn" id="1_base"]
-[ext_resource type="Texture2D" path="res://assets/terrain/trees/treeOne.png" id="2_texture"]
+[ext_resource type="Texture2D" uid="uid://d25v6y1etmn8n" path="res://assets/terrain/trees/treeOne.png" id="2_texture"]
 
-[node name="TreeOne" instance=ExtResource("1_base")]
+[node name="TreeOne" unique_id=1261975146 instance=ExtResource("1_base")]
 scale = Vector2(3, 3)
 
-[node name="Sprite2D" parent="." index="0"]
+[node name="Sprite2D" parent="." index="0" unique_id=608332616]
 texture = ExtResource("2_texture")
-offset = Vector2(10.0, -26.5)
+offset = Vector2(10, -26.5)
 
-[node name="ProgressBar" parent="." index="4"]
+[node name="ProgressBar" parent="." index="4" unique_id=1490392441]
 offset_top = -74.0
 offset_bottom = -70.0
+
+[node name="GatherBurst" parent="." index="5"]
+amount = 50

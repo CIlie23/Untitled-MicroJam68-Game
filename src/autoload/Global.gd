@@ -13,6 +13,7 @@ var RESOURCES := {
 
 var Wood = 0
 var Minerals = 0
+var coin = 0
 
 func reset():
 	Wood = 0
