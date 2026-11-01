@@ -1,6 +1,62 @@
 [gd_scene format=3 uid="uid://cupxb4hkb0kbi"]
 
 [ext_resource type="Script" uid="uid://dqrnwhot7s55" path="res://src/ui/menus/main_menu.gd" id="1_3skds"]
+[ext_resource type="Texture2D" uid="uid://xo1cogafk6e0" path="res://assets/textures/ui/bg1.png" id="2_vs67m"]
+[ext_resource type="Texture2D" uid="uid://j7cug66obhvd" path="res://assets/textures/ui/soupMenu.png" id="3_jmap8"]
+[ext_resource type="Texture2D" uid="uid://c8i1lxryx4aau" path="res://assets/textures/ui/logoSheet.png" id="4_y3puo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_csvuu"]
+atlas = ExtResource("3_jmap8")
+region = Rect2(0, 0, 377, 222)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ltlti"]
+atlas = ExtResource("3_jmap8")
+region = Rect2(0, 222, 377, 222)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l3u6v"]
+atlas = ExtResource("3_jmap8")
+region = Rect2(0, 444, 377, 222)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rtxm7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_csvuu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ltlti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l3u6v")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vs67m"]
+atlas = ExtResource("4_y3puo")
+region = Rect2(0, 0, 609, 269)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmap8"]
+atlas = ExtResource("4_y3puo")
+region = Rect2(0, 269, 609, 269)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fqy7p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vs67m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmap8")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y3puo"]
 
 [node name="MainMenu" type="Control" unique_id=436938647]
 layout_mode = 3
@@ -12,13 +68,24 @@ grow_vertical = 2
 script = ExtResource("1_3skds")
 metadata/_edit_lock_ = true
 
-[node name="BACKGROUND" type="Panel" parent="." unique_id=237402004]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1426397010]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("2_vs67m")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1032662174]
+position = Vector2(203, 486)
+sprite_frames = SubResource("SpriteFrames_rtxm7")
 
 [node name="Center" type="VBoxContainer" parent="." unique_id=86598751]
 layout_mode = 1
@@ -28,20 +95,21 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -126.5
-offset_top = -84.5
+offset_top = -39.0
 offset_right = 126.5
-offset_bottom = 84.5
+offset_bottom = 176.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TITLE" type="Label" parent="Center" unique_id=1241905623]
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "THIS IS A TITLE"
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Center" unique_id=1863620165]
+position = Vector2(136.5, -112)
+sprite_frames = SubResource("SpriteFrames_fqy7p")
+frame_progress = 0.6209399
 
 [node name="HSeparator" type="HSeparator" parent="Center" unique_id=704016729]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
+theme_override_styles/separator = SubResource("StyleBoxEmpty_y3puo")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Center" unique_id=2132317540]
 layout_mode = 2
@@ -50,7 +118,7 @@ layout_mode = 2
 layout_mode = 2
 text = "PLAY"
 
-[node name="HowToPlay" type="Button" parent="Center/VBoxContainer"]
+[node name="HowToPlay" type="Button" parent="Center/VBoxContainer" unique_id=1510694652]
 layout_mode = 2
 text = "HOW TO PLAY"
 
@@ -58,7 +126,7 @@ text = "HOW TO PLAY"
 layout_mode = 2
 text = "OPTIONS"
 
-[node name="Credits" type="Button" parent="Center/VBoxContainer"]
+[node name="Credits" type="Button" parent="Center/VBoxContainer" unique_id=227965940]
 layout_mode = 2
 text = "CREDITS"
 
@@ -66,6 +134,19 @@ text = "CREDITS"
 unique_name_in_owner = true
 layout_mode = 2
 text = "QUIT"
+
+[node name="Label" type="Label" parent="." unique_id=580492830]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -277.0
+offset_top = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Made with love for Microjam 28"
 
 [connection signal="pressed" from="Center/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Center/VBoxContainer/HowToPlay" to="." method="_on_how_to_play_pressed"]
