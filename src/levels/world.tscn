@@ -22,6 +22,12 @@
 [ext_resource type="Resource" path="res://data/ai/easy.tres" id="23_easy"]
 [ext_resource type="PackedScene" path="res://src/ui/menus/game_over.tscn" id="24_game_over"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_map"]
+parsed_geometry_type = 1
+source_geometry_mode = 1
+source_geometry_group_name = &"navigation_source"
+agent_radius = 36.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fog"]
 shader = ExtResource("20_fog_shader")
 
@@ -53,7 +59,10 @@ position = Vector2(464, 351)
 [node name="EnemyUnit" parent="Units" instance=ExtResource("2_jimqh")]
 team = "enemy"
 
-[node name="Houses" type="Node2D" parent="." unique_id=31918186]
+[node name="Navigation" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_map")
+
+[node name="Houses" type="Node2D" parent="." unique_id=31918186 groups=["navigation_source"]]
 
 [node name="Townhall" parent="Houses" unique_id=1677700993 instance=ExtResource("5_hkv0b")]
 position = Vector2(744, 155)
@@ -65,7 +74,7 @@ team = "enemy"
 
 [node name="Effects" type="Node2D" parent="." unique_id=5182315]
 
-[node name="Objects" type="Node2D" parent="." unique_id=1800154722]
+[node name="Objects" type="Node2D" parent="." unique_id=1800154722 groups=["navigation_source"]]
 y_sort_enabled = true
 
 [node name="Fog" type="ColorRect" parent="."]
@@ -81,3 +90,7 @@ difficulty = ExtResource("23_easy")
 [node name="GameOver" parent="." instance=ExtResource("24_game_over")]
 
 [connection signal="area_selected" from="Camera" to="." method="_on_camera_area_selected"]
+[connection signal="child_entered_tree" from="Objects" to="." method="_on_obstacles_changed"]
+[connection signal="child_exiting_tree" from="Objects" to="." method="_on_obstacles_changed"]
+[connection signal="child_entered_tree" from="Houses" to="." method="_on_obstacles_changed"]
+[connection signal="child_exiting_tree" from="Houses" to="." method="_on_obstacles_changed"]

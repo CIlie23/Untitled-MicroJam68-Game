@@ -97,6 +97,9 @@ const LAKE_CORNER_LIPS := {
 @export var middle_radius := 900.0
 @export var middle_tree_clusters := 10
 @export var middle_mineral_clusters := 6
+@export_group("Navigation")
+@export var units_avoid_water := true
+@export var navigation_update_delay := 2.0
 @export_group("")
 
 var map_size: Vector2
@@ -110,6 +113,9 @@ var sheet: Image
 var lip_images := {}
 var units = []
 var cluster_centers: Array[Vector2] = []
+var navigation_dirty := false
+var navigation_baking := false
+var navigation_update_in := 0.0
 
 # Roughly the unit's 139x143 collision box, so a click on the sprite counts as a hit.
 const CLICK_PICK_RADIUS := 80.0
@@ -127,6 +133,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	generate_map()
+	bake_navigation()
 	get_units()
 	Global.populus = units.size()
 	Global.economy("enemy").populus = get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.team == "enemy").size()
@@ -487,6 +494,38 @@ func spawn(scenes: Array[PackedScene], pos: Vector2):
 	node.position = pos
 	$Objects.add_child(node)
 
+func bake_navigation() -> void:
+	navigation_dirty = false
+	navigation_baking = true
+	var polygon: NavigationPolygon = $Navigation.navigation_polygon.duplicate()
+	polygon.clear_outlines()
+	polygon.add_outline(PackedVector2Array([Vector2.ZERO, Vector2(map_size.x, 0), map_size, Vector2(0, map_size.y)]))
+	var source := NavigationMeshSourceGeometryData2D.new()
+	NavigationServer2D.parse_source_geometry_data(polygon, source, self)
+	if units_avoid_water:
+		var tile := TILE_PX * ground_scale
+		for cell in lake_cells.keys() + pond_cells.keys():
+			var corner := Vector2(cell) * tile
+			source.add_obstruction_outline(PackedVector2Array([corner, corner + Vector2(tile, 0), corner + Vector2(tile, tile), corner + Vector2(0, tile)]))
+	NavigationServer2D.bake_from_source_geometry_data_async(polygon, source, _on_navigation_baked.bind(polygon))
+
+func _on_navigation_baked(polygon: NavigationPolygon) -> void:
+	$Navigation.navigation_polygon = polygon
+	navigation_baking = false
+
+func update_navigation(delta: float) -> void:
+	if not navigation_dirty or navigation_baking:
+		return
+	navigation_update_in -= delta
+	if navigation_update_in <= 0.0:
+		bake_navigation()
+
+func _on_obstacles_changed(node: Node) -> void:
+	if node.get("preview") or node is CPUParticles2D or navigation_dirty:
+		return
+	navigation_dirty = true
+	navigation_update_in = navigation_update_delay
+
 func get_units():
 	units = null
 	units = get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.team == "player")
@@ -540,7 +579,6 @@ func place_ghost() -> void:
 	var building := placing_scene.instantiate() as Node2D
 	building.position = ghost.global_position
 	$Objects.add_child(building)
-	Global.add_xp(Global.XP_PER_BUILD)
 	# One placement per pick: drop the ghost so nothing stays in hand.
 	cancel_placement()
 
@@ -574,6 +612,7 @@ func _pointing_at_widget() -> bool:
 	return false
 
 func _process(delta: float) -> void:
+	update_navigation(delta)
 	if not ghost:
 		return
 	_update_ghost()

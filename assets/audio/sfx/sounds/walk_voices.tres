@@ -1,0 +1,12 @@
+[gd_resource type="AudioStreamRandomizer" format=3]
+
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sounds/walk1.wav" id="1_walk1"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sounds/walk2.wav" id="2_walk2"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sounds/walk3.wav" id="3_walk3"]
+
+[resource]
+random_pitch = 1.08
+streams_count = 3
+stream_0/stream = ExtResource("1_walk1")
+stream_1/stream = ExtResource("2_walk2")
+stream_2/stream = ExtResource("3_walk3")

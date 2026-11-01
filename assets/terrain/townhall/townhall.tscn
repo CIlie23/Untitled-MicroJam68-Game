@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
 [ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
 [ext_resource type="PackedScene" path="res://src/common/components/construction.tscn" id="43_construction"]
+[ext_resource type="PackedScene" path="res://src/common/components/smoke.tscn" id="44_smoke"]
+[ext_resource type="PackedScene" path="res://src/common/components/flash.tscn" id="45_flash"]
 [ext_resource type="Texture2D" path="res://assets/textures/soup/evilTownhall.png" id="50_enemy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
@@ -73,8 +75,27 @@ offset_bottom = -18.0
 script = ExtResource("42_vision")
 radius = 900.0
 
+[node name="Smoke" parent="." instance=ExtResource("44_smoke")]
+position = Vector2(0, -3)
+scale = Vector2(0.16, 0.16)
+
+[node name="TrainSmoke" parent="." instance=ExtResource("44_smoke")]
+position = Vector2(0, -3)
+scale = Vector2(0.16, 0.16)
+amount = 8
+
+[node name="Flash" parent="." instance=ExtResource("45_flash")]
+position = Vector2(0, -3)
+scale = Vector2(0.16, 0.16)
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="body_entered" from="DepositArea" to="." method="_on_deposit_area_body_entered"]
 [connection signal="died" from="Health" to="." method="_on_health_died"]
 [connection signal="finished" from="Construction" to="." method="_on_construction_finished"]
+[connection signal="started" from="Construction" to="Smoke" method="set_emitting" binds=[true]]
+[connection signal="finished" from="Construction" to="Smoke" method="set_emitting" binds=[false]]
+[connection signal="finished" from="Construction" to="Flash" method="restart"]
+[connection signal="started" from="Trainer" to="TrainSmoke" method="set_emitting" binds=[true]]
+[connection signal="stopped" from="Trainer" to="TrainSmoke" method="set_emitting" binds=[false]]
+[connection signal="trained" from="Trainer" to="Flash" method="restart"]

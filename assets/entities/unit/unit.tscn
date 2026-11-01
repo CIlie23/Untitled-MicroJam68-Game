@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
 [ext_resource type="Script" path="res://src/common/components/attacker.gd" id="41_attacker"]
 [ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/sounds/death_voices.tres" id="43_death"]
 
 [sub_resource type="Resource" id="Resource_inventory"]
 resource_local_to_scene = true
@@ -65,11 +66,27 @@ offset_bottom = -50.0
 [node name="Vision" type="Node" parent="."]
 script = ExtResource("42_vision")
 
+[node name="Agent" type="NavigationAgent2D" parent="."]
+path_desired_distance = 24.0
+target_desired_distance = 20.0
+avoidance_enabled = true
+radius = 38.0
+neighbor_distance = 250.0
+max_neighbors = 8
+time_horizon_agents = 0.6
+max_speed = 600.0
+
+[node name="DeathVoice" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("43_death")
+max_distance = 2500.0
+bus = &"SFX"
+
 [node name="IdleTimer" type="Timer" parent="."]
 wait_time = 12.0
 one_shot = true
 
 [connection signal="died" from="Health" to="." method="_on_health_died"]
+[connection signal="velocity_computed" from="Agent" to="." method="_on_agent_velocity_computed"]
 [connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]
 [connection signal="damaged" from="Health" to="." method="_on_health_damaged"]
 [connection signal="attacked" from="Attacker" to="." method="_on_attacker_attacked"]

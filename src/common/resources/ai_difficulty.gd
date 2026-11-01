@@ -13,6 +13,7 @@ extends Resource
 @export var wave_growth := 2
 @export var wave_cooldown := 150.0
 @export var defend_radius := 1100.0
+@export var pursuit_range := 600.0
 @export var retreat_health := 0.25
 @export var rally_distance := 600.0
 @export var raid_interval := 75.0

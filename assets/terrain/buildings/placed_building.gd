@@ -37,6 +37,7 @@ func _ready() -> void:
 
 func finish_construction() -> void:
 	built = true
+	Global.add_xp(Global.XP_PER_BUILD, team)
 	$Sprite2D.self_modulate.a = 1.0
 	Global.refresh_population_cap(team)
 	if stats.product == null:

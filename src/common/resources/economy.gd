@@ -8,6 +8,7 @@ var populus := 0
 var maxPopulus := 0
 var townhall_level := 1
 var xp := 0
+var delivered := 0
 var evolving := false
 var team := "player"
 var gather_rate := 1.0
@@ -55,6 +56,14 @@ func gather_multiplier() -> float:
 
 func building_level_cap() -> int:
 	return townhall_level
+
+
+func deliver(stock: String, amount: int) -> void:
+	add(stock, amount)
+	delivered += amount
+	@warning_ignore("integer_division")
+	xp += delivered / Global.RESOURCES_PER_XP
+	delivered %= Global.RESOURCES_PER_XP
 
 
 func add(stock: String, amount: int) -> void:

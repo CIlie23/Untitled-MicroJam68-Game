@@ -1,6 +1,6 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://da0sknqrr7a3c"]
 
-[ext_resource type="Texture2D" uid="uid://ciomutp1m0rlv" path="res://assets/entities/enemyUnit/enemy-fih-Sheet.png" id="1_sheet"]
+[ext_resource type="Texture2D" path="res://assets/entities/enemyUnit/evil-fih-workert.png" id="1_sheet"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_attack0"]
 atlas = ExtResource("1_sheet")

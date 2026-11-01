@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://balrxcuy5esrk" path="res://assets/textures/tiles/tree.png" id="2_21jrs"]
 [ext_resource type="PackedScene" path="res://src/common/components/gather_burst.tscn" id="3_burst"]
 [ext_resource type="Resource" path="res://data/items/wood.tres" id="4_item"]
+[ext_resource type="PackedScene" path="res://src/common/components/gather_chips.tscn" id="5_chips"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
 size = Vector2(13, 7.5)
@@ -45,6 +46,10 @@ offset_bottom = -17.0
 show_percentage = false
 
 [node name="GatherBurst" parent="." instance=ExtResource("3_burst")]
+position = Vector2(0, 8)
+color_initial_ramp = SubResource("Gradient_wood")
+
+[node name="GatherChips" parent="." instance=ExtResource("5_chips")]
 position = Vector2(0, 8)
 color_initial_ramp = SubResource("Gradient_wood")
 

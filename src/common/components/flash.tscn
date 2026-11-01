@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[sub_resource type="Curve" id="Curve_shrink"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_flash"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.9, 0.45, 0.9, 1, 0.75, 0.2, 0)
+
+[node name="Flash" type="CPUParticles2D"]
+z_index = 3
+emitting = false
+amount = 28
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 140.0
+initial_velocity_max = 260.0
+damping_min = 250.0
+damping_max = 350.0
+scale_amount_min = 8.0
+scale_amount_max = 14.0
+scale_amount_curve = SubResource("Curve_shrink")
+color_ramp = SubResource("Gradient_flash")

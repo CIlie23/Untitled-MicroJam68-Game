@@ -28,6 +28,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var active := active_gatherers()
 	bar.visible = not active.is_empty()
+	$GatherChips.emitting = not active.is_empty()
+	for unit in active:
+		unit.mine(global_position)
 	if active.is_empty():
 		timer.stop()
 	elif timer.is_stopped():
@@ -58,7 +61,13 @@ func _on_timer_timeout() -> void:
 
 func depleted():
 	set_process(false)
-	share_yield(active_gatherers())
+	var finishers := active_gatherers()
+	share_yield(finishers)
+	var teams := {}
+	for unit in finishers:
+		teams[unit.team] = true
+	for team in teams:
+		Global.add_xp(Global.XP_PER_NODE, team)
 	var burst := $GatherBurst as CPUParticles2D
 	burst.reparent(get_parent())
 	burst.emitting = true

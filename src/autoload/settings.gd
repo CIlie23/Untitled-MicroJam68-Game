@@ -7,7 +7,7 @@ const WINDOW_SIZES: Array[Vector2i] = [
 	Vector2i(1920, 1080),
 ]
 
-const DEFAULT_LAYOUT := "Arrows"
+const DEFAULT_LAYOUT := "WASD"
 const KEY_LAYOUTS: Dictionary[String, Dictionary] = {
 	"Arrows": {
 		&"camera_up": KEY_UP,

@@ -19,3 +19,7 @@ hframes = 4
 [node name="Trainer" type="Node" parent="."]
 script = ExtResource("4_trainer")
 troop = ExtResource("5_troop")
+
+[connection signal="started" from="Trainer" to="TrainSmoke" method="set_emitting" binds=[true]]
+[connection signal="stopped" from="Trainer" to="TrainSmoke" method="set_emitting" binds=[false]]
+[connection signal="trained" from="Trainer" to="Flash" method="restart"]

@@ -2,6 +2,9 @@ class_name Trainer
 extends Node
 
 signal queue_changed
+signal started
+signal stopped
+signal trained
 
 @export var troop: TroopStats
 @export var faster_training_per_level := 0.15
@@ -27,6 +30,8 @@ func can_train() -> bool:
 func train() -> void:
 	if can_train() and Global.spend(troop.cost, team()):
 		queue += 1
+		if queue == 1:
+			started.emit()
 		queue_changed.emit()
 
 
@@ -47,4 +52,8 @@ func _process(delta: float) -> void:
 		progress = 0.0
 		queue -= 1
 		Global.spawn_unit(troop, get_parent().global_position, 1.0 + faster_troops_per_level * (get_parent().level - 1), team(), get_parent().level)
+		Global.add_xp(Global.XP_PER_TRAIN, team())
+		trained.emit()
+		if queue == 0:
+			stopped.emit()
 		queue_changed.emit()

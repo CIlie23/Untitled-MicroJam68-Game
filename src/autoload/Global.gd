@@ -24,6 +24,9 @@ var XP_PER_BUILD := 5
 var XP_PER_KILL := 6
 var XP_PER_BUILDING_KILL := 15
 var XP_PER_UPGRADE := 12
+var XP_PER_TRAIN := 2
+var XP_PER_NODE := 2
+var RESOURCES_PER_XP := 10
 
 const TEAMS := ["player", "enemy"]
 const ENEMY_TINT := Color(1, 0.4, 0.4)

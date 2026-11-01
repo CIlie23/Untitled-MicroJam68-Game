@@ -300,7 +300,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 tooltip_text = "Switch between arrow keys and WASD"
-text = "Arrows"
+text = "WASD"
 
 [node name="KeybindList" type="VBoxContainer" parent="Center/Box/Margin/List/Scroll/Content"]
 unique_name_in_owner = true

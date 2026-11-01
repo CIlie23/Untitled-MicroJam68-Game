@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" path="res://assets/terrain/mineral/mineral.png" id="2_tex"]
 [ext_resource type="PackedScene" path="res://src/common/components/gather_burst.tscn" id="3_burst"]
 [ext_resource type="Resource" path="res://data/items/ore.tres" id="4_item"]
+[ext_resource type="PackedScene" path="res://src/common/components/gather_chips.tscn" id="5_chips"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(20, 12)
@@ -45,6 +46,10 @@ offset_bottom = -10.0
 show_percentage = false
 
 [node name="GatherBurst" parent="." instance=ExtResource("3_burst")]
+position = Vector2(0, 4)
+color_initial_ramp = SubResource("Gradient_stone")
+
+[node name="GatherChips" parent="." instance=ExtResource("5_chips")]
 position = Vector2(0, 4)
 color_initial_ramp = SubResource("Gradient_stone")
 

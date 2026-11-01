@@ -57,7 +57,7 @@ func setup_health() -> void:
 func _on_deposit_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("unit") and body.team == team:
 		for stack in body.inventory.take_all():
-			Global.economy(team).add(stack.item.stock_name, stack.count)
+			Global.economy(team).deliver(stack.item.stock_name, stack.count)
 
 
 func _on_health_died(killer_team: String) -> void:

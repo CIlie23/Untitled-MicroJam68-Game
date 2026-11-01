@@ -1,6 +1,7 @@
 class_name Construction
 extends ProgressBar
 
+signal started
 signal finished
 
 var duration := 0.0
@@ -18,6 +19,7 @@ func start(seconds: float) -> void:
 	value = 0.0
 	show()
 	set_process(true)
+	started.emit()
 
 
 func busy() -> bool:

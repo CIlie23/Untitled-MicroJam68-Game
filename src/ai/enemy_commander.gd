@@ -17,6 +17,7 @@ var next_raid := 0.0
 var next_wave := 0.0
 var next_expand := 0.0
 var last_threat := -INF
+var threat_point := Vector2.ZERO
 var build_costs := {}
 var scout: Node2D
 var worker_scout: Node2D
@@ -43,7 +44,7 @@ func _process(delta: float) -> void:
 	think_in -= delta
 	if think_in > 0.0:
 		return
-	think_in = difficulty.think_interval
+	think_in = difficulty.think_interval * (0.5 if under_pressure() else 1.0)
 	var home := townhall()
 	if home == null:
 		return
@@ -57,9 +58,11 @@ func _process(delta: float) -> void:
 		outpost.guards = outpost.guards.filter(alive)
 	look_around()
 	var threats := threats_near(home)
+	var siege := under_siege(home, threats)
 	if not threats.is_empty():
 		last_threat = elapsed
-	manage_workers(home, threats)
+		threat_point = closest(threats, home.global_position).global_position
+	manage_workers(home, threats, siege and outmatched(threats))
 	train(home)
 	if not build(home):
 		upgrade_buildings()
@@ -69,8 +72,9 @@ func _process(delta: float) -> void:
 	send_wounded_home(home)
 	explore()
 	scout_with_worker(home)
+	call_off_chases(home)
 	if not threats.is_empty():
-		defend(threats)
+		defend(threats, home, siege)
 	elif aggressive():
 		attack(home)
 		raid(home)
@@ -243,20 +247,53 @@ func guard_outposts() -> void:
 
 
 func threats_near(home: Townhall) -> Array:
-	return player_units().filter(func(unit): return in_territory(unit.global_position, home))
+	var eyes := own("buildings").filter(func(building): return building.has_node("Vision"))
+	return player_units().filter(func(unit): return in_territory(unit.global_position, home) or seen_by(eyes, unit.global_position))
 
 
-func in_territory(pos: Vector2, home: Townhall) -> bool:
-	if pos.distance_to(home.global_position) <= difficulty.defend_radius:
+func seen_by(eyes: Array, pos: Vector2) -> bool:
+	return eyes.any(func(eye): return eye.global_position.distance_to(pos) <= eye.get_node("Vision").radius)
+
+
+func under_siege(home: Townhall, threats: Array) -> bool:
+	var sight: float = home.get_node("Vision").radius
+	return threats.any(func(threat): return threat.global_position.distance_to(home.global_position) <= sight)
+
+
+func under_pressure() -> bool:
+	return elapsed - last_threat < 30.0
+
+
+func outmatched(threats: Array) -> bool:
+	return army().filter(func(unit): return not is_wounded(unit)).size() < threats.size()
+
+
+func in_territory(pos: Vector2, home: Townhall, margin := 0.0) -> bool:
+	if pos.distance_to(home.global_position) <= difficulty.defend_radius + margin:
 		return true
-	return outposts.any(func(outpost): return pos.distance_to(outpost.center) <= difficulty.outpost_radius)
+	return outposts.any(func(outpost): return pos.distance_to(outpost.center) <= difficulty.outpost_radius + margin)
 
 
-func defend(threats: Array) -> void:
-	var defenders := army().filter(func(unit): return unit != scout and not attackers.has(unit) and not raiders.has(unit) and not is_wounded(unit))
-	if threats.size() >= 3:
-		defenders += attackers
+func call_off_chases(home: Townhall) -> void:
+	for unit in army():
+		if unit == scout or attackers.has(unit) or raiders.has(unit) or gathering.has(unit):
+			continue
+		var foe = unit.get_node("Attacker").target
+		if foe and not in_territory(foe.global_position, home, difficulty.pursuit_range):
+			unit.move_to(home_spot(home))
+
+
+func defend(threats: Array, home: Townhall, siege: bool) -> void:
+	var defenders := army().filter(func(unit): return not is_wounded(unit) and (siege or (unit != scout and not attackers.has(unit) and not raiders.has(unit))))
+	if siege:
 		attackers.clear()
+		raiders.clear()
+		scout = null
+		for outpost in outposts:
+			outpost.guards.clear()
+		if outmatched(threats):
+			var sight: float = home.get_node("Vision").radius
+			defenders += workers().filter(func(worker): return worker != worker_scout and worker.global_position.distance_to(home.global_position) <= sight)
 	gathering.clear()
 	for unit in defenders:
 		unit.moving = false
@@ -281,9 +318,11 @@ func retreat(units: Array, home: Townhall) -> void:
 		unit.move_to(home_spot(home))
 
 
-func manage_workers(home: Townhall, threats: Array) -> void:
+func manage_workers(home: Townhall, threats: Array, militia: bool) -> void:
 	for worker in workers():
 		if worker == worker_scout:
+			continue
+		if militia and worker.get_node("Attacker").target != null:
 			continue
 		if threats.any(func(threat): return threat.global_position.distance_to(worker.global_position) < 450.0):
 			worker.move_to(home_spot(home))
@@ -345,7 +384,9 @@ func train(home: Townhall) -> void:
 
 func build(home: Townhall) -> bool:
 	var scene := next_building()
-	if scene:
+	if scene == difficulty.tower_scene and under_pressure():
+		place(scene, home.global_position.move_toward(threat_point, 450.0), 0.0, 250.0)
+	elif scene:
 		place(scene, home.global_position, 350.0, 750.0)
 	return scene != null
 
@@ -378,7 +419,6 @@ func place(scene: PackedScene, around: Vector2, near: float, far: float) -> Node
 			building.team = TEAM
 			building.position = spot
 			world().get_node("Objects").add_child(building)
-			Global.add_xp(Global.XP_PER_BUILD, TEAM)
 			return building
 	return null
 
@@ -386,6 +426,12 @@ func place(scene: PackedScene, around: Vector2, near: float, far: float) -> Node
 func next_building() -> PackedScene:
 	var economy := Global.economy(TEAM)
 	var level := economy.townhall_level
+	if under_pressure():
+		for scene in difficulty.military_scenes.slice(0, level + 1):
+			if count(scene) == 0:
+				return scene
+		if count(difficulty.tower_scene) - outposts.size() < level + 1:
+			return difficulty.tower_scene
 	if economy.populus + Global.queued_troops(TEAM) >= economy.maxPopulus - 1 and Global.can_build(stats_of(difficulty.house_scene), TEAM):
 		return difficulty.house_scene
 	if economy.food < 10 and count(difficulty.farm_scene) < level + 1:

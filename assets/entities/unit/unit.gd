@@ -9,10 +9,14 @@ extends CharacterBody2D
 @export var speed_multiplier := 1.0
 @onready var box: Panel = $Box
 @onready var sprite: AnimatedSprite2D = $Sprite
+@onready var agent: NavigationAgent2D = $Agent
 
 var target: Vector2
 var moving := false
 var stuck_time := 0.0
+var steering := false
+var mining_until := 0
+var mining_at := Vector2.ZERO
 var dying := false
 var Speed = Global.UNIT_SPEED
 var health: int:
@@ -22,6 +26,7 @@ var health: int:
 func _ready() -> void:
 	$Health.setup(max_health(), defense())
 	Speed = stats.speed * speed_multiplier
+	agent.max_speed = Speed
 	var looks := frames_for_team()
 	var enemy_frames: bool = team == "enemy" and looks.enemy
 	if looks.frames:
@@ -40,14 +45,26 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if dying or (sprite.animation in [&"attack", &"hurt"] and sprite.is_playing()):
 		return
+	if is_mining():
+		sprite.flip_h = mining_at.x < global_position.x
+		sprite.play(&"attack")
+		return
 	var animation := &"walk" if velocity.length() > 1.0 else &"idle"
 	if sprite.animation != animation:
 		sprite.play(animation)
 	if absf(velocity.x) > 1.0:
 		sprite.flip_h = velocity.x < 0.0
 
+func mine(at: Vector2) -> void:
+	mining_at = at
+	mining_until = Time.get_ticks_msec() + 200
+
+func is_mining() -> bool:
+	return not moving and Time.get_ticks_msec() < mining_until and $Attacker.target == null
+
 func apply_size(size: float) -> void:
 	sprite.scale *= size
+	agent.radius *= size
 	$CollisionShape2D.scale *= size
 	$CollisionShape2D.position *= size
 	hit_radius *= size
@@ -77,6 +94,7 @@ func portrait_texture() -> Texture2D:
 func move_to(pos: Vector2) -> void:
 	$Attacker.target = null
 	target = pos
+	agent.target_position = pos
 	moving = true
 	stuck_time = 0.0
 
@@ -90,6 +108,8 @@ func defense() -> int:
 	return roundi(stats.defense * level_multiplier())
 
 func set_selected(value):
+	if value and not selected and team == "player":
+		Audio.say(Audio.SELECT_VOICES)
 	selected = value
 	box.visible = value
 
@@ -100,30 +120,51 @@ func _input(event: InputEvent) -> void:
 		if enemy and $Attacker.active():
 			$Attacker.target = enemy
 			moving = false
+			Audio.say(Audio.ATTACK_VOICES)
 		else:
-			move_to(get_global_mouse_position())
+			var squad := get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.selected)
+			move_to(get_global_mouse_position() + formation_slot(squad.find(self), squad.size()))
+			Audio.say(Audio.WALK_VOICES)
 
 func _physics_process(delta: float) -> void:
 	watch_idle()
 	if not moving:
 		var foe = $Attacker.target
 		if is_instance_valid(foe) and not $Attacker.in_reach(foe):
-			velocity = global_position.direction_to(foe.global_position) * Speed
-			move_and_slide()
+			if agent.target_position.distance_to(foe.global_position) > 40.0:
+				agent.target_position = foe.global_position
+			steer()
 		else:
 			velocity = Vector2.ZERO
 		return
-	if global_position.distance_to(target) <= 15:
+	if global_position.distance_to(target) <= 15 or agent.is_navigation_finished():
 		velocity = Vector2.ZERO
 		moving = false
 		#anim stop
 		return
-	velocity = global_position.direction_to(target) * Speed
-	move_and_slide()
+	steer()
 	stuck_time = stuck_time + delta if get_real_velocity().length() < Speed * 0.1 else 0.0
-	if stuck_time > 0.75:
+	if stuck_time > 1.5:
 		moving = false
 	#play walk anim
+
+func steer() -> void:
+	var next := agent.target_position if agent.is_navigation_finished() else agent.get_next_path_position()
+	steering = true
+	agent.velocity = global_position.direction_to(next) * Speed
+
+func _on_agent_velocity_computed(safe_velocity: Vector2) -> void:
+	if not steering or dying:
+		return
+	steering = false
+	velocity = safe_velocity
+	move_and_slide()
+
+static func formation_slot(index: int, count: int, spacing := 95.0) -> Vector2:
+	var columns := ceili(sqrt(count))
+	var rows := ceili(float(count) / columns)
+	var cell := Vector2(index % columns, floori(float(index) / columns))
+	return (cell - Vector2(columns - 1, rows - 1) / 2.0) * spacing
 
 func _on_attacker_attacked(foe: Node2D) -> void:
 	if dying:
@@ -146,6 +187,7 @@ func _on_health_died(killer_team: String) -> void:
 	$Health.hide()
 	$CollisionShape2D.set_deferred("disabled", true)
 	sprite.play(&"death")
+	$DeathVoice.play()
 	get_tree().current_scene.get_units()
 
 func watch_idle() -> void:
@@ -165,6 +207,10 @@ func _on_idle_timer_timeout() -> void:
 
 func _on_sprite_animation_finished() -> void:
 	if sprite.animation == &"death":
+		if $DeathVoice.playing:
+			await $DeathVoice.finished
 		queue_free()
+	elif is_mining():
+		sprite.play(&"attack")
 	else:
 		sprite.play(&"idle")
