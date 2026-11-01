@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/ui/ui_health.png" id="30_health"]
 [ext_resource type="Texture2D" path="res://assets/textures/ui/ui_defense.png" id="30_defense"]
 [ext_resource type="PackedScene" path="res://assets/terrain/buildings/house.tscn" id="15_house"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/tower.tscn" id="16_tower"]
 
 [sub_resource type="Theme" id="Theme_panel"]
 default_font_size = 18
@@ -36,7 +37,7 @@ bg_color = Color(0.29803923, 0.49019608, 1, 1)
 
 [node name="unitPortrait" type="CanvasLayer" unique_id=447086382]
 script = ExtResource("9_script")
-buildings = Array[PackedScene]([ExtResource("11_farm"), ExtResource("15_house"), ExtResource("12_barracks"), ExtResource("13_archery"), ExtResource("14_shield")])
+buildings = Array[PackedScene]([ExtResource("11_farm"), ExtResource("15_house"), ExtResource("12_barracks"), ExtResource("13_archery"), ExtResource("14_shield"), ExtResource("16_tower")])
 
 [node name="Panel" type="Panel" parent="." unique_id=1962666542]
 anchors_preset = 2

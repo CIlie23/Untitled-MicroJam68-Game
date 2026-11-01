@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BuildingStats" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/building_stats.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Tower"
+description = "Shoots arrows at enemies in range."
+category = 1
+max_health = 300
+defense = 6
+cost = {"Wood": 3, "Minerals": 6}
+upgrade_cost = {"Wood": 2, "Minerals": 4}
+max_level = 4

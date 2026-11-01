@@ -3,11 +3,23 @@
 [ext_resource type="PackedScene" uid="uid://dgdhxhadf7ccv" path="res://assets/terrain/buildings/building.tscn" id="1_base"]
 [ext_resource type="Resource" path="res://data/stats/buildings/farm.tres" id="2_stats"]
 [ext_resource type="Texture2D" path="res://assets/textures/buildings/farmBuilding/farmSheet.png" id="3_sheet"]
+[ext_resource type="Texture2D" path="res://assets/textures/buildings/evilFarm/eviFarml.png" id="50_enemy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
+radius = 100.0
 
 [node name="Farm" instance=ExtResource("1_base")]
+enemy_texture = ExtResource("50_enemy")
 stats = ExtResource("2_stats")
 
 [node name="Sprite2D" parent="." index="3"]
 scale = Vector2(4.25, 4.25)
 texture = ExtResource("3_sheet")
 hframes = 4
+
+[node name="PickupArea" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+position = Vector2(0, 20)
+shape = SubResource("CircleShape2D_pickup")

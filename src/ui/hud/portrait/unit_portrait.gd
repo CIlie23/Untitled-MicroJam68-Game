@@ -11,7 +11,7 @@ func _process(_delta: float) -> void:
 
 func show_unit(unit) -> void:
 	%NameLabel.text = "%s  Lv %d" % [unit.stats.display_name, unit.level]
-	%Picture.texture = unit.sprite.texture
+	%Picture.texture = unit.portrait_texture()
 	%HealthBar.max_value = unit.max_health()
 	%HealthBar.value = unit.health
 	%HealthValue.text = "%d / %d" % [unit.health, unit.max_health()]

@@ -16,6 +16,14 @@
 [ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_three.tscn" id="8_mineral_three"]
 [ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_two.tscn" id="8_mineral_two"]
 [ext_resource type="PackedScene" uid="uid://d3pn1us4grbjd" path="res://src/common/components/fireflies.tscn" id="9_fireflies"]
+[ext_resource type="Shader" path="res://assets/shaders/fog.gdshader" id="20_fog_shader"]
+[ext_resource type="Script" path="res://src/levels/fog.gd" id="21_fog"]
+[ext_resource type="Script" path="res://src/ai/enemy_commander.gd" id="22_commander"]
+[ext_resource type="Resource" path="res://data/ai/easy.tres" id="23_easy"]
+[ext_resource type="PackedScene" path="res://src/ui/menus/game_over.tscn" id="24_game_over"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fog"]
+shader = ExtResource("20_fog_shader")
 
 [node name="World" type="Node2D" unique_id=1628329778]
 y_sort_enabled = true
@@ -42,15 +50,34 @@ y_sort_enabled = true
 [node name="Unit" parent="Units" unique_id=1370506533 instance=ExtResource("2_jimqh")]
 position = Vector2(464, 351)
 
+[node name="EnemyUnit" parent="Units" instance=ExtResource("2_jimqh")]
+team = "enemy"
+
 [node name="Houses" type="Node2D" parent="." unique_id=31918186]
 
 [node name="Townhall" parent="Houses" unique_id=1677700993 instance=ExtResource("5_hkv0b")]
 position = Vector2(744, 155)
 scale = Vector2(6.25, 6.25)
 
+[node name="EnemyTownhall" parent="Houses" instance=ExtResource("5_hkv0b")]
+scale = Vector2(6.25, 6.25)
+team = "enemy"
+
 [node name="Effects" type="Node2D" parent="." unique_id=5182315]
 
 [node name="Objects" type="Node2D" parent="." unique_id=1800154722]
 y_sort_enabled = true
+
+[node name="Fog" type="ColorRect" parent="."]
+z_index = 10
+material = SubResource("ShaderMaterial_fog")
+mouse_filter = 2
+script = ExtResource("21_fog")
+
+[node name="EnemyCommander" type="Node" parent="."]
+script = ExtResource("22_commander")
+difficulty = ExtResource("23_easy")
+
+[node name="GameOver" parent="." instance=ExtResource("24_game_over")]
 
 [connection signal="area_selected" from="Camera" to="." method="_on_camera_area_selected"]

@@ -1,6 +1,7 @@
 extends Node2D
 
 const TILESET := preload("res://assets/textures/tiles/tileset.png")
+const TEST_ENEMY := preload("res://data/stats/troops/swordsman.tres")
 const TILE_PX := 32
 const DARK := 0
 const MEDIUM := 1
@@ -83,9 +84,23 @@ const LAKE_CORNER_LIPS := {
 @export var mineral_clusters := 32
 @export var mineral_cluster_sizes: Array[int] = [1, 1, 2, 3]
 @export var mineral_cluster_spacing := 900.0
+
+@export_group("Bases")
+@export var player_base := Vector2(0.18, 0.72)
+@export var enemy_base := Vector2(0.82, 0.28)
+@export var pocket_tree_clusters := 4
+@export var pocket_mineral_clusters := 2
+@export var pocket_min_distance := 450.0
+@export var pocket_max_distance := 850.0
+
+@export_group("Middle")
+@export var middle_radius := 900.0
+@export var middle_tree_clusters := 10
+@export var middle_mineral_clusters := 6
 @export_group("")
 
 var map_size: Vector2
+var bases := {}
 var level := {}
 var lake_cells := {}
 var pond_cells := {}
@@ -107,18 +122,22 @@ var placing_scene: PackedScene
 # Untyped on purpose: this is a scene instance carrying set_preview_valid().
 var ghost
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	Global.reset()
+
+func _ready() -> void:
 	generate_map()
 	get_units()
 	Global.populus = units.size()
+	Global.economy("enemy").populus = get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.team == "enemy").size()
 
 func generate_map():
 	var tile_size := TILE_PX * ground_scale
 	map_size = Vector2(map_tiles) * tile_size
-	var center := map_size / 2
+	bases = {"player": Vector2(map_tiles) * player_base, "enemy": Vector2(map_tiles) * enemy_base}
 
 	$Ground.scale = Vector2.ONE * ground_scale
+	$Fog.size = map_size
 	generate_levels()
 	place_lakes()
 	paint_ground()
@@ -127,30 +146,35 @@ func generate_map():
 	$Camera.limit_top = 0
 	$Camera.limit_right = int(map_size.x)
 	$Camera.limit_bottom = int(map_size.y)
-	$Camera.position = center
+	$Camera.position = base_position("player")
 
-	$Houses/Townhall.position = center
+	for building in $Houses.get_children():
+		building.position = base_position(building.team)
 	for unit in $Units.get_children():
-		unit.position = center + Vector2(randf_range(-150, 150), 150)
+		unit.position = base_position(unit.team) + Vector2(randf_range(-150, 150), 220)
 
 	add_lake_fireflies()
 
 	cluster_centers.clear()
-	scatter_resource(mineral_scenes, mineral_clusters, mineral_cluster_sizes, mineral_cluster_spacing, center)
-	scatter_resource(tree_scenes, tree_clusters, tree_cluster_sizes, tree_cluster_spacing, center)
+	for team in bases:
+		place_clusters_near(tree_scenes, tree_cluster_sizes, pocket_tree_clusters, base_position(team), pocket_min_distance, pocket_max_distance)
+		place_clusters_near(mineral_scenes, mineral_cluster_sizes, pocket_mineral_clusters, base_position(team), pocket_min_distance, pocket_max_distance)
+	place_clusters_near(tree_scenes, tree_cluster_sizes, middle_tree_clusters, map_size / 2, 0.0, middle_radius)
+	place_clusters_near(mineral_scenes, mineral_cluster_sizes, middle_mineral_clusters, map_size / 2, 0.0, middle_radius)
+	scatter_resource(mineral_scenes, mineral_clusters, mineral_cluster_sizes, mineral_cluster_spacing)
+	scatter_resource(tree_scenes, tree_clusters, tree_cluster_sizes, tree_cluster_spacing)
 
 func generate_levels():
 	var noise := FastNoiseLite.new()
 	noise.seed = randi()
 	noise.frequency = blob_frequency
-	var middle := Vector2(map_tiles) / 2
 	level.clear()
 	for x in map_tiles.x:
 		for y in map_tiles.y:
 			var cell := Vector2i(x, y)
 			var value := noise.get_noise_2dv(Vector2(cell))
 			var height := LIGHT if value > -light_amount else (MEDIUM if value > -medium_amount else DARK)
-			var town_distance := cell_center(cell).distance_to(middle)
+			var town_distance := base_distance(cell_center(cell))
 			if town_distance < town_radius:
 				height = LIGHT
 			elif town_distance < town_radius + 1.5:
@@ -166,7 +190,7 @@ func generate_levels():
 	var puddles: Array[Vector2i] = []
 	for cell in level:
 		var height: int = level[cell]
-		if height == DARK or randf() >= mud_puddle_chance or cell_center(cell).distance_to(middle) < town_radius:
+		if height == DARK or randf() >= mud_puddle_chance or base_distance(cell_center(cell)) < town_radius:
 			continue
 		if neighbors(cell).all(func(n): return height_at(n) == height):
 			puddles.append(cell)
@@ -177,32 +201,31 @@ func place_lakes():
 	lake_cells.clear()
 	pond_cells.clear()
 	lakes.clear()
-	var middle := Vector2(map_tiles) / 2
 	var placed := 0
 	for attempt in lake_count * 200:
 		if placed == lake_count:
 			return
 		if randf() < pond_chance:
-			if place_pond(middle):
+			if place_pond():
 				placed += 1
 			continue
 		var diameter := lake_max_size * randf_range(0.6, 1.0)
 		var center := Vector2(randf_range(diameter, map_tiles.x - diameter), randf_range(diameter, map_tiles.y - diameter))
 		var lake := grow_lake(center, diameter)
-		if lake.all(func(cell): return fits_lake(cell, middle)):
+		if lake.all(func(cell): return fits_lake(cell)):
 			for cell in lake:
 				lake_cells[cell] = true
 			lakes.append(lake)
 			placed += 1
 
-func place_pond(middle: Vector2) -> bool:
+func place_pond() -> bool:
 	var corner := Vector2i(randi_range(3, map_tiles.x - POND_SIZE.x - 3), randi_range(3, map_tiles.y - POND_SIZE.y - 3))
 	var pond: Array[Vector2i] = []
 	for x in POND_SIZE.x:
 		for y in POND_SIZE.y:
 			if not POND_GAPS.has(Vector2i(x, y)):
 				pond.append(corner + Vector2i(x, y))
-	if not pond.all(func(cell): return fits_lake(cell, middle)):
+	if not pond.all(func(cell): return fits_lake(cell)):
 		return false
 	var area := Rect2i(corner, POND_SIZE)
 	for x in range(area.position.x - 2, area.end.x + 2):
@@ -254,8 +277,8 @@ func add_ellipse(lake: Array[Vector2i], center: Vector2, radius: Vector2):
 			if ((cell_center(cell) - center) / radius).length_squared() <= 1.0 and not lake.has(cell):
 				lake.append(cell)
 
-func fits_lake(cell: Vector2i, middle: Vector2) -> bool:
-	if cell_center(cell).distance_to(middle) < town_radius + 3:
+func fits_lake(cell: Vector2i) -> bool:
+	if base_distance(cell_center(cell)) < town_radius + 3:
 		return false
 	if cell.x < 2 or cell.y < 2 or cell.x > map_tiles.x - 3 or cell.y > map_tiles.y - 3:
 		return false
@@ -277,6 +300,21 @@ func height_at(cell: Vector2i) -> int:
 
 func land_height_at(cell: Vector2i) -> int:
 	return DARK if lake_cells.has(cell) else height_at(cell)
+
+func base_position(team: String) -> Vector2:
+	return bases[team] * TILE_PX * ground_scale
+
+func base_distance(tile: Vector2) -> float:
+	var nearest := INF
+	for team in bases:
+		nearest = minf(nearest, tile.distance_to(bases[team]))
+	return nearest
+
+func near_base(pos: Vector2) -> bool:
+	for team in bases:
+		if pos.distance_to(base_position(team)) < townhall_clearing + cluster_radius:
+			return true
+	return false
 
 func cell_center(cell: Vector2i) -> Vector2:
 	return Vector2(cell) + Vector2(0.5, 0.5)
@@ -405,14 +443,29 @@ func is_water(pos: Vector2) -> bool:
 
 
 # resources - scatter them around and spawns them by cluster or not
-func scatter_resource(scenes: Array[PackedScene], count: int, sizes: Array[int], spacing: float, center: Vector2):
+func place_clusters_near(scenes: Array[PackedScene], sizes: Array[int], count: int, origin: Vector2, min_distance: float, max_distance: float):
+	var margin := edge_margin + cluster_radius
+	var placed := 0
+	for attempt in count * 30:
+		if placed == count:
+			return
+		var pos := origin + Vector2.from_angle(randf() * TAU) * randf_range(min_distance, max_distance)
+		if pos.x < margin or pos.y < margin or pos.x > map_size.x - margin or pos.y > map_size.y - margin:
+			continue
+		if near_base(pos) or is_water(pos) or cluster_centers.any(func(c): return c.distance_to(pos) < cluster_radius * 2):
+			continue
+		cluster_centers.append(pos)
+		spawn_cluster(scenes, pos, sizes.pick_random())
+		placed += 1
+
+func scatter_resource(scenes: Array[PackedScene], count: int, sizes: Array[int], spacing: float):
 	var margin := edge_margin + cluster_radius
 	var placed := 0
 	for attempt in count * 30:
 		if placed == count:
 			return
 		var pos := Vector2(randf_range(margin, map_size.x - margin), randf_range(margin, map_size.y - margin))
-		if pos.distance_to(center) < townhall_clearing + cluster_radius or is_water(pos):
+		if near_base(pos) or is_water(pos):
 			continue
 		if cluster_centers.any(func(c): return c.distance_to(pos) < spacing):
 			continue
@@ -436,7 +489,7 @@ func spawn(scenes: Array[PackedScene], pos: Vector2):
 
 func get_units():
 	units = null
-	units = get_tree().get_nodes_in_group("unit")
+	units = get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.team == "player")
 
 
 # placement - ghost the building under the cursor, green where it fits, red where it does not
@@ -527,6 +580,10 @@ func _process(delta: float) -> void:
 	_try_place()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Global.FREE_MODE and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_K:
+		test_damage()
+	if Global.FREE_MODE and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_J:
+		Global.spawn_unit(TEST_ENEMY, get_global_mouse_position() - Vector2(0, 160), 1.0, "enemy")
 	if not is_placing():
 		return
 	if event.is_action_pressed("ui_cancel"):
@@ -534,6 +591,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Consume it so the pause menu does not also act on the same Esc.
 		get_viewport().set_input_as_handled()
 	
+func enemy_at(point: Vector2, team: String) -> Node2D:
+	for group in ["unit", "buildings"]:
+		for other in get_tree().get_nodes_in_group(group):
+			if other.team != team and other.visible and not other.get("preview") and other.global_position.distance_to(point) <= other.hit_radius:
+				return other
+	return null
+
+func test_damage() -> void:
+	for unit in units.filter(func(unit): return unit.selected):
+		unit.get_node("Health").take_damage(30, "enemy")
+	for building in get_tree().get_nodes_in_group("buildings").filter(func(building): return building.Selected):
+		building.get_node("Health").take_damage(60, "enemy")
+
 func _on_camera_area_selected(object) -> void:
 	if _pointing_at_widget():
 		return

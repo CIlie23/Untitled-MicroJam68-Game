@@ -1,17 +1,33 @@
 [gd_resource type="Resource" script_class="TroopStats" format=3]
 
 [ext_resource type="Script" path="res://src/common/resources/troop_stats.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/fish_frames.tres" id="2_frames"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/enemy_fish_frames.tres" id="3_enemy_frames"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/ranged/ranged_prehistoric_frames.tres" id="10_p0"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/ranged/ranged_medieval_frames.tres" id="10_p1"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/ranged/ranged_modern_frames.tres" id="10_p2"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/ranged/ranged_future_frames.tres" id="10_p3"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/evilRanged/enemy_ranged_prehistoric_frames.tres" id="11_e0"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/evilRanged/enemy_ranged_medieval_frames.tres" id="11_e1"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/evilRanged/enemy_ranged_modern_frames.tres" id="11_e2"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/evilRanged/enemy_ranged_future_frames.tres" id="11_e3"]
 
 [resource]
 script = ExtResource("1_script")
 display_name = "Archer"
-description = "Fragile, but hits hard from range."
-max_health = 70
-damage = 18
-defense = 2
+description = "Fragile, but fires quickly from long range."
+max_health = 60
+damage = 8
+defense = 1
 speed = 520.0
+attack_range = 600.0
+attack_cooldown = 0.6
+ranged = true
 cost = {"food": 5}
 train_time = 3.0
 can_gather = false
-tint = Color(0.55, 1, 0.55, 1)
-stage_sprites = Array[Texture2D]([])
+tint = Color(1, 1, 1, 1)
+frames = ExtResource("2_frames")
+enemy_frames = ExtResource("3_enemy_frames")
+level_frames = Array[SpriteFrames]([ExtResource("10_p0"), ExtResource("10_p1"), ExtResource("10_p2"), ExtResource("10_p3")])
+enemy_level_frames = Array[SpriteFrames]([ExtResource("11_e0"), ExtResource("11_e1"), ExtResource("11_e2"), ExtResource("11_e3")])

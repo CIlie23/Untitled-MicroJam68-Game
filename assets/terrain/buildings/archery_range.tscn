@@ -5,8 +5,10 @@
 [ext_resource type="Script" path="res://src/common/components/trainer.gd" id="4_trainer"]
 [ext_resource type="Resource" path="res://data/stats/troops/archer.tres" id="5_troop"]
 [ext_resource type="Texture2D" path="res://assets/textures/buildings/rangedTroopBuilding/rangedSheet.png" id="3_sheet"]
+[ext_resource type="Texture2D" path="res://assets/textures/buildings/evilRanged/evilRanged.png" id="50_enemy"]
 
 [node name="ArcheryRange" instance=ExtResource("1_base")]
+enemy_texture = ExtResource("50_enemy")
 stats = ExtResource("2_stats")
 
 [node name="Sprite2D" parent="." index="3"]

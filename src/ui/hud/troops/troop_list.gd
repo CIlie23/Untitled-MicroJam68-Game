@@ -6,7 +6,7 @@ var shown_units: Array = []
 
 
 func _process(_delta: float) -> void:
-	var units := get_tree().get_nodes_in_group("unit")
+	var units := get_tree().get_nodes_in_group("unit").filter(func(unit): return unit.team == "player")
 	if units != shown_units:
 		shown_units = units
 		rebuild()

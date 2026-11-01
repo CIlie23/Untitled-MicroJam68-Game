@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://dgdhxhadf7ccv" path="res://assets/terrain/buildings/building.tscn" id="1_base"]
+[ext_resource type="Resource" path="res://data/stats/buildings/tower.tres" id="2_stats"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="3_sprite"]
+[ext_resource type="Script" path="res://src/common/components/attacker.gd" id="4_attacker"]
+
+[node name="Tower" instance=ExtResource("1_base")]
+stats = ExtResource("2_stats")
+
+[node name="Sprite2D" parent="." index="3"]
+modulate = Color(0.6, 0.6, 0.65, 1)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("3_sprite")
+
+[node name="Attacker" type="Node" parent="."]
+script = ExtResource("4_attacker")
+attack_range = 550.0
+cooldown = 1.5
+damage = 12
+ranged = true
+sight = 550.0
+
+[node name="Vision" parent="." index="8"]
+radius = 600.0

@@ -12,7 +12,6 @@ defense = 5
 cost = {"Wood": 2, "Minerals": 2}
 upgrade_cost = {"Minerals": 2, "Wood": 3, "food": 3}
 max_level = 4
-produces = ""
 production = 0
 production_per_level = 0
 production_time = 5.0

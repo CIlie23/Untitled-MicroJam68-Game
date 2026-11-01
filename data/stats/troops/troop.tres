@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="TroopStats" format=3]
 
 [ext_resource type="Script" path="res://src/common/resources/troop_stats.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/fish_frames.tres" id="2_frames"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/enemy_fish_frames.tres" id="3_enemy_frames"]
 
 [resource]
 script = ExtResource("1_script")
@@ -10,8 +12,12 @@ max_health = 100
 damage = 5
 defense = 2
 speed = 550.0
+attack_range = 0.0
+attack_cooldown = 1.0
+ranged = false
 cost = {}
 train_time = 3.0
 can_gather = true
 tint = Color(1, 1, 1, 1)
-stage_sprites = Array[Texture2D]([])
+frames = ExtResource("2_frames")
+enemy_frames = ExtResource("3_enemy_frames")

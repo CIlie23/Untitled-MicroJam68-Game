@@ -3,7 +3,7 @@ extends Control
 
 func _ready() -> void:
 	%Body.text = "\n".join([
-		"Explain the goal of the game here.",
+		"Destroy the enemy town hall before they destroy yours.",
 		"",
 		"CONTROLS",
 		"- Move camera: %s %s %s %s (change in Options)" % [
@@ -26,6 +26,11 @@ func _ready() -> void:
 		"TROOPS",
 		"- The town hall trains workers for free",
 		"- Barracks, Archery Range and Shield Hall train swordsmen, archers and tanks for food",
+		"",
+		"COMBAT",
+		"- Soldiers attack enemies in range; right-click an enemy to attack it",
+		"- Towers shoot enemies near your base; workers never fight",
+		"- You only see enemy troops near your own troops and buildings",
 		"",
 		"GROWING",
 		"- Place buildings from the town hall's Buildings tab; each one gives XP",

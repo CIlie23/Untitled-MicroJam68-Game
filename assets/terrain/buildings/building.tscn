@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://d06ogi0cjamsg" path="res://assets/terrain/buildings/placed_building.gd" id="1_b61pd"]
 [ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_k5a0v"]
 [ext_resource type="Resource" path="res://data/stats/buildings/farm.tres" id="2_stats"]
+[ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
+[ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k5a0v"]
 size = Vector2(110, 50)
@@ -80,6 +82,17 @@ offset_bottom = 80.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_selected")
 
+[node name="Health" parent="." instance=ExtResource("40_health")]
+offset_left = -60.0
+offset_top = -118.0
+offset_right = 60.0
+offset_bottom = -110.0
+
+[node name="Vision" type="Node" parent="."]
+script = ExtResource("42_vision")
+radius = 400.0
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="died" from="Health" to="." method="_on_health_died"]

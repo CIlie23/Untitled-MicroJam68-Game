@@ -49,7 +49,9 @@ func _on_gather_area_body_exited(body: Node2D) -> void:
 
 
 func _on_timer_timeout() -> void:
-	var gatherSpeed = 1 * active_gatherers().size() #more units around it, faster it goes
+	var gatherSpeed = 0.0 #more units around it, faster it goes
+	for unit in active_gatherers():
+		gatherSpeed += unit.gather_rate()
 	currTime -= gatherSpeed
 	var tween = get_tree().create_tween()
 	tween.tween_property(bar, "value", currTime, 0.5).set_trans(Tween.TRANS_LINEAR)

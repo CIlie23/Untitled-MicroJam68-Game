@@ -62,7 +62,7 @@ func show_tabs(building) -> void:
 
 
 func watch_trainer(new_trainer: Trainer) -> void:
-	if trainer and trainer.queue_changed.is_connected(rebuild_queue):
+	if is_instance_valid(trainer) and trainer.queue_changed.is_connected(rebuild_queue):
 		trainer.queue_changed.disconnect(rebuild_queue)
 	trainer = new_trainer
 	if trainer:
@@ -103,8 +103,8 @@ func show_townhall(townhall) -> void:
 	%BuildingName.text = "TOWN HALL  Lv %d" % Global.townhall_level
 	show_picture(townhall.get_node("Sprite2D"))
 	%BuildingHealthBar.max_value = stats.health
-	%BuildingHealthBar.value = Global.townhall_health
-	%BuildingHealth.text = "%d / %d" % [Global.townhall_health, stats.health]
+	%BuildingHealthBar.value = townhall.health
+	%BuildingHealth.text = "%d / %d" % [townhall.health, stats.health]
 	%BuildingDefense.text = str(stats.defense)
 	%InfoLabel.text = "Population %d / %d\nXP %d / %d" % [Global.populus, Global.maxPopulus, Global.xp, Global.next_evolve_xp()]
 
@@ -133,8 +133,8 @@ func show_building(building) -> void:
 	%BuildingHealth.text = "%d / %d" % [building.health, stats.max_health]
 	%BuildingDefense.text = str(stats.defense)
 	%InfoLabel.text = stats.description
-	if stats.produces:
-		%InfoLabel.text = production_text(stats, building.production_amount())
+	if stats.product:
+		%InfoLabel.text = "Stored %d / %d\n%s" % [building.stored, stats.storage, production_text(stats, building.production_amount())]
 	elif stats.population:
 		%InfoLabel.text = "+%d max population" % building.population_bonus()
 
@@ -145,7 +145,7 @@ func show_building(building) -> void:
 		%UpgradeInfo.text = "Evolve the town hall to unlock level %d" % (building.level + 1)
 	else:
 		var effect := "Troops +%d%% speed, training -%d%%" % [roundi(trainer.faster_troops_per_level * 100), roundi(trainer.faster_training_per_level * 100)] if trainer else ""
-		if stats.produces:
+		if stats.product:
 			effect = production_text(stats, building.production_amount() + stats.production_per_level)
 		elif stats.population:
 			effect = "+%d max population" % stats.population_per_level
@@ -168,7 +168,7 @@ func frame_texture(sprite: Sprite2D) -> Texture2D:
 
 
 func production_text(stats: BuildingStats, amount: int) -> String:
-	return "+%d %s every %ss" % [amount, STOCK_LABELS.get(stats.produces, stats.produces), stats.production_time]
+	return "+%d %s every %ss" % [amount, stats.product.display_name.to_lower(), stats.production_time]
 
 
 func cost_text(cost: Dictionary) -> String:

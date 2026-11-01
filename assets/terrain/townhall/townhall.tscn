@@ -4,6 +4,9 @@
 [ext_resource type="Script" uid="uid://clx6u41rawc03" path="res://assets/terrain/townhall/townhall.gd" id="1_k2fjg"]
 [ext_resource type="Script" path="res://src/common/components/trainer.gd" id="2_trainer"]
 [ext_resource type="Resource" path="res://data/stats/troops/troop.tres" id="3_worker"]
+[ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
+[ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
+[ext_resource type="Texture2D" path="res://assets/textures/soup/evilTownhall.png" id="50_enemy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
 size = Vector2(29, 10)
@@ -23,6 +26,8 @@ border_blend = true
 [node name="Townhall" type="StaticBody2D" unique_id=1677700993]
 input_pickable = true
 script = ExtResource("1_k2fjg")
+enemy_texture = ExtResource("50_enemy")
+hit_radius = 110.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=353445144]
 texture = ExtResource("1_j6gtm")
@@ -51,6 +56,17 @@ shape = SubResource("CircleShape2D_deposit")
 script = ExtResource("2_trainer")
 troop = ExtResource("3_worker")
 
+[node name="Health" parent="." instance=ExtResource("40_health")]
+offset_left = -12.0
+offset_top = -21.0
+offset_right = 12.0
+offset_bottom = -20.0
+
+[node name="Vision" type="Node" parent="."]
+script = ExtResource("42_vision")
+radius = 900.0
+
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="body_entered" from="DepositArea" to="." method="_on_deposit_area_body_entered"]
+[connection signal="died" from="Health" to="." method="_on_health_died"]

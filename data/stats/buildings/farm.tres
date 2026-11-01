@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="BuildingStats" format=3]
 
 [ext_resource type="Script" path="res://src/common/resources/building_stats.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/items/food.tres" id="2_food"]
 
 [resource]
 script = ExtResource("1_script")
@@ -12,7 +13,8 @@ defense = 2
 cost = {"Wood": 4}
 upgrade_cost = {"Wood": 5}
 max_level = 4
-produces = "food"
+product = ExtResource("2_food")
+storage = 16
 production = 10
 production_per_level = 5
 production_time = 5.0

@@ -4,7 +4,7 @@ var unit
 
 
 func _ready() -> void:
-	%Icon.texture = unit.sprite.texture
+	%Icon.texture = unit.portrait_texture()
 	%Icon.modulate = unit.stats.tint
 
 

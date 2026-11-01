@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://h8vpc05mtwi0"]
 
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_mukvx"]
+[ext_resource type="SpriteFrames" path="res://assets/entities/unit/fish_frames.tres" id="1_frames"]
 [ext_resource type="Script" uid="uid://b5giqhkwkvnt8" path="res://assets/entities/unit/unit.gd" id="1_q456h"]
 [ext_resource type="Resource" path="res://data/stats/troops/troop.tres" id="2_stats"]
 [ext_resource type="Script" path="res://src/common/resources/inventory.gd" id="3_inventory"]
+[ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
+[ext_resource type="Script" path="res://src/common/components/attacker.gd" id="41_attacker"]
+[ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
 
 [sub_resource type="Resource" id="Resource_inventory"]
 resource_local_to_scene = true
@@ -12,7 +15,7 @@ slot_count = 6
 max_per_slot = 16
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
-size = Vector2(139, 143)
+size = Vector2(66, 60)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtxm7"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -29,17 +32,35 @@ stats = ExtResource("2_stats")
 inventory = SubResource("Resource_inventory")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1358620830]
-position = Vector2(-1.5, -0.5)
+position = Vector2(0, 6)
 shape = SubResource("RectangleShape2D_fqy7p")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1280843234]
-texture = ExtResource("1_mukvx")
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1280843234]
+scale = Vector2(3, 3)
+sprite_frames = ExtResource("1_frames")
+animation = &"idle"
+autoplay = "idle"
 
 [node name="Box" type="Panel" parent="." unique_id=896607805]
-offset_left = -71.0
-offset_top = -72.0
-offset_right = 68.0
-offset_bottom = 71.0
+offset_left = -45.0
+offset_top = -40.0
+offset_right = 45.0
+offset_bottom = 48.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rtxm7")
 
-[connection signal="input_event" from="." to="." method="_on_input_event"]
+[node name="Attacker" type="Node" parent="."]
+script = ExtResource("41_attacker")
+
+[node name="Health" parent="." instance=ExtResource("40_health")]
+offset_left = -40.0
+offset_top = -56.0
+offset_right = 40.0
+offset_bottom = -50.0
+
+[node name="Vision" type="Node" parent="."]
+script = ExtResource("42_vision")
+
+[connection signal="died" from="Health" to="." method="_on_health_died"]
+[connection signal="damaged" from="Health" to="." method="_on_health_damaged"]
+[connection signal="attacked" from="Attacker" to="." method="_on_attacker_attacked"]
+[connection signal="animation_finished" from="Sprite" to="." method="_on_sprite_animation_finished"]
