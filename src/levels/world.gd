@@ -14,6 +14,9 @@ const DECOR: Array[Vector2i] = [
 const WATER_PUDDLES: Array[Vector2i] = [Vector2i(4, 3), Vector2i(5, 3), Vector2i(6, 3)]
 const LAKE_WATER := Vector2i(5, 1)
 const LAKE_BLOCK := Vector2i(4, 0)
+const POND_ORIGIN := Vector2i(14, 0)
+const POND_SIZE := Vector2i(5, 5)
+const POND_GAPS: Array[Vector2i] = [Vector2i(0, 4), Vector2i(4, 4)]
 const EDGE_BLOCK := {MEDIUM: Vector2i(8, 0), DARK: Vector2i(8, 6)}
 const SHADE_COLOR := {
 	LIGHT: Color(34 / 255.0, 32 / 255.0, 52 / 255.0),
@@ -69,6 +72,7 @@ const LAKE_CORNER_LIPS := {
 @export var water_puddle_chance := 0.03
 @export var lake_count := 5
 @export var lake_max_size := 8.0
+@export var pond_chance := 0.4
 @export var firefly_scene: PackedScene
 @export var town_radius := 3.0
 @export var decor_chance := 0.3
@@ -84,6 +88,7 @@ const LAKE_CORNER_LIPS := {
 var map_size: Vector2
 var level := {}
 var lake_cells := {}
+var pond_cells := {}
 var lakes: Array = []
 var water_cells := {}
 var sheet: Image
@@ -158,12 +163,17 @@ func generate_levels():
 
 func place_lakes():
 	lake_cells.clear()
+	pond_cells.clear()
 	lakes.clear()
 	var middle := Vector2(map_tiles) / 2
 	var placed := 0
 	for attempt in lake_count * 200:
 		if placed == lake_count:
 			return
+		if randf() < pond_chance:
+			if place_pond(middle):
+				placed += 1
+			continue
 		var diameter := lake_max_size * randf_range(0.6, 1.0)
 		var center := Vector2(randf_range(diameter, map_tiles.x - diameter), randf_range(diameter, map_tiles.y - diameter))
 		var lake := grow_lake(center, diameter)
@@ -172,6 +182,25 @@ func place_lakes():
 				lake_cells[cell] = true
 			lakes.append(lake)
 			placed += 1
+
+func place_pond(middle: Vector2) -> bool:
+	var corner := Vector2i(randi_range(3, map_tiles.x - POND_SIZE.x - 3), randi_range(3, map_tiles.y - POND_SIZE.y - 3))
+	var pond: Array[Vector2i] = []
+	for x in POND_SIZE.x:
+		for y in POND_SIZE.y:
+			if not POND_GAPS.has(Vector2i(x, y)):
+				pond.append(corner + Vector2i(x, y))
+	if not pond.all(func(cell): return fits_lake(cell, middle)):
+		return false
+	var area := Rect2i(corner, POND_SIZE)
+	for x in range(area.position.x - 2, area.end.x + 2):
+		for y in range(area.position.y - 2, area.end.y + 2):
+			var cell := Vector2i(x, y)
+			level[cell] = LIGHT if area.grow(1).has_point(cell) else maxi(level[cell], MEDIUM)
+	for cell in pond:
+		pond_cells[cell] = POND_ORIGIN + cell - corner
+	lakes.append(pond)
+	return true
 
 func add_lake_fireflies():
 	var tile_size := TILE_PX * ground_scale
@@ -219,7 +248,7 @@ func fits_lake(cell: Vector2i, middle: Vector2) -> bool:
 	if cell.x < 2 or cell.y < 2 or cell.x > map_tiles.x - 3 or cell.y > map_tiles.y - 3:
 		return false
 	for n in neighbors(cell) + [cell]:
-		if lake_cells.has(n):
+		if lake_cells.has(n) or pond_cells.has(n):
 			return false
 	return true
 
@@ -249,6 +278,9 @@ func paint_ground():
 	var composed := {}
 	var composed_cells := {}
 	for cell in level:
+		if pond_cells.has(cell):
+			sheet_cells[cell] = pond_cells[cell]
+			continue
 		if lake_cells.has(cell):
 			sheet_cells[cell] = LAKE_WATER
 			continue
@@ -355,7 +387,7 @@ func make_source(texture: Texture2D, tile_count: Vector2i) -> TileSetAtlasSource
 func is_water(pos: Vector2) -> bool:
 	var cell := Vector2i((pos / (TILE_PX * ground_scale)).floor())
 	for n in neighbors(cell) + [cell]:
-		if lake_cells.has(n):
+		if lake_cells.has(n) or pond_cells.has(n):
 			return true
 	return water_cells.has(cell)
 
