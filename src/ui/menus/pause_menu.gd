@@ -8,12 +8,18 @@ func _ready() -> void:
 	%Menu.hide()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		if get_tree().paused:
-			resume()
-		else:
-			pause()
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	# Placement mode claims Esc first. Without this, Esc would both cancel the
+	# placement and open this menu, because this node is notified before World.
+	var world = get_tree().current_scene
+	if world and world.has_method("is_placing") and world.call("is_placing"):
+		return
+	get_viewport().set_input_as_handled()
+	if get_tree().paused:
+		resume()
+	else:
+		pause()
 
 
 func pause() -> void:

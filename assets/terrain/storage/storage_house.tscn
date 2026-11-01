@@ -6,6 +6,24 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k5a0v"]
 size = Vector2(32, 12)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f4asi"]
+bg_color = Color(1, 0.16298431, 0.3333164, 0.14117648)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0.09019608, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqy7p"]
+bg_color = Color(0, 1, 0.3019608, 0.25882354)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.92156863, 0, 1)
+border_blend = true
+
 [node name="StorageHouse" type="StaticBody2D" unique_id=34833653]
 y_sort_enabled = true
 script = ExtResource("1_b61pd")
@@ -26,5 +44,19 @@ wait_time = 0.1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1330651824]
 texture = ExtResource("1_k5a0v")
+
+[node name="panelRed" type="Panel" parent="." unique_id=1984938123]
+offset_left = -20.0
+offset_top = -31.0
+offset_right = 20.0
+offset_bottom = 9.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_f4asi")
+
+[node name="panelGreen" type="Panel" parent="." unique_id=1350110311]
+offset_left = -20.0
+offset_top = -31.0
+offset_right = 20.0
+offset_bottom = 9.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fqy7p")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -90,6 +90,13 @@ func _input(event: InputEvent) -> void:
 	if abs(zoomPos.y - get_global_mouse_position().y) > ZOOM_MARGIN:
 		zoomFactor = 1.0
 	
+	if event is InputEventMouse:
+		mousePos = event.position
+		mousePosGlobal = get_global_mouse_position()
+
+# Unhandled, not _input: the GUI gets the event first, so a wheel over a
+# ScrollContainer scrolls the panel instead of zooming the camera.
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			zooming = true
@@ -101,9 +108,6 @@ func _input(event: InputEvent) -> void:
 				zoomPos = get_global_mouse_position()
 	else:
 		zooming = false
-	if event is InputEventMouse:
-		mousePos = event.position
-		mousePosGlobal = get_global_mouse_position()
 		
 # the select area
 func draw_area(s=true):

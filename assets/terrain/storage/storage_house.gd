@@ -2,6 +2,9 @@ extends StaticBody2D
 
 var totalTime = 50
 var currTime
+# Set before add_child by world.gd's placement code. A ghost earns nothing and has
+# no progress bar; it only shows whether the current spot is buildable.
+var preview := false
 
 @onready var bar = $ProgressBar
 @onready var timer = $Timer
@@ -9,9 +12,21 @@ const POP = preload("uid://baxf4afl6lm8e")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if preview:
+		set_process(false)
+		bar.hide()
+		set_preview_valid(false)
+		return
+	# Both panels sit visible in the scene file, so hide them on a real building.
+	$panelGreen.hide()
+	$panelRed.hide()
 	currTime = totalTime
 	bar.max_value = totalTime
 	timer.start()
+
+func set_preview_valid(valid: bool) -> void:
+	$panelGreen.visible = valid
+	$panelRed.visible = not valid
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

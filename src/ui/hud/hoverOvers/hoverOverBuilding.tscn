@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://pre2kc5svid7"]
+
+[ext_resource type="FontFile" uid="uid://ba1dqnkvkrq8" path="res://assets/fonts/PixeloidSans.ttf" id="1_vjfno"]
+[ext_resource type="Texture2D" uid="uid://cqy1xjqy0dxt6" path="res://assets/textures/ui/ui_wood.png" id="2_vjfno"]
+[ext_resource type="FontFile" uid="uid://dhyltg26lgfpw" path="res://assets/fonts/Cairopixel.ttf" id="3_vu5kv"]
+[ext_resource type="Texture2D" uid="uid://boawgncfvuuq6" path="res://assets/textures/ui/ui_populus.png" id="4_2iybl"]
+[ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="4_6vfyh"]
+[ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="5_frxvk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5hhn8"]
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+
+[node name="HoverOverStats" type="Control" unique_id=169525533]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Panel" type="Panel" parent="." unique_id=391017403]
+layout_mode = 0
+offset_right = 353.0
+offset_bottom = 106.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5hhn8")
+
+[node name="Label" type="Label" parent="Panel" unique_id=1596263840]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 7.0
+offset_top = 3.0
+offset_right = 4.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_vjfno")
+text = "BUILD NAME"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel" unique_id=1299880268]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 7.0
+offset_top = -28.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/HBoxContainer" unique_id=1396699822]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HBoxContainer/HBoxContainer" unique_id=445277562]
+custom_minimum_size = Vector2(16, 16)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("2_vjfno")
+
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/HBoxContainer" unique_id=36141543]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_vu5kv")
+text = "-50"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/HBoxContainer" unique_id=1119351083]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HBoxContainer/HBoxContainer2" unique_id=739170578]
+custom_minimum_size = Vector2(16, 16)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("4_6vfyh")
+
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/HBoxContainer2" unique_id=1253614996]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_vu5kv")
+text = "-1"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/HBoxContainer" unique_id=1783790885]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HBoxContainer/HBoxContainer3" unique_id=1007502779]
+custom_minimum_size = Vector2(16, 16)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("4_2iybl")
+
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/HBoxContainer3" unique_id=1917359737]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_vu5kv")
+text = "+3 max"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/HBoxContainer" unique_id=497098222]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel/HBoxContainer/HBoxContainer4" unique_id=531532274]
+custom_minimum_size = Vector2(16, 16)
+custom_maximum_size = Vector2(16, 16)
+layout_mode = 2
+texture = ExtResource("5_frxvk")
+
+[node name="Label2" type="Label" parent="Panel/HBoxContainer/HBoxContainer4" unique_id=1465790621]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_vu5kv")
+text = "1 s"
+
+[node name="Label2" type="Label" parent="Panel" unique_id=488582472]
+custom_minimum_size = Vector2(340, 56)
+custom_maximum_size = Vector2(340, 56)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -7.5
+offset_right = -6.0
+offset_bottom = 49.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_vu5kv")
+text = "Building description here lololololo"
+autowrap_mode = 3

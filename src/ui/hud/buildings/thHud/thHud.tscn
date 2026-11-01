@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://brv316f1j0j4f" path="res://assets/textures/menu/british.png" id="1_yg5oy"]
 [ext_resource type="Texture2D" uid="uid://cms1rjk3w7sjd" path="res://assets/textures/ui/ui_ore.png" id="2_gwkay"]
+[ext_resource type="FontFile" uid="uid://dhyltg26lgfpw" path="res://assets/fonts/Cairopixel.ttf" id="3_oifef"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuxs4"]
 bg_color = Color(0.20996031, 0.22353527, 0.25253984, 1)
@@ -17,6 +18,12 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sd4fx"]
 bg_color = Color(1, 0, 0.16470589, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqy7p"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtxm7"]
+bg_color = Color(0.29803923, 0.49019608, 1, 1)
+
 [node name="unitPortrait" type="CanvasLayer" unique_id=447086382]
 
 [node name="Panel" type="Panel" parent="." unique_id=1962666542]
@@ -30,6 +37,7 @@ offset_top = -130.0
 offset_right = 311.25
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tuxs4")
 
 [node name="Container" type="HBoxContainer" parent="Panel" unique_id=1325739064]
@@ -96,3 +104,146 @@ texture = ExtResource("2_gwkay")
 [node name="Label" type="Label" parent="Panel/Container/statsContainer/Defense" unique_id=898646763]
 layout_mode = 2
 text = "10"
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=860169499]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -118.0
+offset_top = -123.0
+offset_right = 307.0
+grow_horizontal = 2
+grow_vertical = 0
+current_tab = 1
+
+[node name="Troops" type="TabBar" parent="TabContainer" unique_id=1348594802]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/Troops" unique_id=679715492]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="TabContainer/Troops/VBoxContainer2" unique_id=1080119197]
+layout_mode = 2
+
+[node name="btnTroop1" type="Button" parent="TabContainer/Troops/VBoxContainer2/VBoxContainer" unique_id=1431793639]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+text = "FA"
+
+[node name="Panel" type="Panel" parent="TabContainer/Troops" unique_id=1465640877]
+layout_mode = 0
+offset_left = 199.0
+offset_top = 2.0
+offset_right = 419.0
+offset_bottom = 90.0
+
+[node name="TrainingQueue" type="Label" parent="TabContainer/Troops/Panel" unique_id=1528075208]
+layout_mode = 0
+offset_right = 217.0
+offset_bottom = 20.0
+theme_override_fonts/font = ExtResource("3_oifef")
+text = "Training Queue"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Troops/Panel" unique_id=1930415439]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Troops/Panel/MarginContainer" unique_id=387306679]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Troops/Panel/MarginContainer/ScrollContainer" unique_id=768606181]
+layout_mode = 2
+columns = 5
+
+[node name="Buildings" type="TabBar" parent="TabContainer" unique_id=148533080]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/Buildings" unique_id=1504419469]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Buildings/VBoxContainer2" unique_id=373305747]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="GridContainer" type="GridContainer" parent="TabContainer/Buildings/VBoxContainer2/MarginContainer" unique_id=1198567042]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 6
+
+[node name="btnBuild1" type="Button" parent="TabContainer/Buildings/VBoxContainer2/MarginContainer/GridContainer" unique_id=1431149082]
+custom_minimum_size = Vector2(32, 32)
+custom_maximum_size = Vector2(32, 32)
+layout_mode = 2
+text = "B1"
+
+[node name="Evolve" type="TabBar" parent="TabContainer" unique_id=1096031014]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TabContainer/Evolve" unique_id=1266092467]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TabContainer/Evolve/VBoxContainer2" unique_id=725221734]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_oifef")
+text = "Kill your enemies and earn XP. It's survival of the fittest after all! Evolving improves your troops and increases your chances of survival."
+autowrap_mode = 3
+
+[node name="BoxContainer" type="BoxContainer" parent="TabContainer/Evolve/VBoxContainer2" unique_id=1356890780]
+layout_mode = 2
+size_flags_vertical = 10
+alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=978546058]
+custom_minimum_size = Vector2(300, 0)
+custom_maximum_size = Vector2(300, -1)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_fqy7p")
+theme_override_styles/fill = SubResource("StyleBoxFlat_rtxm7")
+value = 50.0
+
+[node name="Button" type="Button" parent="TabContainer/Evolve/VBoxContainer2/BoxContainer" unique_id=125502118]
+custom_minimum_size = Vector2(32, 5)
+custom_maximum_size = Vector2(-1, 20)
+layout_mode = 2
+text = "EVOLVE"

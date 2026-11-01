@@ -99,6 +99,14 @@ var cluster_centers: Array[Vector2] = []
 # Roughly the unit's 139x143 collision box, so a click on the sprite counts as a hit.
 const CLICK_PICK_RADIUS := 80.0
 
+# The ghost's green/red panel spans x -20..20, y -31..9, so its centre sits 11px up.
+const PLACE_FOOTPRINT := Vector2(40, 40)
+const PLACE_FOOTPRINT_OFFSET := Vector2(0, -11)
+
+var placing_scene: PackedScene
+# Untyped on purpose: this is a scene instance carrying set_preview_valid().
+var ghost
+
 func _ready() -> void:
 	Global.reset()
 	generate_map()
@@ -428,6 +436,101 @@ func spawn(scenes: Array[PackedScene], pos: Vector2):
 func get_units():
 	units = null
 	units = get_tree().get_nodes_in_group("unit")
+
+
+# placement - ghost the building under the cursor, green where it fits, red where it does not
+func is_placing() -> bool:
+	return ghost != null
+
+func begin_placement(scene: PackedScene) -> void:
+	cancel_placement()
+	if scene == null:
+		return
+	placing_scene = scene
+	ghost = scene.instantiate()
+	# preview must be set before add_child, because _ready reads it.
+	ghost.preview = true
+	# Layer 0 so it neither blocks anything nor shows up in its own placement check.
+	ghost.collision_layer = 0
+	ghost.collision_mask = 0
+	ghost.input_pickable = false
+	$Objects.add_child(ghost)
+	_update_ghost()
+
+func cancel_placement() -> void:
+	if ghost:
+		ghost.queue_free()
+	ghost = null
+	placing_scene = null
+
+func can_place_at(pos: Vector2) -> bool:
+	if is_water(pos):
+		return false
+	# Real shapes, so scaled and offset foliage blocks correctly.
+	var shape := RectangleShape2D.new()
+	shape.size = PLACE_FOOTPRINT
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = Transform2D(0.0, pos + PLACE_FOOTPRINT_OFFSET)
+	for hit in get_world_2d().direct_space_state.intersect_shape(query, 32):
+		var body = hit.collider
+		# Anything static blocks: foliage, the townhall, and already-placed storage
+		# houses. Units are CharacterBody2D, so a passing troop does not flicker it.
+		if body is StaticBody2D:
+			return false
+	return true
+
+func place_ghost() -> void:
+	if not can_place_at(ghost.global_position):
+		return
+	var building := placing_scene.instantiate() as Node2D
+	building.position = ghost.global_position
+	$Objects.add_child(building)
+	# One placement per pick: drop the ghost so nothing stays in hand.
+	cancel_placement()
+
+func _update_ghost() -> void:
+	ghost.global_position = get_global_mouse_position()
+	ghost.set_preview_valid(can_place_at(ghost.global_position))
+
+# Polled rather than an _unhandled_input branch: both the GUI and physics picking
+# mark a mouse click handled before unhandled input runs, so a click over a unit or
+# over the HUD would never arrive. Polling cannot be swallowed.
+func _try_place() -> void:
+	if not Input.is_action_just_pressed("LeftClick"):
+		return
+	# Clicking a widget is HUD interaction, not map interaction: drop the building.
+	if _pointing_at_widget():
+		cancel_placement()
+		return
+	place_ghost()
+
+# Only real widgets veto a click. Testing for any hovered Control instead refuses
+# placement over every decorative Panel and layout rectangle that overlaps the map,
+# which reads as "green but it will not place".
+func _pointing_at_widget() -> bool:
+	var hovered := get_viewport().gui_get_hovered_control()
+	if hovered == null:
+		return false
+	if hovered is BaseButton or hovered is ScrollContainer:
+		return true
+	if hovered is TabBar or hovered is TabContainer or hovered is SubViewportContainer:
+		return true
+	return false
+
+func _process(delta: float) -> void:
+	if not ghost:
+		return
+	_update_ghost()
+	_try_place()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_placing():
+		return
+	if event.is_action_pressed("ui_cancel"):
+		cancel_placement()
+		# Consume it so the pause menu does not also act on the same Esc.
+		get_viewport().set_input_as_handled()
 	
 func _on_camera_area_selected(object) -> void:
 	var start = object.start
