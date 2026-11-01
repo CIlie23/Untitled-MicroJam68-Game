@@ -3,6 +3,8 @@ extends Building
 
 @export var heal_radius := 500.0
 @export var heal_per_second := 0.05
+# Workers park about 200-215px out, well clear of the DepositArea's 25px circle.
+@export var drop_radius := 260.0
 
 var heal_in := 1.0
 
@@ -26,8 +28,20 @@ func _process(delta: float) -> void:
 		return
 	heal_in = 1.0
 	for unit in get_tree().get_nodes_in_group("unit"):
-		if unit.team == team and unit.global_position.distance_to(global_position) <= heal_radius:
+		if unit.team != team:
+			continue
+		var distance: float = unit.global_position.distance_to(global_position)
+		if distance <= heal_radius:
 			unit.get_node("Health").heal(ceili(unit.max_health() * heal_per_second))
+		if distance <= drop_radius:
+			deliver_from(unit)
+
+
+func deliver_from(unit) -> void:
+	if not unit.inventory:
+		return
+	for stack in unit.inventory.take_all():
+		Global.economy(team).deliver(stack.item.stock_name, stack.count)
 
 
 func _on_townhall_evolved(evolved_team: String, stage: int) -> void:
@@ -56,8 +70,7 @@ func setup_health() -> void:
 
 func _on_deposit_area_body_entered(body: Node2D) -> void:
 	if body.is_in_group("unit") and body.team == team:
-		for stack in body.inventory.take_all():
-			Global.economy(team).deliver(stack.item.stock_name, stack.count)
+		deliver_from(body)
 
 
 func _on_health_died(killer_team: String) -> void:

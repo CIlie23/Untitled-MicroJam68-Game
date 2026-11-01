@@ -1,23 +1,20 @@
-[gd_resource type="Resource" script_class="TroopStats" format=3]
+[gd_resource type="Resource" script_class="TroopStats" format=3 uid="uid://y44l5ovin5g2"]
 
-[ext_resource type="Script" path="res://src/common/resources/troop_stats.gd" id="1_script"]
-[ext_resource type="SpriteFrames" path="res://assets/entities/unit/fish_frames.tres" id="2_frames"]
-[ext_resource type="SpriteFrames" path="res://assets/entities/enemyUnit/enemy_fish_frames.tres" id="3_enemy_frames"]
+[ext_resource type="Script" uid="uid://raeqlq88hmwi" path="res://src/common/resources/troop_stats.gd" id="1_script"]
+[ext_resource type="SpriteFrames" uid="uid://pl4ui58w0ww6" path="res://assets/entities/unit/fish_frames.tres" id="2_frames"]
+[ext_resource type="SpriteFrames" uid="uid://da0sknqrr7a3c" path="res://assets/entities/enemyUnit/enemy_fish_frames.tres" id="3_enemy_frames"]
 
 [resource]
 script = ExtResource("1_script")
 display_name = "Worker"
 description = "Gathers wood and ore and brings it back to the town hall."
-max_health = 100
 damage = 3
 defense = 2
-speed = 550.0
 attack_range = 70.0
 attack_cooldown = 1.5
-ranged = false
-cost = {}
-train_time = 3.0
 can_gather = true
-tint = Color(1, 1, 1, 1)
+cost = {
+"food": 3
+}
 frames = ExtResource("2_frames")
 enemy_frames = ExtResource("3_enemy_frames")

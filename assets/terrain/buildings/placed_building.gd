@@ -15,6 +15,9 @@ var stored := 0
 
 @onready var bar = $ProgressBar
 @onready var timer = $Timer
+# Only farm.tscn has this node. The other five buildings share this script without
+# one, so a plain $PickupArea/exclamation would error on all of them.
+@onready var exclamation: TextureRect = get_node_or_null("PickupArea/exclamation") as TextureRect
 const POP = preload("uid://baxf4afl6lm8e")
 
 func _ready() -> void:
@@ -67,6 +70,9 @@ func _process(delta: float) -> void:
 		produce()
 	hand_out()
 	bar.value = stored
+	# After hand_out(), so a worker standing in the pickup area clears it same frame.
+	if exclamation:
+		exclamation.visible = stored > 0
 
 func _on_timer_timeout() -> void:
 	if stored < stats.storage:

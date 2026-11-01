@@ -91,11 +91,33 @@ func rebuild_queue() -> void:
 	for i in trainer.queue:
 		var slot = TROOP_SLOT.instantiate()
 		%QueueGrid.add_child(slot)
+		var portrait = slot.find_child("itemPortrait", true, false)
+		var texture := troop_texture()
+		if portrait and texture:
+			portrait.texture = texture
 		var bar = slot.find_child("troopHealth", true, false)
 		if bar:
 			bar.max_value = 1.0
 			bar.value = 0.0
 		queue_bars.append(bar)
+
+
+# Same pick unit.gd:frames_for_team() makes, so the icon matches what will spawn:
+# level_frames win when present, because the troop resources carry their real art
+# there and leave `frames` on the generic fallback sheet.
+func troop_texture() -> Texture2D:
+	var troop: TroopStats = trainer.troop
+	var enemy := trainer.team() == "enemy"
+	var by_level := troop.enemy_level_frames if enemy else troop.level_frames
+	var frames: SpriteFrames = troop.frames
+	if not by_level.is_empty():
+		var building_level: int = trainer.get_parent().level
+		frames = by_level[clampi(building_level - 1, 0, by_level.size() - 1)]
+	elif enemy and troop.enemy_frames:
+		frames = troop.enemy_frames
+	if frames == null or not frames.has_animation(&"idle"):
+		return null
+	return frames.get_frame_texture(&"idle", 0)
 
 
 func show_townhall(townhall) -> void:

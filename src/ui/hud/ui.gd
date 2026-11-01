@@ -17,6 +17,9 @@ const HOVER_OFFSET := Vector2(16, 16)
 
 var _shown: Array = []
 var _hover: Control
+# Indexed in step with _shown, so entry i is the bar for the unit at _shown[i].
+# Entries can be null when a slot has no troopHealth child.
+var _slot_bars: Array = []
 
 func _ready() -> void:
 	_ignore_mouse(hover_stats)
@@ -40,6 +43,11 @@ func _process(delta: float) -> void:
 	if selected != _shown:
 		_shown = selected
 		_fill_slots(selected)
+
+	# Every frame, not just on rebuild: health changes while the selection stands.
+	for i in _slot_bars.size():
+		if _slot_bars[i]:
+			_slot_bars[i].value = _health_fraction(_shown[i])
 
 	# Stay up while placing, since the first placement click deselects the townhall.
 	th_hud.visible = _selected_building() != null or _placing()
@@ -65,8 +73,26 @@ func _fill_slots(units: Array) -> void:
 	for slot in slot_grid.get_children():
 		slot_grid.remove_child(slot)
 		slot.queue_free()
+	_slot_bars.clear()
 	for unit in units:
-		slot_grid.add_child(TROOP_SLOT.instantiate())
+		var slot = TROOP_SLOT.instantiate()
+		slot_grid.add_child(slot)
+		var portrait = slot.find_child("itemPortrait", true, false)
+		var texture: Texture2D = unit.portrait_texture()
+		if portrait and texture:
+			portrait.texture = texture
+		var bar = slot.find_child("troopHealth", true, false)
+		if bar:
+			bar.max_value = 1.0
+			bar.value = _health_fraction(unit)
+		_slot_bars.append(bar)
+
+# Bar range is 0 to 1, matching how the training queue drives the same node.
+func _health_fraction(unit) -> float:
+	var maximum: int = unit.max_health()
+	if maximum <= 0:
+		return 0.0
+	return clampf(float(unit.health) / float(maximum), 0.0, 1.0)
 
 func _placing() -> bool:
 	var world = get_tree().get_root().get_node_or_null("World")

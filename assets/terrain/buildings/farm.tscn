@@ -1,25 +1,32 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bonr3aaq7pdj0"]
 
 [ext_resource type="PackedScene" uid="uid://dgdhxhadf7ccv" path="res://assets/terrain/buildings/building.tscn" id="1_base"]
-[ext_resource type="Resource" path="res://data/stats/buildings/farm.tres" id="2_stats"]
-[ext_resource type="Texture2D" path="res://assets/textures/buildings/farmBuilding/farmSheet.png" id="3_sheet"]
-[ext_resource type="Texture2D" path="res://assets/textures/buildings/evilFarm/eviFarml.png" id="50_enemy"]
+[ext_resource type="Texture2D" uid="uid://bgvqgexh3d3vh" path="res://assets/textures/buildings/farmBuilding/farmSheet.png" id="3_sheet"]
+[ext_resource type="Texture2D" uid="uid://bf47nwnxtcgi1" path="res://assets/textures/ui/exclamation.png" id="4_c0sp6"]
+[ext_resource type="Texture2D" uid="uid://xu4ncfpjg14v" path="res://assets/textures/buildings/evilFarm/eviFarml.png" id="50_enemy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
 radius = 100.0
 
-[node name="Farm" instance=ExtResource("1_base")]
+[node name="Farm" unique_id=1319583155 instance=ExtResource("1_base")]
 enemy_texture = ExtResource("50_enemy")
-stats = ExtResource("2_stats")
 
-[node name="Sprite2D" parent="." index="3"]
+[node name="Sprite2D" parent="." index="3" unique_id=1330651824]
 scale = Vector2(4.25, 4.25)
 texture = ExtResource("3_sheet")
 hframes = 4
 
-[node name="PickupArea" type="Area2D" parent="."]
+[node name="PickupArea" type="Area2D" parent="." index="13" unique_id=423453154]
 input_pickable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea"]
+[node name="exclamation" type="TextureRect" parent="PickupArea" index="0" unique_id=1742261865]
+visible = false
+offset_left = -29.0
+offset_top = -62.0
+offset_right = 36.0
+offset_bottom = 3.0
+texture = ExtResource("4_c0sp6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea" index="1" unique_id=713179754]
 position = Vector2(0, 20)
 shape = SubResource("CircleShape2D_pickup")

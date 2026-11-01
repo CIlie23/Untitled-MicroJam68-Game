@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://btywy2oum6f2c"]
 
-[ext_resource type="Script" path="res://src/ui/menus/how_to_play_menu.gd" id="1_howto"]
 [ext_resource type="Shader" uid="uid://c6eou3taws00l" path="res://assets/shaders/background.gdshader" id="1_8ef0u"]
+[ext_resource type="Script" uid="uid://dtjaqfqhphwrp" path="res://src/ui/menus/how_to_play_menu.gd" id="1_howto"]
 [ext_resource type="Texture2D" uid="uid://ehhjy2fbfblt" path="res://assets/textures/menu/bgSquares.png" id="2_8ef0u"]
 [ext_resource type="Material" uid="uid://c45blnws6i24j" path="res://assets/shaders/TransitionShader/TransitonShaderMaterial.tres" id="4_3etfd"]
 
@@ -64,7 +64,7 @@ _data = {
 &"RESET": SubResource("Animation_xxutv")
 }
 
-[node name="HowToPlay" type="Control"]
+[node name="HowToPlay" type="Control" unique_id=1425953841]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -74,7 +74,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_howto")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=556562098]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,7 +83,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=595087820]
 material = SubResource("ShaderMaterial_h2y1r")
 layout_mode = 1
 anchors_preset = 15
@@ -94,7 +94,7 @@ grow_vertical = 2
 texture = ExtResource("2_8ef0u")
 stretch_mode = 1
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=40075449]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,68 +102,68 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Box" type="PanelContainer" parent="Center"]
+[node name="Box" type="PanelContainer" parent="Center" unique_id=1734571808]
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 
-[node name="Margin" type="MarginContainer" parent="Center/Box"]
+[node name="Margin" type="MarginContainer" parent="Center/Box" unique_id=1734757870]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 24
 
-[node name="List" type="VBoxContainer" parent="Center/Box/Margin"]
+[node name="List" type="VBoxContainer" parent="Center/Box/Margin" unique_id=1300570961]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="Center/Box/Margin/List"]
+[node name="Title" type="Label" parent="Center/Box/Margin/List" unique_id=47385763]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "HOW TO PLAY"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Center/Box/Margin/List"]
+[node name="HSeparator" type="HSeparator" parent="Center/Box/Margin/List" unique_id=348972785]
 layout_mode = 2
 
-[node name="ImageFrame" type="PanelContainer" parent="Center/Box/Margin/List"]
+[node name="ImageFrame" type="PanelContainer" parent="Center/Box/Margin/List" unique_id=1822684712]
 custom_minimum_size = Vector2(360, 140)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Placeholder" type="Label" parent="Center/Box/Margin/List/ImageFrame"]
+[node name="Placeholder" type="Label" parent="Center/Box/Margin/List/ImageFrame" unique_id=3789816]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.35)
 text = "IMAGE GOES HERE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Image" type="TextureRect" parent="Center/Box/Margin/List/ImageFrame"]
+[node name="Image" type="TextureRect" parent="Center/Box/Margin/List/ImageFrame" unique_id=1628094290]
 unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="BodyScroll" type="ScrollContainer" parent="Center/Box/Margin/List"]
+[node name="BodyScroll" type="ScrollContainer" parent="Center/Box/Margin/List" unique_id=2012106394]
 custom_minimum_size = Vector2(560, 300)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Body" type="Label" parent="Center/Box/Margin/List/BodyScroll"]
+[node name="Body" type="Label" parent="Center/Box/Margin/List/BodyScroll" unique_id=319550671]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(540, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 autowrap_mode = 3
 
-[node name="BackButton" type="Button" parent="Center/Box/Margin/List"]
+[node name="BackButton" type="Button" parent="Center/Box/Margin/List" unique_id=1548003773]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "BACK"
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=1124105154]
 material = ExtResource("4_3etfd")
 layout_mode = 1
 anchors_preset = 15
@@ -174,7 +174,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3etfd")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1567398017]
 libraries/ = SubResource("AnimationLibrary_jjs6x")
 autoplay = &"Fade-Out"
 
