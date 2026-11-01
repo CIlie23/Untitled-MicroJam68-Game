@@ -34,6 +34,7 @@ func _ready() -> void:
 
 	%CameraSpeedSlider.set_value_no_signal(Settings.camera_speed)
 	%CameraSpeedValue.text = "%d%%" % Settings.camera_speed
+	%InfiniteResourcesCheck.set_pressed_no_signal(Settings.infinite_resources)
 
 	for action in Settings.KEYBIND_NAMES:
 		var row := HBoxContainer.new()
@@ -115,6 +116,10 @@ func _start_rebind(action: StringName) -> void:
 func _on_camera_speed_slider_value_changed(value: float) -> void:
 	Settings.camera_speed = value
 	%CameraSpeedValue.text = "%d%%" % value
+
+
+func _on_infinite_resources_check_toggled(enabled: bool) -> void:
+	Settings.infinite_resources = enabled
 
 
 func _on_key_layout_button_pressed() -> void:

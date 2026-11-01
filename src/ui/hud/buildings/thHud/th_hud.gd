@@ -111,7 +111,9 @@ func show_townhall(townhall) -> void:
 	%XpBar.max_value = Global.next_evolve_xp()
 	%XpBar.value = Global.xp
 	%EvolveButton.disabled = not Global.can_evolve()
-	if Global.townhall_level < Global.TOWNHALL_LEVELS.size():
+	if Global.economy().evolving:
+		%EvolveNext.text = "Evolving to Lv %d... %ds" % [Global.townhall_level + 1, townhall.evolve_time_left()]
+	elif Global.townhall_level < Global.TOWNHALL_LEVELS.size():
 		var next: Dictionary = Global.TOWNHALL_LEVELS[Global.townhall_level]
 		%EvolveNext.text = "Next: Lv %d (%d XP) - new troops +%d%%, buildings up to Lv %d, max population %d" % [
 			Global.townhall_level + 1,
@@ -139,7 +141,12 @@ func show_building(building) -> void:
 		%InfoLabel.text = "+%d max population" % building.population_bonus()
 
 	%UpgradeButton.disabled = not building.can_upgrade()
-	if building.level >= stats.max_level:
+	if not building.built:
+		%InfoLabel.text = "Under construction... %ds" % building.get_node("Construction").remaining()
+		%UpgradeInfo.text = "Finish construction first"
+	elif building.upgrading:
+		%UpgradeInfo.text = "Upgrading to Lv %d... %ds" % [building.level + 1, building.get_node("Construction").remaining()]
+	elif building.level >= stats.max_level:
 		%UpgradeInfo.text = "Max level"
 	elif building.level >= building.level_cap():
 		%UpgradeInfo.text = "Evolve the town hall to unlock level %d" % (building.level + 1)
@@ -149,7 +156,7 @@ func show_building(building) -> void:
 			effect = production_text(stats, building.production_amount() + stats.production_per_level)
 		elif stats.population:
 			effect = "+%d max population" % stats.population_per_level
-		%UpgradeInfo.text = "Lv %d -> Lv %d\n%s\nCost: %s" % [building.level, building.level + 1, effect, cost_text(building.upgrade_cost())]
+		%UpgradeInfo.text = "Lv %d -> Lv %d\n%s\nCost: %s  (%ds)" % [building.level, building.level + 1, effect, cost_text(building.upgrade_cost()), stats.upgrade_time]
 
 
 func show_picture(sprite: Sprite2D) -> void:
@@ -203,8 +210,10 @@ func show_build_detail() -> void:
 	for stock in stats.cost:
 		var part := "%d %s" % [stats.cost[stock], STOCK_LABELS.get(stock, stock)]
 		parts.append(part if Global.get(stock) >= stats.cost[stock] else "[color=red]%s[/color]" % part)
-	%BuildCost.text = "Cost: " + ", ".join(PackedStringArray(parts))
-	%BuildButton.disabled = not Global.can_afford(stats.cost)
+	%BuildCost.text = "Cost: %s  (%ds)" % [", ".join(PackedStringArray(parts)), stats.build_time]
+	if stats.max_count > 0:
+		%BuildCost.text += "\nBuilt %d / %d" % [Global.building_count(stats), stats.max_count]
+	%BuildButton.disabled = not Global.can_build(stats)
 
 
 func _on_build_list_item_selected(index: int) -> void:

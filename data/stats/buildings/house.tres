@@ -12,5 +12,6 @@ defense = 2
 cost = {"Wood": 4}
 upgrade_cost = {"Wood": 4}
 max_level = 4
+max_count = 4
 population = 3
 population_per_level = 1

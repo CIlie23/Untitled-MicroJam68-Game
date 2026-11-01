@@ -21,7 +21,7 @@ func team() -> String:
 
 func can_train() -> bool:
 	var eco := Global.economy(team())
-	return eco.populus + Global.queued_troops(team()) < eco.maxPopulus and eco.can_afford(troop.cost)
+	return get_parent().get("built") != false and eco.populus + Global.queued_troops(team()) < eco.maxPopulus and eco.can_afford(troop.cost)
 
 
 func train() -> void:
@@ -46,5 +46,5 @@ func _process(delta: float) -> void:
 	if progress >= train_time():
 		progress = 0.0
 		queue -= 1
-		Global.spawn_unit(troop, get_parent().global_position, 1.0 + faster_troops_per_level * (get_parent().level - 1), team())
+		Global.spawn_unit(troop, get_parent().global_position, 1.0 + faster_troops_per_level * (get_parent().level - 1), team(), get_parent().level)
 		queue_changed.emit()

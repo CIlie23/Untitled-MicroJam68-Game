@@ -17,7 +17,7 @@ var scan_in := 0.0
 
 
 func active() -> bool:
-	return attack_range > 0.0 and not get_parent().get("preview")
+	return attack_range > 0.0 and not get_parent().get("preview") and get_parent().get("built") != false
 
 
 func _process(delta: float) -> void:

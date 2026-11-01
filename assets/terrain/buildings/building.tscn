@@ -5,6 +5,7 @@
 [ext_resource type="Resource" path="res://data/stats/buildings/farm.tres" id="2_stats"]
 [ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
 [ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
+[ext_resource type="PackedScene" path="res://src/common/components/construction.tscn" id="43_construction"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k5a0v"]
 size = Vector2(110, 50)
@@ -88,6 +89,12 @@ offset_top = -118.0
 offset_right = 60.0
 offset_bottom = -110.0
 
+[node name="Construction" parent="." instance=ExtResource("43_construction")]
+offset_left = -60.0
+offset_top = -106.0
+offset_right = 60.0
+offset_bottom = -98.0
+
 [node name="Vision" type="Node" parent="."]
 script = ExtResource("42_vision")
 radius = 400.0
@@ -96,3 +103,4 @@ radius = 400.0
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="died" from="Health" to="." method="_on_health_died"]
+[connection signal="finished" from="Construction" to="." method="_on_construction_finished"]

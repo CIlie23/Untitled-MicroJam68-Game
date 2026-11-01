@@ -1,23 +1,29 @@
 extends Button
 
-var unit
+signal picked(troop: TroopStats)
+
+var units: Array = []
 
 
 func _ready() -> void:
-	%Icon.texture = unit.portrait_texture()
-	%Icon.modulate = unit.stats.tint
+	%Icon.texture = units[0].portrait_texture()
+	%Icon.modulate = units[0].stats.tint
 
 
 func refresh() -> void:
-	if not is_instance_valid(unit):
+	var alive := units.filter(func(unit): return is_instance_valid(unit))
+	if alive.is_empty():
 		return
-	%Name.text = "%s  Lv %d" % [unit.stats.display_name, unit.level]
-	%Health.max_value = unit.max_health()
-	%Health.value = unit.health
-	flat = not unit.selected
+	%Name.text = "%s  x%d" % [alive[0].stats.display_name, alive.size()]
+	var health := 0
+	var max_health := 0
+	for unit in alive:
+		health += unit.health
+		max_health += unit.max_health()
+	%Health.max_value = max_health
+	%Health.value = health
+	flat = not alive.any(func(unit): return unit.selected)
 
 
 func _on_pressed() -> void:
-	for other in get_tree().get_nodes_in_group("unit"):
-		other.set_selected(other == unit)
-	get_viewport().get_camera_2d().pan_to(unit.global_position)
+	picked.emit(units[0].stats)

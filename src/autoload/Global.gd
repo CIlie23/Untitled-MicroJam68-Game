@@ -7,20 +7,23 @@ var CAMERA_SPEED := 400.0
 var UNIT_SPEED := 550.0
 
 var RESOURCES := {
-	"Wood": {"gather_time": 3, "amount": [1, 2, 3]},
-	"Minerals": {"gather_time": 6, "amount": [3, 4, 5]},
+	"Wood": {"gather_time": 5, "amount": [1, 2, 3]},
+	"Minerals": {"gather_time": 10, "amount": [3, 4, 5]},
 }
 
 var TOWNHALL_LEVELS := [
 	{"health": 500, "defense": 5, "max_population": 5, "xp": 0},
-	{"health": 600, "defense": 6, "max_population": 7, "xp": 100},
-	{"health": 700, "defense": 7, "max_population": 9, "xp": 150},
-	{"health": 850, "defense": 9, "max_population": 11, "xp": 200},
+	{"health": 600, "defense": 6, "max_population": 7, "xp": 40},
+	{"health": 700, "defense": 7, "max_population": 9, "xp": 60},
+	{"health": 850, "defense": 9, "max_population": 11, "xp": 80},
 ]
 var TROOP_BONUS_PER_LEVEL := 0.05
+var GATHER_BONUS_PER_LEVEL := 0.25
+var EVOLVE_TIME := 15.0
 var XP_PER_BUILD := 5
-var XP_PER_KILL := 5
-var FREE_MODE := true
+var XP_PER_KILL := 6
+var XP_PER_BUILDING_KILL := 15
+var XP_PER_UPGRADE := 12
 
 const TEAMS := ["player", "enemy"]
 const ENEMY_TINT := Color(1, 0.4, 0.4)
@@ -83,21 +86,21 @@ func queued_troops(team := "player") -> int:
 			total += trainer.queue
 	return total
 
-func spawn_unit(troop: TroopStats, pos: Vector2, speed_multiplier := 1.0, team := "player") -> void:
+func spawn_unit(troop: TroopStats, pos: Vector2, speed_multiplier := 1.0, team := "player", level := 0) -> void:
 	var eco := economy(team)
 	var unit = UNIT_SCENE.instantiate()
 	unit.stats = troop
 	unit.team = team
-	unit.level = eco.townhall_level
+	unit.level = level if level > 0 else eco.townhall_level
 	unit.speed_multiplier = speed_multiplier
 	unit.position = pos + Vector2(randf_range(-60, 60), 160)
 	get_tree().get_root().get_node("World/Units").add_child(unit)
 	eco.populus += 1
 	get_tree().get_root().get_node("World").get_units()
 
-func credit_kill(killer_team: String) -> void:
+func credit_kill(killer_team: String, amount := XP_PER_KILL) -> void:
 	if economies.has(killer_team):
-		economy(killer_team).xp += XP_PER_KILL
+		economy(killer_team).xp += amount
 
 func townhall_stats(team := "player") -> Dictionary:
 	return economy(team).townhall_stats()
@@ -115,7 +118,16 @@ func evolve_townhall(team := "player") -> void:
 	var eco := economy(team)
 	if not eco.can_evolve():
 		return
-	eco.xp = maxi(eco.xp - eco.next_evolve_xp(), 0)
+	for building in get_tree().get_nodes_in_group("buildings"):
+		if building is Townhall and building.team == team:
+			eco.xp = maxi(eco.xp - eco.next_evolve_xp(), 0)
+			eco.evolving = true
+			building.begin_evolve(EVOLVE_TIME)
+			return
+
+func finish_evolve(team := "player") -> void:
+	var eco := economy(team)
+	eco.evolving = false
 	eco.townhall_level += 1
 	refresh_population_cap(team)
 	townhall_evolved.emit(team, eco.townhall_level - 1)
@@ -133,6 +145,12 @@ func can_afford(cost: Dictionary, team := "player") -> bool:
 
 func spend(cost: Dictionary, team := "player") -> bool:
 	return economy(team).spend(cost)
+
+func building_count(stats: BuildingStats, team := "player") -> int:
+	return get_tree().get_nodes_in_group("buildings").filter(func(building): return building.team == team and building.get("stats") == stats and not building.get("preview")).size()
+
+func can_build(stats: BuildingStats, team := "player") -> bool:
+	return (stats.max_count == 0 or building_count(stats, team) < stats.max_count) and can_afford(stats.cost, team)
 
 func building_level_cap(team := "player") -> int:
 	return economy(team).building_level_cap()

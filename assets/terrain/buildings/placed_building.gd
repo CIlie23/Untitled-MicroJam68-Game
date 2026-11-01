@@ -8,6 +8,8 @@ var preview := false
 var health: int:
 	get:
 		return $Health.current
+var built := false
+var upgrading := false
 var currTime := 0.0
 var stored := 0
 
@@ -28,14 +30,32 @@ func _ready() -> void:
 	$panelGreen.hide()
 	$panelRed.hide()
 	$Health.setup(stats.max_health, stats.defense)
+	bar.hide()
+	set_process(false)
+	$Sprite2D.self_modulate.a = 0.5
+	$Construction.start(stats.build_time)
+
+func finish_construction() -> void:
+	built = true
+	$Sprite2D.self_modulate.a = 1.0
 	Global.refresh_population_cap(team)
 	if stats.product == null:
-		bar.hide()
-		set_process(false)
 		return
+	bar.show()
 	bar.max_value = stats.storage
 	restart_cycle()
 	timer.start()
+	set_process(true)
+
+func _on_construction_finished() -> void:
+	if not built:
+		finish_construction()
+	elif upgrading:
+		upgrading = false
+		level += 1
+		$Sprite2D.frame = mini(level - 1, $Sprite2D.hframes - 1)
+		Global.refresh_population_cap(team)
+		Global.add_xp(Global.XP_PER_UPGRADE, team)
 
 func set_preview_valid(valid: bool) -> void:
 	$panelGreen.visible = valid
@@ -75,7 +95,7 @@ func hand_out() -> void:
 				stored -= given
 
 func population_bonus() -> int:
-	if preview or stats.population == 0:
+	if preview or not built or stats.population == 0:
 		return 0
 	return stats.population + stats.population_per_level * (level - 1)
 
@@ -92,16 +112,15 @@ func level_cap() -> int:
 	return mini(stats.max_level, Global.building_level_cap(team))
 
 func can_upgrade() -> bool:
-	return level < level_cap() and Global.can_afford(upgrade_cost(), team)
+	return built and not upgrading and level < level_cap() and Global.can_afford(upgrade_cost(), team)
 
 func upgrade() -> void:
-	if level < level_cap() and Global.spend(upgrade_cost(), team):
-		level += 1
-		$Sprite2D.frame = mini(level - 1, $Sprite2D.hframes - 1)
-		Global.refresh_population_cap(team)
+	if can_upgrade() and Global.spend(upgrade_cost(), team):
+		upgrading = true
+		$Construction.start(stats.upgrade_time)
 
 func _on_health_died(killer_team: String) -> void:
-	Global.credit_kill(killer_team)
+	Global.credit_kill(killer_team, Global.XP_PER_BUILDING_KILL)
 	remove_from_group("buildings")
 	queue_free()
 	Global.refresh_population_cap(team)

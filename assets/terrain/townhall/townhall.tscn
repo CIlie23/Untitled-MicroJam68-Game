@@ -6,6 +6,7 @@
 [ext_resource type="Resource" path="res://data/stats/troops/troop.tres" id="3_worker"]
 [ext_resource type="PackedScene" path="res://src/common/components/health.tscn" id="40_health"]
 [ext_resource type="Script" path="res://src/common/components/vision.gd" id="42_vision"]
+[ext_resource type="PackedScene" path="res://src/common/components/construction.tscn" id="43_construction"]
 [ext_resource type="Texture2D" path="res://assets/textures/soup/evilTownhall.png" id="50_enemy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
@@ -62,6 +63,12 @@ offset_top = -21.0
 offset_right = 12.0
 offset_bottom = -20.0
 
+[node name="Construction" parent="." instance=ExtResource("43_construction")]
+offset_left = -12.0
+offset_top = -19.0
+offset_right = 12.0
+offset_bottom = -18.0
+
 [node name="Vision" type="Node" parent="."]
 script = ExtResource("42_vision")
 radius = 900.0
@@ -70,3 +77,4 @@ radius = 900.0
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="body_entered" from="DepositArea" to="." method="_on_deposit_area_body_entered"]
 [connection signal="died" from="Health" to="." method="_on_health_died"]
+[connection signal="finished" from="Construction" to="." method="_on_construction_finished"]

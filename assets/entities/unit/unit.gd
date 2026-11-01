@@ -33,7 +33,7 @@ func _ready() -> void:
 	$Attacker.cooldown = stats.attack_cooldown
 	$Attacker.ranged = stats.ranged
 	$Attacker.damage = damage()
-	$Attacker.sight = maxf(stats.attack_range + 250.0, 350.0)
+	$Attacker.sight = stats.attack_range + 60.0 if stats.can_gather else maxf(stats.attack_range + 250.0, 350.0)
 	$Vision.radius = maxf($Vision.radius, stats.attack_range + 100.0)
 	set_selected(selected)
 
@@ -69,7 +69,7 @@ func level_multiplier() -> float:
 	return (1.0 + Global.TROOP_BONUS_PER_LEVEL * (level - 1)) * Global.economy(team).stat_multiplier
 
 func gather_rate() -> float:
-	return Global.economy(team).gather_rate
+	return Global.economy(team).gather_multiplier()
 
 func portrait_texture() -> Texture2D:
 	return sprite.sprite_frames.get_frame_texture(&"idle", 0)
@@ -104,6 +104,7 @@ func _input(event: InputEvent) -> void:
 			move_to(get_global_mouse_position())
 
 func _physics_process(delta: float) -> void:
+	watch_idle()
 	if not moving:
 		var foe = $Attacker.target
 		if is_instance_valid(foe) and not $Attacker.in_reach(foe):
@@ -146,6 +147,21 @@ func _on_health_died(killer_team: String) -> void:
 	$CollisionShape2D.set_deferred("disabled", true)
 	sprite.play(&"death")
 	get_tree().current_scene.get_units()
+
+func watch_idle() -> void:
+	var idle: bool = stats.can_gather and not moving and $Attacker.target == null
+	if not idle:
+		$IdleTimer.stop()
+	elif $IdleTimer.is_stopped():
+		$IdleTimer.start()
+
+func _on_idle_timer_timeout() -> void:
+	for resource in get_tree().get_nodes_in_group("resources"):
+		if resource.active_gatherers().has(self):
+			return
+	for building in get_tree().get_nodes_in_group("buildings"):
+		if building is Townhall and building.team == team and global_position.distance_to(building.global_position) > 300.0:
+			move_to(building.global_position + Vector2(randf_range(-80.0, 80.0), 200.0))
 
 func _on_sprite_animation_finished() -> void:
 	if sprite.animation == &"death":

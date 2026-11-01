@@ -8,6 +8,7 @@ var populus := 0
 var maxPopulus := 0
 var townhall_level := 1
 var xp := 0
+var evolving := false
 var team := "player"
 var gather_rate := 1.0
 var stat_multiplier := 1.0
@@ -20,7 +21,7 @@ func _init(team_name := "player") -> void:
 
 
 func is_free() -> bool:
-	return team == "player" and Global.FREE_MODE
+	return team == "player" and Settings.infinite_resources
 
 
 func apply_difficulty(difficulty: AIDifficulty) -> void:
@@ -45,7 +46,11 @@ func next_evolve_xp() -> int:
 
 
 func can_evolve() -> bool:
-	return townhall_level < Global.TOWNHALL_LEVELS.size() and (is_free() or xp >= next_evolve_xp())
+	return not evolving and townhall_level < Global.TOWNHALL_LEVELS.size() and (is_free() or xp >= next_evolve_xp())
+
+
+func gather_multiplier() -> float:
+	return gather_rate * (1.0 + Global.GATHER_BONUS_PER_LEVEL * (townhall_level - 1))
 
 
 func building_level_cap() -> int:

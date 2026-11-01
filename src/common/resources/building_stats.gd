@@ -11,6 +11,9 @@ enum Category { FARM, MILITARY }
 @export var cost := {}
 @export var upgrade_cost := {}
 @export var max_level := 4
+@export var max_count := 0
+@export var build_time := 20.0
+@export var upgrade_time := 12.0
 @export var product: Item
 @export var storage := 16
 @export var production := 0

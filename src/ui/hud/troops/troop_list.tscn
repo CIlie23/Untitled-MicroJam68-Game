@@ -37,3 +37,47 @@ horizontal_scroll_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Picker" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = -240.0
+offset_right = -8.0
+offset_bottom = 120.0
+
+[node name="Margin" type="MarginContainer" parent="Picker"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Layout" type="VBoxContainer" parent="Picker/Margin"]
+layout_mode = 2
+
+[node name="PickerTitle" type="Label" parent="Picker/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="PickerGrid" type="GridContainer" parent="Picker/Margin/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4
+
+[node name="Buttons" type="HBoxContainer" parent="Picker/Margin/Layout"]
+layout_mode = 2
+alignment = 1
+
+[node name="SelectAll" type="Button" parent="Picker/Margin/Layout/Buttons"]
+layout_mode = 2
+text = "Select all"
+
+[node name="Close" type="Button" parent="Picker/Margin/Layout/Buttons"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="Picker/Margin/Layout/Buttons/SelectAll" to="." method="_on_select_all_pressed"]
+[connection signal="pressed" from="Picker/Margin/Layout/Buttons/Close" to="." method="_on_close_pressed"]

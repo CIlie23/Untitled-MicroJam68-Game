@@ -33,6 +33,7 @@ var volumes := {&"Master": 100.0, &"Music": 100.0, &"SFX": 100.0}
 var muted := false
 var window_size_index := 0
 var camera_speed := 100.0
+var infinite_resources := false
 
 
 func _ready() -> void:

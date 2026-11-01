@@ -17,6 +17,15 @@ extends Resource
 @export var rally_distance := 600.0
 @export var raid_interval := 75.0
 @export var raid_size := 2
+@export var scout_after := 45.0
+@export var spot_range := 700.0
+@export var expand_interval := 90.0
+@export var outposts_per_level := 1
+@export var outpost_radius := 700.0
+@export var outpost_guards := 1
+@export var safe_radius := 1500.0
+@export var aggressive_level := 3
+@export var worker_scout_interval := 90.0
 @export var farm_scene: PackedScene
 @export var house_scene: PackedScene
 @export var tower_scene: PackedScene

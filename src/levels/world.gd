@@ -535,7 +535,7 @@ func can_place_at(pos: Vector2) -> bool:
 	return true
 
 func place_ghost() -> void:
-	if not can_place_at(ghost.global_position) or not Global.spend(ghost.stats.cost):
+	if not can_place_at(ghost.global_position) or not Global.can_build(ghost.stats) or not Global.spend(ghost.stats.cost):
 		return
 	var building := placing_scene.instantiate() as Node2D
 	building.position = ghost.global_position
@@ -580,9 +580,9 @@ func _process(delta: float) -> void:
 	_try_place()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Global.FREE_MODE and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_K:
+	if Settings.infinite_resources and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_K:
 		test_damage()
-	if Global.FREE_MODE and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_J:
+	if Settings.infinite_resources and event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_J:
 		Global.spawn_unit(TEST_ENEMY, get_global_mouse_position() - Vector2(0, 160), 1.0, "enemy")
 	if not is_placing():
 		return
