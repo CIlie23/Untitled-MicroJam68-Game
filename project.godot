@@ -22,6 +22,19 @@ Settings="*res://src/autoload/settings.gd"
 Audio="*res://src/autoload/audio.gd"
 Dialogic="*uid://ds2q0uclmolvu"
 
+[dialogic]
+
+directories/dch_directory={
+"unit_test_character": "res://Tests/Resources/unit_test_character.dch"
+}
+directories/dtl_directory={
+"endgame": "res://cutscenes/endgame.dtl",
+"trainTroop": "res://cutscenes/trainTroop.dtl",
+"welcome": "res://cutscenes/welcome.dtl",
+"worker": "res://cutscenes/worker.dtl"
+}
+layout/style_directory={}
+
 [display]
 
 window/stretch/mode="canvas_items"

@@ -119,6 +119,17 @@ func _over_scroll_area() -> bool:
 		node = node.get_parent() as Control
 	return false
 
+## Drops a drag in progress. A cutscene freeze can land between the press and the
+## release, and neither a disabled camera nor _input sees the release, so the marquee
+## would stay on screen and keep following the mouse afterwards.
+func cancel_drag() -> void:
+	if not isDragging:
+		return
+	isDragging = false
+	end = start
+	draw_area(false)
+
+
 # the select area
 func draw_area(s=true):
 	panel.size = Vector2(abs(startV.x - endV.x), abs(startV.y - endV.y))

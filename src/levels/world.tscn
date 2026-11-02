@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://ufj1jmngqsds"]
+[gd_scene format=4 uid="uid://ufj1jmngqsds"]
 
 [ext_resource type="Script" uid="uid://dne6j7jiaj50l" path="res://src/levels/world.gd" id="1_q35l7"]
 [ext_resource type="Script" uid="uid://b7nve0a26tikt" path="res://src/ui/hud/camera.gd" id="1_qd0h3"]
@@ -16,11 +16,17 @@
 [ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_three.tscn" id="8_mineral_three"]
 [ext_resource type="PackedScene" path="res://assets/terrain/mineral/mineral_cluster_two.tscn" id="8_mineral_two"]
 [ext_resource type="PackedScene" uid="uid://d3pn1us4grbjd" path="res://src/common/components/fireflies.tscn" id="9_fireflies"]
-[ext_resource type="Shader" path="res://assets/shaders/fog.gdshader" id="20_fog_shader"]
-[ext_resource type="Script" path="res://src/levels/fog.gd" id="21_fog"]
-[ext_resource type="Script" path="res://src/ai/enemy_commander.gd" id="22_commander"]
+[ext_resource type="Script" uid="uid://cyn8auwwy03yy" path="res://src/common/resources/inventory.gd" id="16_aoqg0"]
+[ext_resource type="Shader" uid="uid://b3ygl1ipg08o0" path="res://assets/shaders/fog.gdshader" id="20_fog_shader"]
+[ext_resource type="Script" uid="uid://ber4cqighoc6n" path="res://src/levels/fog.gd" id="21_fog"]
+[ext_resource type="Script" uid="uid://41j0nmtsg7pk" path="res://src/ai/enemy_commander.gd" id="22_commander"]
 [ext_resource type="Resource" path="res://data/ai/easy.tres" id="23_easy"]
 [ext_resource type="PackedScene" path="res://src/ui/menus/game_over.tscn" id="24_game_over"]
+[ext_resource type="Script" uid="uid://be0f3nimu75gb" path="res://src/levels/cutscene.gd" id="25_cutscene"]
+
+[sub_resource type="Resource" id="Resource_i81uq"]
+resource_local_to_scene = true
+script = ExtResource("16_aoqg0")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_map"]
 parsed_geometry_type = 1
@@ -30,6 +36,10 @@ agent_radius = 36.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fog"]
 shader = ExtResource("20_fog_shader")
+shader_parameter/sources = PackedVector4Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/source_count = 0
+shader_parameter/dim = 0.45
+shader_parameter/softness = 80.0
 
 [node name="World" type="Node2D" unique_id=1628329778]
 y_sort_enabled = true
@@ -53,13 +63,11 @@ script = ExtResource("1_qd0h3")
 [node name="Units" type="Node2D" parent="." unique_id=2012210298]
 y_sort_enabled = true
 
-[node name="Unit" parent="Units" unique_id=1370506533 instance=ExtResource("2_jimqh")]
-position = Vector2(464, 351)
-
-[node name="EnemyUnit" parent="Units" instance=ExtResource("2_jimqh")]
+[node name="EnemyUnit" parent="Units" unique_id=1580328460 instance=ExtResource("2_jimqh")]
 team = "enemy"
+inventory = SubResource("Resource_i81uq")
 
-[node name="Navigation" type="NavigationRegion2D" parent="."]
+[node name="Navigation" type="NavigationRegion2D" parent="." unique_id=1574600403]
 navigation_polygon = SubResource("NavigationPolygon_map")
 
 [node name="Houses" type="Node2D" parent="." unique_id=31918186 groups=["navigation_source"]]
@@ -68,7 +76,7 @@ navigation_polygon = SubResource("NavigationPolygon_map")
 position = Vector2(744, 155)
 scale = Vector2(6.25, 6.25)
 
-[node name="EnemyTownhall" parent="Houses" instance=ExtResource("5_hkv0b")]
+[node name="EnemyTownhall" parent="Houses" unique_id=532188398 instance=ExtResource("5_hkv0b")]
 scale = Vector2(6.25, 6.25)
 team = "enemy"
 
@@ -77,20 +85,25 @@ team = "enemy"
 [node name="Objects" type="Node2D" parent="." unique_id=1800154722 groups=["navigation_source"]]
 y_sort_enabled = true
 
-[node name="Fog" type="ColorRect" parent="."]
+[node name="Fog" type="ColorRect" parent="." unique_id=1750825513]
 z_index = 10
 material = SubResource("ShaderMaterial_fog")
 mouse_filter = 2
 script = ExtResource("21_fog")
 
-[node name="EnemyCommander" type="Node" parent="."]
+[node name="EnemyCommander" type="Node" parent="." unique_id=673245935]
 script = ExtResource("22_commander")
 difficulty = ExtResource("23_easy")
 
-[node name="GameOver" parent="." instance=ExtResource("24_game_over")]
+[node name="GameOver" parent="." unique_id=1292300653 instance=ExtResource("24_game_over")]
+
+[node name="Cutscene" type="Node" parent="." unique_id=846896400]
+script = ExtResource("25_cutscene")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Cutscene" unique_id=235937781]
 
 [connection signal="area_selected" from="Camera" to="." method="_on_camera_area_selected"]
-[connection signal="child_entered_tree" from="Objects" to="." method="_on_obstacles_changed"]
-[connection signal="child_exiting_tree" from="Objects" to="." method="_on_obstacles_changed"]
 [connection signal="child_entered_tree" from="Houses" to="." method="_on_obstacles_changed"]
 [connection signal="child_exiting_tree" from="Houses" to="." method="_on_obstacles_changed"]
+[connection signal="child_entered_tree" from="Objects" to="." method="_on_obstacles_changed"]
+[connection signal="child_exiting_tree" from="Objects" to="." method="_on_obstacles_changed"]
