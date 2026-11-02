@@ -1,6 +1,6 @@
 extends Control
 
-const GAME_SCENE_PATH := "res://src/levels/world.tscn"
+const DIFFICULTY_SCENE := preload("res://src/ui/menus/difficulty_menu.tscn")
 const HOW_TO_PLAY_SCENE := preload("res://src/ui/menus/how_to_play_menu.tscn")
 const OPTIONS_SCENE := preload("res://src/ui/menus/settings_menu.tscn")
 const CREDITS_SCENE := preload("res://src/ui/menus/credits_menu.tscn")
@@ -16,7 +16,7 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file(GAME_SCENE_PATH)
+	add_child(DIFFICULTY_SCENE.instantiate())
 
 
 func _on_how_to_play_pressed() -> void:

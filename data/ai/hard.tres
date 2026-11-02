@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="AIDifficulty" format=3]
+
+[ext_resource type="Script" path="res://src/common/resources/ai_difficulty.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/farm.tscn" id="2_farm"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/house.tscn" id="3_house"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/barracks.tscn" id="4_barracks"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/archery_range.tscn" id="5_archery"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/shield_hall.tscn" id="6_shield"]
+[ext_resource type="PackedScene" path="res://assets/terrain/buildings/tower.tscn" id="7_tower"]
+
+[resource]
+script = ExtResource("1_script")
+gather_rate = 0.95
+stat_multiplier = 1.0
+cost_multiplier = 1.05
+starting_food = 4
+think_interval = 1.5
+builds_per_think = 3
+max_workers = 6
+army_cap = 5
+army_cap_per_level = 2
+carry_before_return = 10
+first_attack_delay = 150.0
+wave_size = 3
+wave_growth = 2
+wave_cooldown = 75.0
+defend_radius = 1200.0
+pursuit_range = 900.0
+retreat_health = 0.3
+rally_distance = 600.0
+raid_interval = 40.0
+raid_size = 2
+raid_growth_per_level = 0
+first_raid_delay = 45.0
+wave_level = 2
+raid_until_level = 4
+scout_after = 15.0
+spot_range = 700.0
+expand_interval = 45.0
+outposts_per_level = 1
+outpost_radius = 700.0
+outpost_guards = 1
+safe_radius = 1200.0
+aggressive_level = 2
+worker_scout_interval = 60.0
+farm_scene = ExtResource("2_farm")
+house_scene = ExtResource("3_house")
+tower_scene = ExtResource("7_tower")
+military_scenes = Array[PackedScene]([ExtResource("4_barracks"), ExtResource("5_archery"), ExtResource("6_shield")])

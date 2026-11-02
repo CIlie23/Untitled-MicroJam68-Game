@@ -18,6 +18,7 @@ hframes = 4
 
 [node name="PickupArea" type="Area2D" parent="." index="13" unique_id=423453154]
 input_pickable = false
+collision_mask = 3
 
 [node name="exclamation" type="TextureRect" parent="PickupArea" index="0" unique_id=1742261865]
 visible = false

@@ -20,7 +20,10 @@
 [ext_resource type="Shader" uid="uid://b3ygl1ipg08o0" path="res://assets/shaders/fog.gdshader" id="20_fog_shader"]
 [ext_resource type="Script" uid="uid://ber4cqighoc6n" path="res://src/levels/fog.gd" id="21_fog"]
 [ext_resource type="Script" uid="uid://41j0nmtsg7pk" path="res://src/ai/enemy_commander.gd" id="22_commander"]
+[ext_resource type="Script" path="res://src/common/resources/ai_difficulty.gd" id="22_ai_difficulty"]
 [ext_resource type="Resource" path="res://data/ai/easy.tres" id="23_easy"]
+[ext_resource type="Resource" path="res://data/ai/normal.tres" id="23_normal"]
+[ext_resource type="Resource" path="res://data/ai/hard.tres" id="23_hard"]
 [ext_resource type="PackedScene" path="res://src/ui/menus/game_over.tscn" id="24_game_over"]
 [ext_resource type="Script" uid="uid://be0f3nimu75gb" path="res://src/levels/cutscene.gd" id="25_cutscene"]
 
@@ -93,7 +96,8 @@ script = ExtResource("21_fog")
 
 [node name="EnemyCommander" type="Node" parent="." unique_id=673245935]
 script = ExtResource("22_commander")
-difficulty = ExtResource("23_easy")
+difficulty = ExtResource("23_normal")
+difficulties = Array[ExtResource("22_ai_difficulty")]([ExtResource("23_easy"), ExtResource("23_normal"), ExtResource("23_hard")])
 
 [node name="GameOver" parent="." unique_id=1292300653 instance=ExtResource("24_game_over")]
 

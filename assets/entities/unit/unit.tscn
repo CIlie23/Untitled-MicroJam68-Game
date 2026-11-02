@@ -15,8 +15,8 @@ script = ExtResource("3_inventory")
 slot_count = 6
 max_per_slot = 16
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fqy7p"]
-size = Vector2(66, 60)
+[sub_resource type="CircleShape2D" id="RectangleShape2D_fqy7p"]
+radius = 26.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtxm7"]
 bg_color = Color(0.45, 1, 0.55, 0.25)
@@ -31,6 +31,7 @@ corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
 [node name="Unit" type="CharacterBody2D" unique_id=1370506533 groups=["unit"]]
+collision_layer = 2
 script = ExtResource("1_q456h")
 stats = ExtResource("2_stats")
 inventory = SubResource("Resource_inventory")

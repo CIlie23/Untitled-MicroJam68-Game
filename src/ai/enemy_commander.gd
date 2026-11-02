@@ -4,10 +4,10 @@ extends Node
 const TEAM := "enemy"
 
 @export var difficulty: AIDifficulty
+@export var difficulties: Array[AIDifficulty] = []
 
 var elapsed := 0.0
 var think_in := 0.0
-var wave_size := 0
 var wave_launch_size := 0
 var attackers: Array = []
 var gathering: Array = []
@@ -27,13 +27,12 @@ var known: Array = []
 var outposts: Array = []
 
 
-func _enter_tree() -> void:
-	Global.economy(TEAM).apply_difficulty(difficulty)
-
-
 func _ready() -> void:
-	wave_size = difficulty.wave_size
-	next_raid = difficulty.first_attack_delay
+	if difficulties.size() > Settings.ai_difficulty:
+		difficulty = difficulties[Settings.ai_difficulty]
+	Global.economy(TEAM).apply_difficulty(difficulty)
+	Global.economy(TEAM).food += difficulty.starting_food
+	next_raid = difficulty.first_raid_delay
 	next_wave = difficulty.first_attack_delay
 	next_expand = difficulty.expand_interval
 	next_worker_scout = difficulty.worker_scout_interval
@@ -44,7 +43,7 @@ func _process(delta: float) -> void:
 	think_in -= delta
 	if think_in > 0.0:
 		return
-	think_in = difficulty.think_interval * (0.5 if under_pressure() else 1.0)
+	think_in = difficulty.think_interval * (0.5 if under_pressure() and difficulty.emergency_builds else 1.0)
 	var home := townhall()
 	if home == null:
 		return
@@ -53,9 +52,11 @@ func _process(delta: float) -> void:
 	raiders = raiders.filter(alive)
 	if scout and not alive(scout):
 		scout = null
-	outposts = outposts.filter(func(outpost): return is_instance_valid(outpost.tower))
+	outposts = outposts.filter(func(outpost): return not known.any(func(building): return is_instance_valid(building) and building.global_position.distance_to(outpost.center) < difficulty.outpost_radius * 0.5))
 	for outpost in outposts:
 		outpost.guards = outpost.guards.filter(alive)
+		if not is_instance_valid(outpost.tower):
+			outpost.tower = null
 	look_around()
 	var threats := threats_near(home)
 	var siege := under_siege(home, threats)
@@ -75,9 +76,10 @@ func _process(delta: float) -> void:
 	call_off_chases(home)
 	if not threats.is_empty():
 		defend(threats, home, siege)
-	elif aggressive():
-		attack(home)
+	else:
 		raid(home)
+		if Global.economy(TEAM).townhall_level >= difficulty.wave_level:
+			attack(home)
 	guard_outposts()
 
 
@@ -149,7 +151,11 @@ func in_player_base(pos: Vector2) -> bool:
 
 
 func aggressive() -> bool:
-	return own("buildings").any(func(building): return building.has_node("Trainer") and not building is Townhall and building.level >= difficulty.aggressive_level)
+	return level() >= difficulty.aggressive_level
+
+
+func wave_size() -> int:
+	return difficulty.wave_size + difficulty.wave_growth * maxi(level() - difficulty.wave_level, 0)
 
 
 func scout_with_worker(home: Townhall) -> void:
@@ -172,6 +178,9 @@ func scout_with_worker(home: Townhall) -> void:
 
 func look_around() -> void:
 	known = known.filter(func(building): return is_instance_valid(building) and building.is_in_group("buildings"))
+	var player_home := find_townhall("player")
+	if player_home and not known.has(player_home):
+		known.append(player_home)
 	var eyes := own("unit") + own("buildings")
 	for center in world().cluster_centers:
 		if not explored.has(center) and eyes.any(func(eye): return eye.global_position.distance_to(center) < 500.0):
@@ -184,6 +193,9 @@ func look_around() -> void:
 
 
 func explore() -> void:
+	if level() >= difficulty.wave_level:
+		scout = null
+		return
 	if elapsed < difficulty.scout_after:
 		return
 	if scout == null:
@@ -206,6 +218,12 @@ func explore() -> void:
 
 
 func expand(home: Townhall) -> void:
+	for outpost in outposts:
+		if outpost.tower == null:
+			var rebuilt := place(difficulty.tower_scene, outpost.center, 200.0, 380.0)
+			if rebuilt:
+				outpost.tower = rebuilt
+			return
 	if elapsed < next_expand:
 		return
 	var limit: int = Global.economy(TEAM).townhall_level * difficulty.outposts_per_level
@@ -291,7 +309,7 @@ func defend(threats: Array, home: Townhall, siege: bool) -> void:
 		scout = null
 		for outpost in outposts:
 			outpost.guards.clear()
-		if outmatched(threats):
+		if difficulty.workers_defend and outmatched(threats):
 			var sight: float = home.get_node("Vision").radius
 			defenders += workers().filter(func(worker): return worker != worker_scout and worker.global_position.distance_to(home.global_position) <= sight)
 	gathering.clear()
@@ -301,6 +319,8 @@ func defend(threats: Array, home: Townhall, siege: bool) -> void:
 
 
 func send_wounded_home(home: Townhall) -> void:
+	if not difficulty.retreats:
+		return
 	for unit in army():
 		if is_wounded(unit) and unit.global_position.distance_to(home.global_position) > home.heal_radius:
 			attackers.erase(unit)
@@ -338,7 +358,7 @@ func manage_workers(home: Townhall, threats: Array, militia: bool) -> void:
 			continue
 		var job := next_job(worker)
 		if job:
-			worker.move_to(job.global_position + job.global_position.direction_to(worker.global_position) * 90.0)
+			worker.move_to(job.global_position)
 
 
 func is_gathering(worker) -> bool:
@@ -378,17 +398,25 @@ func train(home: Townhall) -> void:
 		if building == home or not building.has_node("Trainer"):
 			continue
 		var trainer := building.get_node("Trainer") as Trainer
-		if army().size() + Global.queued_troops(TEAM) < difficulty.army_cap:
+		if army().size() + Global.queued_troops(TEAM) < army_cap():
 			trainer.train()
 
 
 func build(home: Townhall) -> bool:
-	var scene := next_building()
-	if scene == difficulty.tower_scene and under_pressure():
-		place(scene, home.global_position.move_toward(threat_point, 450.0), 0.0, 250.0)
-	elif scene:
-		place(scene, home.global_position, 350.0, 750.0)
-	return scene != null
+	var wanted := false
+	for attempt in difficulty.builds_per_think:
+		var scene := next_building()
+		if scene == null:
+			break
+		wanted = true
+		var placed: Node2D
+		if scene == difficulty.tower_scene and under_pressure():
+			placed = place(scene, home.global_position.move_toward(threat_point, 450.0), 0.0, 250.0)
+		else:
+			placed = place(scene, home.global_position, 350.0, 800.0)
+		if placed == null:
+			break
+	return wanted
 
 
 func upgrade_buildings() -> void:
@@ -426,24 +454,35 @@ func place(scene: PackedScene, around: Vector2, near: float, far: float) -> Node
 func next_building() -> PackedScene:
 	var economy := Global.economy(TEAM)
 	var level := economy.townhall_level
-	if under_pressure():
+	var house := stats_of(difficulty.house_scene)
+	if under_pressure() and difficulty.emergency_builds:
 		for scene in difficulty.military_scenes.slice(0, level + 1):
 			if count(scene) == 0:
 				return scene
-		if count(difficulty.tower_scene) - outposts.size() < level + 1:
+		if home_towers() < level + 1:
 			return difficulty.tower_scene
-	if economy.populus + Global.queued_troops(TEAM) >= economy.maxPopulus - 1 and Global.can_build(stats_of(difficulty.house_scene), TEAM):
+	if economy.populus + Global.queued_troops(TEAM) >= economy.maxPopulus - 1 and not constructing(difficulty.house_scene) and Global.can_build(house, TEAM):
 		return difficulty.house_scene
-	if economy.food < 10 and count(difficulty.farm_scene) < level + 1:
+	if economy.food < 15 and count(difficulty.farm_scene) < level + 2:
 		return difficulty.farm_scene
 	for scene in difficulty.military_scenes.slice(0, level + 1):
 		if count(scene) == 0:
 			return scene
-	if (not aggressive() or elapsed - last_threat < 60.0) and count(difficulty.tower_scene) - outposts.size() < level:
+	if home_towers() < level + 1:
 		return difficulty.tower_scene
-	if count(difficulty.farm_scene) < level + 1:
+	if Global.can_build(house, TEAM):
+		return difficulty.house_scene
+	if count(difficulty.farm_scene) < level + 2:
 		return difficulty.farm_scene
 	return null
+
+
+func constructing(scene: PackedScene) -> bool:
+	return own("buildings").any(func(building): return building.scene_file_path == scene.resource_path and not building.get("built"))
+
+
+func home_towers() -> int:
+	return count(difficulty.tower_scene) - outposts.filter(func(outpost): return outpost.tower != null).size()
 
 
 func count(scene: PackedScene) -> int:
@@ -463,105 +502,140 @@ func stats_of(scene: PackedScene) -> BuildingStats:
 
 
 func attack(home: Townhall) -> void:
-	var middle: Vector2 = world().map_size / 2.0
+	var enemy_home := find_townhall("player")
+	if enemy_home == null:
+		return
 	if not attackers.is_empty():
 		var center := Vector2.ZERO
 		for unit in attackers:
 			center += unit.global_position
 		center /= attackers.size()
 		var defenders := player_units().filter(func(unit): return unit.global_position.distance_to(center) < 700.0)
-		if defenders.size() > attackers.size() * 1.5 or attackers.size() <= maxi(1, roundi(wave_launch_size * 0.3)):
+		if difficulty.retreats and (defenders.size() > attackers.size() * 1.5 or attackers.size() <= maxi(1, roundi(wave_launch_size * 0.3))):
 			retreat(attackers, home)
 			attackers.clear()
 		else:
 			for unit in attackers:
-				if not unit.moving and unit.get_node("Attacker").target == null:
-					send(unit, pick_target(unit.global_position, false), middle)
-	var rally := home.global_position + home.global_position.direction_to(middle) * difficulty.rally_distance
+				var target = unit.get_node("Attacker").target
+				var tower := shooter_near(unit.global_position) if difficulty.targets_towers else null
+				if tower and (target == null or target == enemy_home):
+					send(unit, tower)
+				elif not unit.moving and target == null:
+					send(unit, enemy_home)
+	var rally := home.global_position + home.global_position.direction_to(enemy_home.global_position) * difficulty.rally_distance
 	if gathering.is_empty():
 		if elapsed < next_wave:
 			return
 		var idle := idle_army()
-		if idle.size() < wave_size:
+		if idle.size() < wave_size():
 			return
-		gathering = idle
+		idle.sort_custom(func(a, b): return a.global_position.distance_to(rally) < b.global_position.distance_to(rally))
+		gathering = idle.slice(0, wave_size())
 		gather_started = elapsed
+		if not difficulty.uses_rally:
+			gather_started = -INF
+			return
 		for unit in gathering:
 			unit.move_to(rally + Vector2(randf_range(-120.0, 120.0), randf_range(-120.0, 120.0)))
 		return
 	var arrived := gathering.filter(func(unit): return unit.global_position.distance_to(rally) < 300.0)
 	if arrived.size() >= gathering.size() * 0.8 or elapsed - gather_started > 20.0:
 		for unit in gathering:
-			send(unit, pick_target(unit.global_position, false), middle)
+			send(unit, enemy_home)
 		attackers += gathering
 		wave_launch_size = gathering.size()
-		wave_size += difficulty.wave_growth
 		next_wave = elapsed + difficulty.wave_cooldown
 		gathering = []
 
 
-func send(unit, target: Node2D, fallback: Vector2) -> void:
-	if target:
-		unit.moving = false
-		unit.get_node("Attacker").target = target
-	elif unit.global_position.distance_to(fallback) > 400.0:
-		unit.move_to(fallback + Vector2(randf_range(-200.0, 200.0), randf_range(-200.0, 200.0)))
+func send(unit, target: Node2D) -> void:
+	unit.moving = false
+	unit.get_node("Attacker").target = target
+
+
+func shooter_near(pos: Vector2) -> Node2D:
+	var towers := get_tree().get_nodes_in_group("buildings").filter(func(building): return building.team == "player" and not building.get("preview") and not building is Townhall and building.has_node("Attacker") and not building.has_node("Trainer"))
+	var tower := closest(towers, pos)
+	return tower if tower and tower.global_position.distance_to(pos) < 500.0 else null
 
 
 func raid(home: Townhall) -> void:
-	if raiders.any(func(raider): return outnumbered(raider)):
+	if difficulty.retreats and raiders.any(func(raider): return outnumbered(raider)):
 		retreat(raiders, home)
 		raiders.clear()
+	var enemy_home := find_townhall("player")
 	for unit in raiders.duplicate():
-		if not unit.moving and unit.get_node("Attacker").target == null:
-			var target := pick_target(unit.global_position, true)
-			if target:
-				unit.get_node("Attacker").target = target
-			else:
-				raiders.erase(unit)
-				unit.move_to(home_spot(home))
-	if elapsed < next_raid:
+		var current = unit.get_node("Attacker").target
+		if current != null and not current is Townhall:
+			continue
+		var target := raid_target(unit.global_position)
+		if target:
+			send(unit, target)
+		elif enemy_home and unit.global_position.distance_to(enemy_home.global_position) < 700.0:
+			raiders.erase(unit)
+			unit.move_to(home_spot(home))
+		elif enemy_home and not unit.moving:
+			unit.move_to(enemy_home.global_position.move_toward(home.global_position, 500.0))
+	if level() > difficulty.raid_until_level or elapsed < next_raid or enemy_home == null:
 		return
 	next_raid = elapsed + difficulty.raid_interval
+	var party := raid_size()
 	var idle := idle_army()
-	if idle.size() <= difficulty.raid_size:
+	if idle.size() < party:
 		return
 	idle.sort_custom(func(a, b): return a.Speed > b.Speed)
-	for unit in idle.slice(0, difficulty.raid_size):
-		var target := pick_target(unit.global_position, true)
+	for unit in idle.slice(0, party):
+		raiders.append(unit)
+		var target := raid_target(unit.global_position)
 		if target:
-			unit.get_node("Attacker").target = target
-			raiders.append(unit)
+			send(unit, target)
+		else:
+			unit.move_to(enemy_home.global_position.move_toward(home.global_position, 500.0))
+
+
+func raid_target(from: Vector2) -> Node2D:
+	var best: Node2D = null
+	var best_score := INF
+	for other in get_tree().get_nodes_in_group("unit"):
+		if other.team == "player" and other.stats.can_gather and not other.dying:
+			var score := from.distance_to(other.global_position) * 0.7
+			if score < best_score:
+				best = other
+				best_score = score
+	for other in known:
+		if other is Townhall or other.get("preview"):
+			continue
+		var score := from.distance_to(other.global_position) * sabotage_weight(other)
+		if score < best_score:
+			best = other
+			best_score = score
+	return best
+
+
+func sabotage_weight(building) -> float:
+	if not building.get("built"):
+		return 0.4
+	if building.stats.product:
+		return 0.6
+	if building.stats.population:
+		return 0.7
+	if building.has_node("Trainer"):
+		return 0.8
+	return 2.0
+
+
+func level() -> int:
+	return Global.economy(TEAM).townhall_level
+
+
+func army_cap() -> int:
+	return difficulty.army_cap + difficulty.army_cap_per_level * (level() - 1)
+
+
+func raid_size() -> int:
+	return difficulty.raid_size + difficulty.raid_growth_per_level * (level() - 1)
 
 
 func outnumbered(raider) -> bool:
 	var fighters := player_units().filter(func(unit): return not unit.stats.can_gather and unit.global_position.distance_to(raider.global_position) < 450.0)
 	return fighters.size() > raiders.size()
-
-
-func pick_target(from: Vector2, economy_only: bool) -> Node2D:
-	var siege := aggressive()
-	var best: Node2D = null
-	var best_score := INF
-	for group in ["unit", "buildings"]:
-		for other in get_tree().get_nodes_in_group(group):
-			if other.team != "player" or other.get("preview") or other.get("dying"):
-				continue
-			if group == "buildings" and not known.has(other):
-				continue
-			if not siege and not economy_only and in_player_base(other.global_position):
-				continue
-			var economic: bool = other.stats.can_gather if group == "unit" else other.get("stats") != null and other.stats.product != null
-			if economy_only and not economic:
-				continue
-			var score := from.distance_to(other.global_position)
-			if economic:
-				score *= 0.6
-			elif other is Townhall:
-				score *= 1.3
-			var health: Health = other.get_node("Health")
-			score *= 0.5 + 0.5 * health.current / health.max_value
-			if score < best_score:
-				best = other
-				best_score = score
-	return best

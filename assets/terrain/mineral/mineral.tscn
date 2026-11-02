@@ -31,6 +31,7 @@ position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_body")
 
 [node name="GatherArea" type="Area2D" parent="."]
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GatherArea"]
 shape = SubResource("CircleShape2D_gather")

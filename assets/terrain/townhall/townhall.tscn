@@ -50,6 +50,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_k2fjg")
 
 [node name="DepositArea" type="Area2D" parent="."]
 input_pickable = false
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DepositArea"]
 position = Vector2(0, 4)

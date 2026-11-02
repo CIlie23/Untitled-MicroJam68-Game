@@ -34,6 +34,7 @@ var muted := false
 var window_size_index := 0
 var camera_speed := 100.0
 var infinite_resources := false
+var ai_difficulty := 1
 
 
 func _ready() -> void:
